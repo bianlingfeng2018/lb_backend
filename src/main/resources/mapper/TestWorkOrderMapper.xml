@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.TestWorkOrderMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestWorkOrder">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="work_order_num" jdbcType="VARCHAR" property="workOrderNum" />
+    <result column="issuer" jdbcType="VARCHAR" property="issuer" />
+    <result column="busy_status" jdbcType="VARCHAR" property="busyStatus" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_output" jdbcType="TIMESTAMP" property="gmtOutput" />
+    <result column="withdraw" jdbcType="VARCHAR" property="withdraw" />
+    <result column="employee" jdbcType="VARCHAR" property="employee" />
+    <result column="customer" jdbcType="VARCHAR" property="customer" />
+    <result column="test_trade_id" jdbcType="BIGINT" property="testTradeId" />
+    <result column="test_id" jdbcType="BIGINT" property="testId" />
+    <result column="editor_id" jdbcType="BIGINT" property="editorId" />
+    <result column="reviewer_id" jdbcType="BIGINT" property="reviewerId" />
+    <result column="approver_id" jdbcType="BIGINT" property="approverId" />
+    <result column="flex_obj" jdbcType="LONGVARCHAR" property="flexObj" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from test_work_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.TestWorkOrder">
+    insert into test_work_order (id, work_order_num, issuer, 
+      busy_status, gmt_create, gmt_output, 
+      withdraw, employee, customer, test_trade_id, test_id, editor_id, reviewer_id, approver_id, flex_obj
+      )
+    values (#{id,jdbcType=BIGINT}, #{workOrderNum,jdbcType=VARCHAR}, #{issuer,jdbcType=VARCHAR}, 
+      #{busyStatus,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtOutput,jdbcType=TIMESTAMP}, 
+      #{withdraw,jdbcType=VARCHAR}, #{employee,jdbcType=VARCHAR}, #{customer,jdbcType=VARCHAR}, #{testTradeId, jdbcType=BIGINT}, #{testId, jdbcType=BIGINT},
+      #{editorId,jdbcType=BIGINT},#{reviewerId,jdbcType=BIGINT},#{approverId,jdbcType=BIGINT},#{flexObj, jdbcType=LONGVARCHAR})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestWorkOrder">
+    update test_work_order
+    set work_order_num = #{workOrderNum,jdbcType=VARCHAR},
+      issuer = #{issuer,jdbcType=VARCHAR},
+      busy_status = #{busyStatus,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_output = #{gmtOutput,jdbcType=TIMESTAMP},
+      withdraw = #{withdraw,jdbcType=VARCHAR},
+      employee = #{employee,jdbcType=VARCHAR},
+      customer = #{customer,jdbcType=VARCHAR},
+      test_trade_id = #{testTradeId, jdbcType=BIGINT},
+      test_id = #{testId, jdbcType=BIGINT},
+      editor_id = #{editorId,jdbcType=BIGINT},
+      reviewer_id = #{reviewerId,jdbcType=BIGINT},
+      approver_id = #{approverId,jdbcType=BIGINT},
+        flex_obj = #{flexObj,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, work_order_num, issuer, busy_status, gmt_create, gmt_output, withdraw, 
+    employee, customer, test_trade_id, test_id, editor_id, reviewer_id, approver_id,flex_obj
+    from test_work_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, work_order_num, issuer, busy_status, gmt_create, gmt_output, withdraw, 
+    employee, customer, test_trade_id, test_id, editor_id, reviewer_id, approver_id,flex_obj
+    from test_work_order
+  </select>
+  <select id="selectByEmployee" resultMap="BaseResultMap">
+    select id, work_order_num, issuer, busy_status, gmt_create, gmt_output, withdraw,
+    employee, customer, test_trade_id, test_id, editor_id, reviewer_id, approver_id,flex_obj
+    from test_work_order
+    where  employee = #{employee,jdbcType=VARCHAR}
+  </select>
+  <select id="queryTestWorkOrderByTestTradeId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, work_order_num, issuer, busy_status, gmt_create, gmt_output, withdraw,
+    employee, customer, test_trade_id, test_id, editor_id, reviewer_id, approver_id,flex_obj
+    from test_work_order
+    where test_trade_id = #{testTradeId, jdbcType=BIGINT}
+  </select>
+  <select id="selectAllByOwner" resultMap="BaseResultMap">
+    select a.*
+    from test_work_order a
+           left join user_test_trade b
+                     on a.test_trade_id = b.test_trade_id
+           left join user c
+                     on b.user_id = c.id
+    where c.username = #{owner,jdbcType=VARCHAR}
+  </select>
+</mapper>

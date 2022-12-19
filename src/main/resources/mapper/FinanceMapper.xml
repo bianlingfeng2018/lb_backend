@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.FinanceMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.Finance">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pro_num" jdbcType="VARCHAR" property="proNum" />
+    <result column="pro_date" jdbcType="VARCHAR" property="proDate" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="deal" jdbcType="VARCHAR" property="deal" />
+    <result column="pay" jdbcType="VARCHAR" property="pay" />
+    <result column="income" jdbcType="VARCHAR" property="income" />
+    <result column="service_confirm" jdbcType="VARCHAR" property="serviceConfirm" />
+    <result column="finance_confirm" jdbcType="VARCHAR" property="financeConfirm" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="client" jdbcType="VARCHAR" property="client" />
+    <result column="discount" jdbcType="VARCHAR" property="discount" />
+    <result column="apply_date" jdbcType="VARCHAR" property="applyDate" />
+    <result column="report_date" jdbcType="VARCHAR" property="reportDate" />
+    <result column="verify_date" jdbcType="VARCHAR" property="verifyDate" />
+    <result column="coefficient" jdbcType="VARCHAR" property="coefficient" />
+    <result column="trade_id" jdbcType="BIGINT" property="tradeId" />
+    <result column="report_num" jdbcType="VARCHAR" property="reportNum" />
+    <result column="agree_to_subcontract" jdbcType="VARCHAR" property="agreeToSubcontract" />
+    <result column="subcontract_price" jdbcType="VARCHAR" property="subcontractPrice" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from finance
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.Finance">
+    insert into finance (id, pro_num, pro_date, 
+      price, deal, pay, income, 
+      service_confirm, finance_confirm, type, 
+      client, discount, apply_date, 
+      report_date, verify_date, coefficient, 
+      trade_id,report_num,agree_to_subcontract,subcontract_price)
+    values (#{id,jdbcType=BIGINT}, #{proNum,jdbcType=VARCHAR}, #{proDate,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR}, #{deal,jdbcType=VARCHAR}, #{pay,jdbcType=VARCHAR}, #{income,jdbcType=VARCHAR}, 
+      #{serviceConfirm,jdbcType=VARCHAR}, #{financeConfirm,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{client,jdbcType=VARCHAR}, #{discount,jdbcType=VARCHAR}, #{applyDate,jdbcType=VARCHAR}, 
+      #{reportDate,jdbcType=VARCHAR}, #{verifyDate,jdbcType=VARCHAR}, #{coefficient,jdbcType=VARCHAR}, 
+      #{tradeId,jdbcType=BIGINT}, #{reportNum,jdbcType=VARCHAR}, #{agreeToSubcontract,jdbcType=VARCHAR}, #{subcontractPrice,jdbcType=VARCHAR})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.Finance">
+    update finance
+    set pro_num = #{proNum,jdbcType=VARCHAR},
+      pro_date = #{proDate,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      deal = #{deal,jdbcType=VARCHAR},
+      pay = #{pay,jdbcType=VARCHAR},
+      income = #{income,jdbcType=VARCHAR},
+      service_confirm = #{serviceConfirm,jdbcType=VARCHAR},
+      finance_confirm = #{financeConfirm,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      client = #{client,jdbcType=VARCHAR},
+      discount = #{discount,jdbcType=VARCHAR},
+      apply_date = #{applyDate,jdbcType=VARCHAR},
+      report_date = #{reportDate,jdbcType=VARCHAR},
+      verify_date = #{verifyDate,jdbcType=VARCHAR},
+      coefficient = #{coefficient,jdbcType=VARCHAR},
+      trade_id = #{tradeId,jdbcType=BIGINT},
+        report_num = #{reportNum,jdbcType=VARCHAR},
+        agree_to_subcontract = #{agreeToSubcontract,jdbcType=VARCHAR},
+        subcontract_price = #{subcontractPrice,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, pro_num, pro_date, price, deal, pay, income, service_confirm, finance_confirm, 
+    type, client, discount, apply_date, report_date, verify_date, coefficient, trade_id,
+           report_num,agree_to_subcontract,subcontract_price
+    from finance
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, pro_num, pro_date, price, deal, pay, income, service_confirm, finance_confirm, 
+    type, client, discount, apply_date, report_date, verify_date, coefficient, trade_id,
+           report_num,agree_to_subcontract,subcontract_price
+    from finance
+  </select>
+</mapper>

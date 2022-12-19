@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.TestWorkOrderItemMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestWorkOrderItem">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="test_work_order_id" jdbcType="BIGINT" property="testWorkOrderId" />
+    <result column="sample_desc" jdbcType="VARCHAR" property="sampleDesc" />
+    <result column="sample_location" jdbcType="VARCHAR" property="sampleLocation" />
+    <result column="test_items_method" jdbcType="VARCHAR" property="testItemsMethod" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from test_work_order_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.TestWorkOrderItem">
+    insert into test_work_order_item (id, test_work_order_id, sample_desc, 
+      sample_location, test_items_method, remark
+      )
+    values (#{id,jdbcType=BIGINT}, #{testWorkOrderId,jdbcType=BIGINT}, #{sampleDesc,jdbcType=VARCHAR}, 
+      #{sampleLocation,jdbcType=VARCHAR}, #{testItemsMethod,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+
+  <insert id="batchInsert" parameterType="com.libiao.customer.dal.model.TestWorkOrderItem">
+        insert into test_work_order_item (id, test_work_order_id, sample_desc,
+                                          sample_location, test_items_method, remark
+        ) values
+  <foreach collection="testWorkOrderItemList" item="item" index="index" separator=",">
+    (#{item.id,jdbcType=BIGINT}, #{item.testWorkOrderId,jdbcType=BIGINT}, #{item.sampleDesc,jdbcType=VARCHAR},
+    #{item.sampleLocation,jdbcType=VARCHAR}, #{item.testItemsMethod,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}
+    )
+  </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestWorkOrderItem">
+    update test_work_order_item
+    set test_work_order_id = #{testWorkOrderId,jdbcType=BIGINT},
+      sample_desc = #{sampleDesc,jdbcType=VARCHAR},
+      sample_location = #{sampleLocation,jdbcType=VARCHAR},
+      test_items_method = #{testItemsMethod,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, test_work_order_id, sample_desc, sample_location, test_items_method, remark
+    from test_work_order_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, test_work_order_id, sample_desc, sample_location, test_items_method, remark
+    from test_work_order_item
+  </select>
+
+  <select id="selectByTestWorkOrderId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, test_work_order_id, sample_desc, sample_location, test_items_method, remark
+    from test_work_order_item
+    where test_work_order_id = #{testWorkOrderId,jdbcType=BIGINT}
+  </select>
+</mapper>

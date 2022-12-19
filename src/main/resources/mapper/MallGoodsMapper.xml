@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.MallGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.MallGoods">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="goods_num" jdbcType="VARCHAR" property="goodsNum" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="test_item_list" jdbcType="LONGVARCHAR" property="testItemList" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from mall_goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.MallGoods">
+    insert into mall_goods (id, goods_num, goods_name, 
+      price, description, test_item_list
+      ,hscode,material,export,platform,standard,indust_class,bus_type,subtitle,meal_list
+      )
+    values (#{id,jdbcType=BIGINT}, #{goodsNum,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{testItemList,jdbcType=LONGVARCHAR}
+    , #{hscode,jdbcType=VARCHAR}, #{material,jdbcType=VARCHAR}
+    , #{export,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}
+    , #{standard,jdbcType=VARCHAR}, #{industClass,jdbcType=VARCHAR}
+    , #{busType,jdbcType=VARCHAR}, #{subtitle,jdbcType=VARCHAR}
+    , #{mealList,jdbcType=LONGVARCHAR}
+      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.MallGoods">
+    update mall_goods
+    set goods_num = #{goodsNum,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      test_item_list = #{testItemList,jdbcType=LONGVARCHAR}
+        ,hscode = #{hscode,jdbcType=VARCHAR},
+        material = #{material,jdbcType=VARCHAR},
+        export = #{export,jdbcType=VARCHAR},
+        platform = #{platform,jdbcType=VARCHAR},
+        standard = #{standard,jdbcType=VARCHAR},
+        indust_class = #{industClass,jdbcType=VARCHAR},
+        bus_type = #{busType,jdbcType=VARCHAR},
+        subtitle = #{subtitle,jdbcType=VARCHAR},
+        meal_list = #{mealList,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select *
+    from mall_goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from mall_goods
+  </select>
+</mapper>

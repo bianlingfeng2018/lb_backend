@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.TfAreaMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TfArea">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="shortname" jdbcType="VARCHAR" property="shortname" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="merger_name" jdbcType="VARCHAR" property="mergerName" />
+    <result column="level" jdbcType="TINYINT" property="level" />
+    <result column="pinyin" jdbcType="VARCHAR" property="pinyin" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="zip_code" jdbcType="VARCHAR" property="zipCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tf_area
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.TfArea">
+    insert into tf_area (id, pid, shortname, 
+      name, merger_name, level, 
+      pinyin, code, zip_code
+      )
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{shortname,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{mergerName,jdbcType=VARCHAR}, #{level,jdbcType=TINYINT}, 
+      #{pinyin,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TfArea">
+    update tf_area
+    set pid = #{pid,jdbcType=INTEGER},
+      shortname = #{shortname,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      merger_name = #{mergerName,jdbcType=VARCHAR},
+      level = #{level,jdbcType=TINYINT},
+      pinyin = #{pinyin,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      zip_code = #{zipCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, pid, shortname, name, merger_name, level, pinyin, code, zip_code
+    from tf_area
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPidAndLevel" resultMap="BaseResultMap">
+    select id, pid, shortname, name, merger_name, level, pinyin, code, zip_code
+    from tf_area
+    where pid = #{pid,jdbcType=INTEGER}
+    and level = #{level,jdbcType=TINYINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, pid, shortname, name, merger_name, level, pinyin, code, zip_code
+    from tf_area
+  </select>
+</mapper>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.TestApplicationFormMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestApplicationForm">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="report_date" jdbcType="TIMESTAMP" property="reportDate" />
+    <result column="rec_date" jdbcType="TIMESTAMP" property="recDate" />
+    <result column="cs_name" jdbcType="VARCHAR" property="csName" />
+    <result column="report_num" jdbcType="VARCHAR" property="reportNum" />
+    <result column="application_name" jdbcType="VARCHAR" property="applicationName" />
+    <result column="application_address" jdbcType="VARCHAR" property="applicationAddress" />
+    <result column="report_title" jdbcType="VARCHAR" property="reportTitle" />
+    <result column="same_as_applicant" jdbcType="VARCHAR" property="sameAsApplicant" />
+    <result column="other_name" jdbcType="VARCHAR" property="otherName" />
+    <result column="other_address" jdbcType="VARCHAR" property="otherAddress" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="delivered_to" jdbcType="VARCHAR" property="deliveredTo" />
+    <result column="payer" jdbcType="VARCHAR" property="payer" />
+    <result column="invoice_title" jdbcType="VARCHAR" property="invoiceTitle" />
+    <result column="sample_name" jdbcType="VARCHAR" property="sampleName" />
+    <result column="sample_quantity" jdbcType="VARCHAR" property="sampleQuantity" />
+    <result column="sample_model" jdbcType="VARCHAR" property="sampleModel" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="lot_no" jdbcType="VARCHAR" property="lotNo" />
+    <result column="specification" jdbcType="VARCHAR" property="specification" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="po_num" jdbcType="VARCHAR" property="poNum" />
+    <result column="buyer" jdbcType="VARCHAR" property="buyer" />
+    <result column="manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+    <result column="exported_to" jdbcType="VARCHAR" property="exportedTo" />
+    <result column="origin_country" jdbcType="VARCHAR" property="originCountry" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="report_format" jdbcType="VARCHAR" property="reportFormat" />
+    <result column="report_type" jdbcType="VARCHAR" property="reportType" />
+    <result column="agree_to_subcontract" jdbcType="VARCHAR" property="agreeToSubcontract" />
+    <result column="service_type" jdbcType="VARCHAR" property="serviceType" />
+    <result column="sample_treatment" jdbcType="VARCHAR" property="sampleTreatment" />
+    <result column="applicant_sig_cop" jdbcType="VARCHAR" property="applicantSigCop" />
+    <result column="application_date" jdbcType="VARCHAR" property="applicationDate" />
+    <result column="employee" jdbcType="VARCHAR" property="employee" />
+    <result column="customer" jdbcType="VARCHAR" property="customer" />
+    <result column="test_requirement" jdbcType="LONGVARCHAR" property="testRequirement" />
+    <result column="test_trade_id" jdbcType="BIGINT" property="testTradeId" />
+    <result column="copy_num" jdbcType="VARCHAR" property="copyNum" />
+    <result column="flex_obj" jdbcType="LONGVARCHAR" property="flexObj" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from test_application_form
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.TestApplicationForm">
+    insert into test_application_form (id, report_date, rec_date, 
+      cs_name, report_num, application_name, 
+      application_address, report_title, same_as_applicant, 
+      other_name, other_address, contact, 
+      tel, fax, email, delivered_to, 
+      payer, invoice_title, sample_name, 
+      sample_quantity, sample_model, brand, 
+      lot_no, specification, supplier, 
+      po_num, buyer, manufacturer, 
+      exported_to, origin_country, language, 
+      report_format, report_type, agree_to_subcontract, 
+      service_type, sample_treatment, applicant_sig_cop, 
+      application_date, employee, customer, 
+      test_requirement, test_trade_id, copy_num, flex_obj)
+    values (#{id,jdbcType=BIGINT}, #{reportDate,jdbcType=TIMESTAMP}, #{recDate,jdbcType=TIMESTAMP}, 
+      #{csName,jdbcType=VARCHAR}, #{reportNum,jdbcType=VARCHAR}, #{applicationName,jdbcType=VARCHAR}, 
+      #{applicationAddress,jdbcType=VARCHAR}, #{reportTitle,jdbcType=VARCHAR}, #{sameAsApplicant,jdbcType=VARCHAR}, 
+      #{otherName,jdbcType=VARCHAR}, #{otherAddress,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{deliveredTo,jdbcType=VARCHAR}, 
+      #{payer,jdbcType=VARCHAR}, #{invoiceTitle,jdbcType=VARCHAR}, #{sampleName,jdbcType=VARCHAR}, 
+      #{sampleQuantity,jdbcType=VARCHAR}, #{sampleModel,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, 
+      #{lotNo,jdbcType=VARCHAR}, #{specification,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, 
+      #{poNum,jdbcType=VARCHAR}, #{buyer,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, 
+      #{exportedTo,jdbcType=VARCHAR}, #{originCountry,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR}, 
+      #{reportFormat,jdbcType=VARCHAR}, #{reportType,jdbcType=VARCHAR}, #{agreeToSubcontract,jdbcType=VARCHAR}, 
+      #{serviceType,jdbcType=VARCHAR}, #{sampleTreatment,jdbcType=VARCHAR}, #{applicantSigCop,jdbcType=VARCHAR}, 
+      #{applicationDate,jdbcType=VARCHAR}, #{employee,jdbcType=VARCHAR}, #{customer,jdbcType=VARCHAR}, 
+      #{testRequirement,jdbcType=LONGVARCHAR}, #{testTradeId, jdbcType=BIGINT}, #{copyNum, jdbcType=VARCHAR},
+      #{flexObj, jdbcType=LONGVARCHAR})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestApplicationForm">
+    update test_application_form
+    set report_date = #{reportDate,jdbcType=TIMESTAMP},
+      rec_date = #{recDate,jdbcType=TIMESTAMP},
+      cs_name = #{csName,jdbcType=VARCHAR},
+      report_num = #{reportNum,jdbcType=VARCHAR},
+      application_name = #{applicationName,jdbcType=VARCHAR},
+      application_address = #{applicationAddress,jdbcType=VARCHAR},
+      report_title = #{reportTitle,jdbcType=VARCHAR},
+      same_as_applicant = #{sameAsApplicant,jdbcType=VARCHAR},
+      other_name = #{otherName,jdbcType=VARCHAR},
+      other_address = #{otherAddress,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      delivered_to = #{deliveredTo,jdbcType=VARCHAR},
+      payer = #{payer,jdbcType=VARCHAR},
+      invoice_title = #{invoiceTitle,jdbcType=VARCHAR},
+      sample_name = #{sampleName,jdbcType=VARCHAR},
+      sample_quantity = #{sampleQuantity,jdbcType=VARCHAR},
+      sample_model = #{sampleModel,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      lot_no = #{lotNo,jdbcType=VARCHAR},
+      specification = #{specification,jdbcType=VARCHAR},
+      supplier = #{supplier,jdbcType=VARCHAR},
+      po_num = #{poNum,jdbcType=VARCHAR},
+      buyer = #{buyer,jdbcType=VARCHAR},
+      manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      exported_to = #{exportedTo,jdbcType=VARCHAR},
+      origin_country = #{originCountry,jdbcType=VARCHAR},
+      language = #{language,jdbcType=VARCHAR},
+      report_format = #{reportFormat,jdbcType=VARCHAR},
+      report_type = #{reportType,jdbcType=VARCHAR},
+      agree_to_subcontract = #{agreeToSubcontract,jdbcType=VARCHAR},
+      service_type = #{serviceType,jdbcType=VARCHAR},
+      sample_treatment = #{sampleTreatment,jdbcType=VARCHAR},
+      applicant_sig_cop = #{applicantSigCop,jdbcType=VARCHAR},
+      application_date = #{applicationDate,jdbcType=VARCHAR},
+      employee = #{employee,jdbcType=VARCHAR},
+      customer = #{customer,jdbcType=VARCHAR},
+      test_requirement = #{testRequirement,jdbcType=LONGVARCHAR},
+      test_trade_id = #{testTradeId, jdbcType=BIGINT},
+        copy_num = #{copyNum,jdbcType=VARCHAR},
+        flex_obj = #{flexObj,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, report_date, rec_date, cs_name, report_num, application_name, application_address, 
+    report_title, same_as_applicant, other_name, other_address, contact, tel, fax, email, 
+    delivered_to, payer, invoice_title, sample_name, sample_quantity, sample_model, brand, 
+    lot_no, specification, supplier, po_num, buyer, manufacturer, exported_to, origin_country, 
+    language, report_format, report_type, agree_to_subcontract, service_type, sample_treatment, 
+    applicant_sig_cop, application_date, employee, customer, test_requirement, test_trade_id, copy_num,
+        flex_obj
+    from test_application_form
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, report_date, rec_date, cs_name, report_num, application_name, application_address, 
+    report_title, same_as_applicant, other_name, other_address, contact, tel, fax, email, 
+    delivered_to, payer, invoice_title, sample_name, sample_quantity, sample_model, brand, 
+    lot_no, specification, supplier, po_num, buyer, manufacturer, exported_to, origin_country, 
+    language, report_format, report_type, agree_to_subcontract, service_type, sample_treatment, 
+    applicant_sig_cop, application_date, employee, customer, test_requirement, test_trade_id, copy_num,
+        flex_obj
+    from test_application_form
+  </select>
+
+  <select id="queryTestApplicationFormByTestTradeId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, report_date, rec_date, cs_name, report_num, application_name, application_address,
+    report_title, same_as_applicant, other_name, other_address, contact, tel, fax, email,
+    delivered_to, payer, invoice_title, sample_name, sample_quantity, sample_model, brand,
+    lot_no, specification, supplier, po_num, buyer, manufacturer, exported_to, origin_country,
+    language, report_format, report_type, agree_to_subcontract, service_type, sample_treatment,
+    applicant_sig_cop, application_date, employee, customer, test_requirement, test_trade_id, copy_num,
+        flex_obj
+    from test_application_form
+    where test_trade_id = #{testTradeId, jdbcType=BIGINT}
+  </select>
+  <select id="selectAllByOwner" resultMap="BaseResultMap">
+    select a.*
+    from test_application_form a
+           left join user_test_trade b
+                     on a.test_trade_id = b.test_trade_id
+           left join user c
+                     on b.user_id = c.id
+    where c.username = #{owner,jdbcType=VARCHAR}
+  </select>
+</mapper>

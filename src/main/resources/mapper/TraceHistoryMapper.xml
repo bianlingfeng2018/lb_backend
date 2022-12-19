@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.TraceHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TraceHistory">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="client_id" jdbcType="BIGINT" property="clientId" />
+    <result column="trace_user_id" jdbcType="BIGINT" property="traceUserId" />
+    <result column="trace_user_name" jdbcType="VARCHAR" property="traceUserName" />
+    <result column="op_type" jdbcType="VARCHAR" property="opType" />
+    <result column="op_date" jdbcType="VARCHAR" property="opDate" />
+    <result column="protect_date" jdbcType="VARCHAR" property="protectDate" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from trace_history
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.TraceHistory">
+    insert into trace_history (id, client_id, trace_user_id, 
+      trace_user_name, op_type, op_date, 
+      protect_date)
+    values (#{id,jdbcType=BIGINT}, #{clientId,jdbcType=BIGINT}, #{traceUserId,jdbcType=BIGINT}, 
+      #{traceUserName,jdbcType=VARCHAR}, #{opType,jdbcType=VARCHAR}, #{opDate,jdbcType=VARCHAR}, 
+      #{protectDate,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TraceHistory">
+    update trace_history
+    set client_id = #{clientId,jdbcType=BIGINT},
+      trace_user_id = #{traceUserId,jdbcType=BIGINT},
+      trace_user_name = #{traceUserName,jdbcType=VARCHAR},
+      op_type = #{opType,jdbcType=VARCHAR},
+      op_date = #{opDate,jdbcType=VARCHAR},
+      protect_date = #{protectDate,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, client_id, trace_user_id, trace_user_name, op_type, op_date, protect_date
+    from trace_history
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByClientId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select *
+    from trace_history
+    where client_id = #{id,jdbcType=BIGINT}
+    limit 100
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, client_id, trace_user_id, trace_user_name, op_type, op_date, protect_date
+    from trace_history
+  </select>
+</mapper>

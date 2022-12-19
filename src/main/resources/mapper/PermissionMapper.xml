@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.Permission">
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="path" jdbcType="VARCHAR" property="path"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select *
+    from permission
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByPath" resultMap="BaseResultMap">
+    select *
+    from permission
+    where path = #{path,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from permission
+  </select>
+
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.Permission"
+    useGeneratedKeys="true"
+    keyProperty="id">
+    insert into permission (name, path)
+    values (#{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.Permission">
+    update permission
+    set name = #{name,jdbcType=VARCHAR},
+        path = #{path,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete
+    from permission
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.UserTestTradeMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.UserTestTrade">
+    <id column="user_id" jdbcType="BIGINT" property="userId"/>
+    <id column="test_trade_id" jdbcType="BIGINT" property="testTradeId"/>
+  </resultMap>
+
+  <delete id="deleteAllPermissionByTestTradeIdAndRole">
+    delete a
+    from user_test_trade a
+        left join `user` b
+            on b.id = a.user_id
+        left join `role` c
+            on c.id = b.role_id
+    where a.test_trade_id = #{testTradeId,jdbcType=BIGINT}
+    and c.name = #{role,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert">
+    insert into user_test_trade (user_id, test_trade_id)
+    values (#{userId, jdbcType=BIGINT}, #{testTradeId, jdbcType=BIGINT})
+  </insert>
+
+</mapper>

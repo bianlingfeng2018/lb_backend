@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.TestQuotationMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestQuotation">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="client" jdbcType="VARCHAR" property="client" />
+    <result column="quotation_num" jdbcType="VARCHAR" property="quotationNum" />
+    <result column="attn" jdbcType="VARCHAR" property="attn" />
+    <result column="tel_client" jdbcType="VARCHAR" property="telClient" />
+    <result column="tel_com" jdbcType="VARCHAR" property="telCom" />
+    <result column="fax_client" jdbcType="VARCHAR" property="faxClient" />
+    <result column="fax_com" jdbcType="VARCHAR" property="faxCom" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="invoice_title" jdbcType="VARCHAR" property="invoiceTitle" />
+    <result column="report_type" jdbcType="VARCHAR" property="reportType" />
+    <result column="delivery_address" jdbcType="VARCHAR" property="deliveryAddress" />
+    <result column="test_peroid" jdbcType="VARCHAR" property="testPeroid" />
+    <result column="bank_account_name" jdbcType="VARCHAR" property="bankAccountName" />
+    <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="client_com_signature" jdbcType="VARCHAR" property="clientComSignature" />
+    <result column="libiao_representative_signature" jdbcType="VARCHAR" property="libiaoRepresentativeSignature" />
+    <result column="client_com_chop" jdbcType="VARCHAR" property="clientComChop" />
+    <result column="audit" jdbcType="VARCHAR" property="audit" />
+    <result column="client_signature_date" jdbcType="VARCHAR" property="clientSignatureDate" />
+    <result column="libiao_signature_date" jdbcType="VARCHAR" property="libiaoSignatureDate" />
+    <result column="employee" jdbcType="VARCHAR" property="employee" />
+    <result column="customer" jdbcType="VARCHAR" property="customer" />
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+    <result column="test_trade_id" jdbcType="BIGINT" property="testTradeId" />
+    <result column="from_com" jdbcType="VARCHAR" property="fromCom"/>
+    <result column="report_fee" jdbcType="VARCHAR" property="reportFee"/>
+    <result column="courier_fee" jdbcType="VARCHAR" property="courierFee"/>
+    <result column="tax_fee" jdbcType="VARCHAR" property="taxFee"/>
+    <result column="discount" jdbcType="VARCHAR" property="discount"/>
+    <result column="total_cost" jdbcType="VARCHAR" property="totalCost"/>
+    <result column="service_id" jdbcType="BIGINT" property="serviceId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from test_quotation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.TestQuotation">
+    insert into test_quotation (id, client, quotation_num, 
+      attn, tel_client, tel_com, 
+      fax_client, fax_com, email, 
+      gmt_create, invoice_title, report_type, 
+      delivery_address, test_peroid, bank_account_name, 
+      bank_account, bank_name, client_com_signature, 
+      libiao_representative_signature, client_com_chop, 
+      audit, client_signature_date, libiao_signature_date, 
+      employee, customer, remark, test_trade_id,
+      from_com, report_fee, courier_fee, tax_fee, discount, total_cost, service_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{client,jdbcType=VARCHAR}, #{quotationNum,jdbcType=VARCHAR}, 
+      #{attn,jdbcType=VARCHAR}, #{telClient,jdbcType=VARCHAR}, #{telCom,jdbcType=VARCHAR}, 
+      #{faxClient,jdbcType=VARCHAR}, #{faxCom,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{invoiceTitle,jdbcType=VARCHAR}, #{reportType,jdbcType=VARCHAR}, 
+      #{deliveryAddress,jdbcType=VARCHAR}, #{testPeroid,jdbcType=VARCHAR}, #{bankAccountName,jdbcType=VARCHAR}, 
+      #{bankAccount,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{clientComSignature,jdbcType=VARCHAR}, 
+      #{libiaoRepresentativeSignature,jdbcType=VARCHAR}, #{clientComChop,jdbcType=VARCHAR}, 
+      #{audit,jdbcType=VARCHAR}, #{clientSignatureDate,jdbcType=VARCHAR}, #{libiaoSignatureDate,jdbcType=VARCHAR}, 
+      #{employee,jdbcType=VARCHAR}, #{customer,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR}, #{testTradeId,jdbcType=BIGINT},
+      #{fromCom, jdbcType=VARCHAR}, #{reportFee, jdbcType=VARCHAR}, #{courierFee, jdbcType=VARCHAR}, #{taxFee, jdbcType=VARCHAR},
+      #{discount, jdbcType=VARCHAR}, #{totalCost, jdbcType=VARCHAR}, #{serviceId, jdbcType=BIGINT}
+      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestQuotation">
+    update test_quotation
+    set client = #{client,jdbcType=VARCHAR},
+      quotation_num = #{quotationNum,jdbcType=VARCHAR},
+      attn = #{attn,jdbcType=VARCHAR},
+      tel_client = #{telClient,jdbcType=VARCHAR},
+      tel_com = #{telCom,jdbcType=VARCHAR},
+      fax_client = #{faxClient,jdbcType=VARCHAR},
+      fax_com = #{faxCom,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      invoice_title = #{invoiceTitle,jdbcType=VARCHAR},
+      report_type = #{reportType,jdbcType=VARCHAR},
+      delivery_address = #{deliveryAddress,jdbcType=VARCHAR},
+      test_peroid = #{testPeroid,jdbcType=VARCHAR},
+      bank_account_name = #{bankAccountName,jdbcType=VARCHAR},
+      bank_account = #{bankAccount,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      client_com_signature = #{clientComSignature,jdbcType=VARCHAR},
+      libiao_representative_signature = #{libiaoRepresentativeSignature,jdbcType=VARCHAR},
+      client_com_chop = #{clientComChop,jdbcType=VARCHAR},
+      audit = #{audit,jdbcType=VARCHAR},
+      client_signature_date = #{clientSignatureDate,jdbcType=VARCHAR},
+      libiao_signature_date = #{libiaoSignatureDate,jdbcType=VARCHAR},
+      employee = #{employee,jdbcType=VARCHAR},
+      customer = #{customer,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=LONGVARCHAR},
+      test_trade_id = #{testTradeId, jdbcType=BIGINT},
+      from_com = #{fromCom, jdbcType=VARCHAR},
+      report_fee = #{reportFee, jdbcType=VARCHAR},
+      courier_fee = #{courierFee, jdbcType=VARCHAR},
+      tax_fee = #{taxFee, jdbcType=VARCHAR},
+      discount = #{discount, jdbcType=VARCHAR},
+      total_cost = #{totalCost, jdbcType=VARCHAR},
+      service_id = #{serviceId, jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, client, quotation_num, attn, tel_client, tel_com, fax_client, fax_com, 
+    email, gmt_create, invoice_title, report_type, delivery_address, test_peroid, bank_account_name, 
+    bank_account, bank_name, client_com_signature, libiao_representative_signature, client_com_chop, 
+    audit, client_signature_date, libiao_signature_date, employee, customer, remark, test_trade_id,
+    from_com, report_fee, courier_fee, tax_fee, discount, total_cost, service_id
+    from test_quotation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, client, quotation_num, attn, tel_client, tel_com, fax_client, fax_com, 
+    email, gmt_create, invoice_title, report_type, delivery_address, test_peroid, bank_account_name, 
+    bank_account, bank_name, client_com_signature, libiao_representative_signature, client_com_chop, 
+    audit, client_signature_date, libiao_signature_date, employee, customer, remark, test_trade_id,
+    from_com, report_fee, courier_fee, tax_fee, discount, total_cost, service_id
+    from test_quotation
+  </select>
+
+  <select id="selectByEmployee" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, client, quotation_num, attn, tel_client, tel_com, fax_client, fax_com,
+           email, gmt_create, invoice_title, report_type, delivery_address, test_peroid, bank_account_name,
+           bank_account, bank_name, client_com_signature, libiao_representative_signature, client_com_chop,
+           audit, client_signature_date, libiao_signature_date, employee, customer, remark, test_trade_id,
+           from_com, report_fee, courier_fee, tax_fee, discount, total_cost, service_id
+    from test_quotation
+    where employee = #{employee,jdbcType=VARCHAR}
+  </select>
+
+  <select id="queryTestQuotationByTestTradeId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, client, quotation_num, attn, tel_client, tel_com, fax_client, fax_com,
+    email, gmt_create, invoice_title, report_type, delivery_address, test_peroid, bank_account_name,
+    bank_account, bank_name, client_com_signature, libiao_representative_signature, client_com_chop,
+    audit, client_signature_date, libiao_signature_date, employee, customer, remark, test_trade_id,
+    from_com, report_fee, courier_fee, tax_fee, discount, total_cost, service_id
+    from test_quotation
+    where test_trade_id = #{testTradeId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAllByOwner" resultMap="BaseResultMap">
+    select a.*
+    from test_quotation a
+           left join user_test_trade b
+                     on a.test_trade_id = b.test_trade_id
+           left join user c
+                     on b.user_id = c.id
+    where c.username = #{owner,jdbcType=VARCHAR}
+  </select>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.BasicCountryMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.BasicCountry">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="abbr" jdbcType="VARCHAR" property="abbr" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="en_name" jdbcType="VARCHAR" property="enName" />
+    <result column="ext1" jdbcType="VARCHAR" property="ext1" />
+    <result column="ext2" jdbcType="VARCHAR" property="ext2" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from basic_country
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.BasicCountry">
+    insert into basic_country (id, code, abbr, 
+      name, en_name, ext1, 
+      ext2)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{abbr,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{enName,jdbcType=VARCHAR}, #{ext1,jdbcType=VARCHAR}, 
+      #{ext2,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.BasicCountry">
+    update basic_country
+    set code = #{code,jdbcType=VARCHAR},
+      abbr = #{abbr,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      en_name = #{enName,jdbcType=VARCHAR},
+      ext1 = #{ext1,jdbcType=VARCHAR},
+      ext2 = #{ext2,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, code, abbr, name, en_name, ext1, ext2
+    from basic_country
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, code, abbr, name, en_name, ext1, ext2
+    from basic_country
+  </select>
+</mapper>

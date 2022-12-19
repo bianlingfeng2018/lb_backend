@@ -1,0 +1,8 @@
+vnc   链接  fdbigdke.cn:5601   密码：FD@Bigdata   
+xshell 连接跳板  ip  fdbigdke.cn 端口 59      用户/密码 root/fujialvdi@123
+
+vnc登陆进去后，锁屏用密码FD@admin解锁
+xshell登陆进去后，通过ssh  root@vm135   或者 root@192.168.3.135登陆spark主节点所在节点，可以提交spark任务。
+
+其他说明：
+集群由CDH管理，一个节点就是一个虚拟机。

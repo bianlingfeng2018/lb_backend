@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.TestQuotationItemMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestQuotationItem">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="test_quotation_id" jdbcType="BIGINT" property="testQuotationId" />
+    <result column="report_num" jdbcType="VARCHAR" property="reportNum" />
+    <result column="product_des" jdbcType="VARCHAR" property="productDes" />
+    <result column="style" jdbcType="VARCHAR" property="style" />
+    <result column="material_color" jdbcType="VARCHAR" property="materialColor" />
+    <result column="test_item" jdbcType="VARCHAR" property="testItem" />
+    <result column="unit_price" jdbcType="VARCHAR" property="unitPrice" />
+    <result column="qty" jdbcType="VARCHAR" property="qty" />
+    <result column="amount_rmb" jdbcType="VARCHAR" property="amountRmb" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from test_quotation_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.TestQuotationItem">
+    insert into test_quotation_item (id, test_quotation_id, report_num, 
+      product_des, style, material_color, 
+      test_item, unit_price, qty, 
+      amount_rmb) values
+    (#{id,jdbcType=BIGINT}, #{testQuotationId,jdbcType=BIGINT}, #{reportNum,jdbcType=VARCHAR},
+    #{productDes,jdbcType=VARCHAR}, #{style,jdbcType=VARCHAR}, #{materialColor,jdbcType=VARCHAR},
+    #{testItem,jdbcType=VARCHAR}, #{unitPrice,jdbcType=VARCHAR}, #{qty,jdbcType=VARCHAR},
+    #{amountRmb,jdbcType=VARCHAR})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+
+  <insert id="batchInsert" parameterType="com.libiao.customer.dal.model.TestQuotationItem">
+    insert into test_quotation_item (id, test_quotation_id, report_num,
+                                     product_des, style, material_color,
+                                     test_item, unit_price, qty,
+                                     amount_rmb)
+                                     values
+    <foreach collection="testQuotationItemList" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=BIGINT}, #{item.testQuotationId,jdbcType=BIGINT}, #{item.reportNum,jdbcType=VARCHAR},
+      #{item.productDes,jdbcType=VARCHAR}, #{item.style,jdbcType=VARCHAR}, #{item.materialColor,jdbcType=VARCHAR},
+      #{item.testItem,jdbcType=VARCHAR}, #{item.unitPrice,jdbcType=VARCHAR}, #{item.qty,jdbcType=VARCHAR},
+      #{item.amountRmb,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestQuotationItem">
+    update test_quotation_item
+    set test_quotation_id = #{testQuotationId,jdbcType=BIGINT},
+      report_num = #{reportNum,jdbcType=VARCHAR},
+      product_des = #{productDes,jdbcType=VARCHAR},
+      style = #{style,jdbcType=VARCHAR},
+      material_color = #{materialColor,jdbcType=VARCHAR},
+      test_item = #{testItem,jdbcType=VARCHAR},
+      unit_price = #{unitPrice,jdbcType=VARCHAR},
+      qty = #{qty,jdbcType=VARCHAR},
+      amount_rmb = #{amountRmb,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, test_quotation_id, report_num, product_des, style, material_color, test_item, 
+    unit_price, qty, amount_rmb
+    from test_quotation_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, test_quotation_id, report_num, product_des, style, material_color, test_item, 
+    unit_price, qty, amount_rmb
+    from test_quotation_item
+  </select>
+  <select id="selectByTestQuotationId" resultMap="BaseResultMap">
+    select id, test_quotation_id, report_num, product_des, style, material_color, test_item,
+           unit_price, qty, amount_rmb
+    from test_quotation_item
+    where test_quotation_id = #{testQuotationId,jdbcType=BIGINT}
+  </select>
+</mapper>

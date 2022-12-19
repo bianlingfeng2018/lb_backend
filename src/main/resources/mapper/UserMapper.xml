@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.User">
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+    <result column="gmt_modify" jdbcType="TIMESTAMP" property="gmtModify"/>
+    <result column="username" jdbcType="VARCHAR" property="username"/>
+    <result column="password" jdbcType="VARCHAR" property="password"/>
+    <result column="permission" jdbcType="VARCHAR" property="permission"/>
+    <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+    <result column="phone_num" jdbcType="VARCHAR" property="phoneNum"/>
+    <result column="email" jdbcType="VARCHAR" property="email"/>
+    <result column="status" jdbcType="VARCHAR" property="status"/>
+    <result column="sex" jdbcType="VARCHAR" property="sex"/>
+    <result column="account_type" jdbcType="VARCHAR" property="accountType"/>
+    <result column="com" jdbcType="VARCHAR" property="com"/>
+    <result column="com_id" jdbcType="BIGINT" property="comId"/>
+    <result column="flex_obj" jdbcType="LONGVARCHAR" property="flexObj" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="decide_role" jdbcType="VARCHAR" property="decideRole" />
+    <result column="depart" jdbcType="VARCHAR" property="depart" />
+    <result column="pos" jdbcType="VARCHAR" property="pos" />
+    <result column="work_state" jdbcType="VARCHAR" property="workState" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="main_contact" jdbcType="VARCHAR" property="mainContact" />
+  </resultMap>
+  <resultMap id="UserRoleResultMap" type="com.libiao.customer.dal.model.User">
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+    <result column="gmt_modify" jdbcType="TIMESTAMP" property="gmtModify"/>
+    <result column="username" jdbcType="VARCHAR" property="username"/>
+    <result column="password" jdbcType="VARCHAR" property="password"/>
+    <result column="permission" jdbcType="VARCHAR" property="permission"/>
+    <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+    <result column="phone_num" jdbcType="VARCHAR" property="phoneNum"/>
+    <result column="email" jdbcType="VARCHAR" property="email"/>
+    <result column="status" jdbcType="VARCHAR" property="status"/>
+    <result column="sex" jdbcType="VARCHAR" property="sex"/>
+    <result column="account_type" jdbcType="VARCHAR" property="accountType"/>
+    <result column="com" jdbcType="VARCHAR" property="com"/>
+    <result column="com_id" jdbcType="BIGINT" property="comId"/>
+    <result column="flex_obj" jdbcType="LONGVARCHAR" property="flexObj" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="decide_role" jdbcType="VARCHAR" property="decideRole" />
+    <result column="depart" jdbcType="VARCHAR" property="depart" />
+    <result column="pos" jdbcType="VARCHAR" property="pos" />
+    <result column="work_state" jdbcType="VARCHAR" property="workState" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="main_contact" jdbcType="VARCHAR" property="mainContact" />
+    <association property="role" javaType="com.libiao.customer.dal.model.Role">
+      <id column="bid" property="id" jdbcType="BIGINT"/>
+      <result column="bname" property="name" jdbcType="VARCHAR"/>
+      <result column="desc" property="desc" jdbcType="VARCHAR"/>
+      <collection property="permission" javaType="java.util.List"
+        ofType="com.libiao.customer.dal.model.Permission">
+        <id column="did" property="id" jdbcType="BIGINT"/>
+        <result column="dname" property="name" jdbcType="VARCHAR"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+      </collection>
+    </association>
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.User" useGeneratedKeys="true"
+    keyProperty="id">
+    insert into user (id, gmt_create, gmt_modify,
+    username, password, permission, nickname, phone_num, email, status, sex, account_type,
+    role_id, created_by, com, com_id, flex_obj,phone,decide_role,depart,pos,work_state,birthday,main_contact
+    )
+    values (#{id, jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP},
+    #{gmtModify,jdbcType=TIMESTAMP},
+    #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR},
+    #{nickname,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+    #{status,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{accountType,jdbcType=VARCHAR},
+    #{role.id,jdbcType=BIGINT}, #{createdBy,jdbcType=BIGINT}, #{com,jdbcType=VARCHAR}
+    , #{comId,jdbcType=BIGINT}, #{flexObj,jdbcType=LONGVARCHAR}
+    , #{phone,jdbcType=VARCHAR}, #{decideRole,jdbcType=VARCHAR}, #{depart,jdbcType=VARCHAR}
+    , #{pos,jdbcType=VARCHAR}, #{workState,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}
+    , #{mainContact,jdbcType=VARCHAR}
+    )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.User">
+    update user
+    set gmt_create   = #{gmtCreate,jdbcType=TIMESTAMP},
+        gmt_modify   = #{gmtModify,jdbcType=TIMESTAMP},
+        username     = #{username,jdbcType=VARCHAR},
+        password     = #{password,jdbcType=VARCHAR},
+        permission   = #{permission,jdbcType=VARCHAR},
+        nickname     = #{nickname, jdbcType=VARCHAR},
+        phone_num    = #{phoneNum, jdbcType=VARCHAR},
+        email        = #{email, jdbcType=VARCHAR},
+        status       = #{status, jdbcType=VARCHAR},
+        sex          = #{sex, jdbcType=VARCHAR},
+        account_type = #{accountType, jdbcType=VARCHAR},
+        role_id      = #{role.id},
+        com = #{com, jdbcType=VARCHAR},
+        com_id = #{comId, jdbcType=BIGINT},
+        flex_obj = #{flexObj, jdbcType=LONGVARCHAR},
+        phone = #{phone, jdbcType=LONGVARCHAR},
+        decide_role = #{decideRole, jdbcType=LONGVARCHAR},
+        depart = #{depart, jdbcType=LONGVARCHAR},
+        pos = #{pos, jdbcType=LONGVARCHAR},
+        work_state = #{workState, jdbcType=LONGVARCHAR},
+        birthday = #{birthday, jdbcType=LONGVARCHAR},
+        main_contact = #{mainContact, jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select *
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+   <select id="selectByClientId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select *
+    from user
+    where com_id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByPrimaryKeyWithRole" parameterType="java.lang.Long" resultMap="UserRoleResultMap">
+    select a.*,
+           b.id   bid,
+           b.name bname,
+           b.`desc`,
+           d.id   did,
+           d.name dname,
+           d.path
+    from user a
+           left join role b
+                     on a.role_id = b.id
+           left join role_permission c
+                     on b.id = c.role_id
+           left join permission d
+                     on c.permission_id = d.id
+    where a.id = #{id,jdbcType=BIGINT}
+    group by a.id
+  </select>
+
+  <select id="selectByUsernamePassword" resultMap="UserRoleResultMap">
+    select a.*,
+           b.id   bid,
+           b.name bname,
+           b.`desc`,
+           d.id   did,
+           d.name dname,
+           d.path
+    from user a
+           left join role b
+                     on a.role_id = b.id
+           left join role_permission c
+                     on b.id = c.role_id
+           left join permission d
+                     on c.permission_id = d.id
+    where username = #{username,jdbcType=VARCHAR}
+      and password = #{password,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByUsername" resultMap="UserRoleResultMap">
+    select a.*,
+           b.id   bid,
+           b.name bname,
+           b.`desc`,
+           d.id   did,
+           d.name dname,
+           d.path
+    from user a
+           left join role b
+                     on a.role_id = b.id
+           left join role_permission c
+                     on b.id = c.role_id
+           left join permission d
+                     on c.permission_id = d.id
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPhoneNum" resultMap="UserRoleResultMap">
+    select a.*,
+           b.id   bid,
+           b.name bname,
+           b.`desc`,
+           d.id   did,
+           d.name dname,
+           d.path
+    from user a
+           left join role b
+                     on a.role_id = b.id
+           left join role_permission c
+                     on b.id = c.role_id
+           left join permission d
+                     on c.permission_id = d.id
+    where phone_num = #{phoneNum,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from user
+  </select>
+
+  <select id="selectAllWithRole" resultMap="UserRoleResultMap">
+    select a.*,
+           b.id   bid,
+           b.name bname,
+           b.`desc`,
+           d.id   did,
+           d.name dname,
+           d.path
+    from user a
+           left join role b
+                     on a.role_id = b.id
+           left join role_permission c
+                     on b.id = c.role_id
+           left join permission d
+                     on c.permission_id = d.id
+    where 1 = 1
+    group by id
+  </select>
+  <select id="selectAllWithRoleByRole" parameterType="java.lang.String"
+    resultMap="UserRoleResultMap">
+    select a.*,
+           b.id   bid,
+           b.name bname,
+           b.`desc`,
+           d.id   did,
+           d.name dname,
+           d.path
+    from user a
+           left join role b
+                     on a.role_id = b.id
+           left join role_permission c
+                     on b.id = c.role_id
+           left join permission d
+                     on c.permission_id = d.id
+    where b.name = #{role,jdbcType=VARCHAR}
+    group by id
+  </select>
+  <select id="selectAllWithRoleByRoleAndCreatedBy" resultMap="UserRoleResultMap">
+    select a.*,
+           b.id   bid,
+           b.name bname,
+           b.`desc`
+    from user a
+           left join role b
+                     on a.role_id = b.id
+    where b.name = #{role,jdbcType=VARCHAR}
+      and a.created_by = #{id}
+    group by a.id
+  </select>
+  <select id="selectAllWithRoleByRoleInSameTestTrade" resultMap="UserRoleResultMap">
+    select a.*,
+           b.id   bid,
+           b.name bname,
+           b.`desc`
+    from user a
+           left join role b
+                     on a.role_id = b.id
+           left join user_test_trade c
+                     on a.id = c.user_id
+    where b.name = #{role}
+      and c.test_trade_id in
+          ( select d.test_trade_id
+            from user_test_trade d
+            left join user e
+            on e.id = d.user_id
+            where e.username = #{username})
+    group by a.id
+  </select>
+  <select id="selectByRoleAndTestTrade" resultMap="UserRoleResultMap">
+    select a.*
+    from user a
+           left join role b
+                     on a.role_id = b.id
+           left join user_test_trade c
+                     on a.id = c.user_id
+    where b.name = #{role}
+      and c.test_trade_id = #{tradeId}
+    group by a.id
+  </select>
+  <select id="selectAllWithRoleByNotRole" parameterType="java.lang.String"
+    resultMap="UserRoleResultMap">
+    select a.*,
+           b.id   bid,
+           b.name bname,
+           b.`desc`,
+           d.id   did,
+           d.name dname,
+           d.path
+    from user a
+           left join role b
+                     on a.role_id = b.id
+           left join role_permission c
+                     on b.id = c.role_id
+           left join permission d
+                     on c.permission_id = d.id
+    where b.name != #{role,jdbcType=VARCHAR}
+    group by id
+  </select>
+</mapper>

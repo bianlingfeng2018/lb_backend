@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.BasicTestItemMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.BasicTestItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="period" jdbcType="VARCHAR" property="period" />
+    <result column="quantity" jdbcType="VARCHAR" property="quantity" />
+    <result column="sub_contract" jdbcType="VARCHAR" property="subContract" />
+    <result column="com_name" jdbcType="VARCHAR" property="comName" />
+    <result column="ext1" jdbcType="VARCHAR" property="ext1" />
+    <result column="ext2" jdbcType="VARCHAR" property="ext2" />
+    <result column="ext3" jdbcType="VARCHAR" property="ext3" />
+    <result column="ext4" jdbcType="VARCHAR" property="ext4" />
+    <result column="ext5" jdbcType="VARCHAR" property="ext5" />
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from basic_test_item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.BasicTestItem">
+    insert into basic_test_item (id, name, price, 
+      period, quantity, sub_contract, 
+      com_name, ext1, ext2, 
+      ext3, ext4, ext5, remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, 
+      #{period,jdbcType=VARCHAR}, #{quantity,jdbcType=VARCHAR}, #{subContract,jdbcType=VARCHAR}, 
+      #{comName,jdbcType=VARCHAR}, #{ext1,jdbcType=VARCHAR}, #{ext2,jdbcType=VARCHAR}, 
+      #{ext3,jdbcType=VARCHAR}, #{ext4,jdbcType=VARCHAR}, #{ext5,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.BasicTestItem">
+    update basic_test_item
+    set name = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      period = #{period,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=VARCHAR},
+      sub_contract = #{subContract,jdbcType=VARCHAR},
+      com_name = #{comName,jdbcType=VARCHAR},
+      ext1 = #{ext1,jdbcType=VARCHAR},
+      ext2 = #{ext2,jdbcType=VARCHAR},
+      ext3 = #{ext3,jdbcType=VARCHAR},
+      ext4 = #{ext4,jdbcType=VARCHAR},
+      ext5 = #{ext5,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, name, price, period, quantity, sub_contract, com_name, ext1, ext2, ext3, 
+    ext4, ext5, remark
+    from basic_test_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, price, period, quantity, sub_contract, com_name, ext1, ext2, ext3, 
+    ext4, ext5, remark
+    from basic_test_item
+  </select>
+</mapper>

@@ -46,6 +46,7 @@ public class BillCtrl {
     @ResponseBody
     @RequestMapping(value = "/addOneIncomeBill", method = RequestMethod.POST)
     public ResponseVO addOneIncomeBill(@RequestBody BillIncomeAddReq req){
+        req.setOperType("入账");
         return incomeService.addOneIncomeBill(req);
     }
 

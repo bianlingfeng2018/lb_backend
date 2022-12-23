@@ -50,7 +50,7 @@ public class BillIncomeServiceImpl implements BillIncomeService {
         billIncome.setOperationAmount(req.getOperAmount());
         billIncome.setOperationTime(new Date());
         billIncome.setOperUser(req.getOperUser());
-        billIncome.setOprationType("入账");
+        billIncome.setOprationType(req.getOperType());
         billIncome.setDesc(req.getDesc());
         long amount = getClientAccountAmount(req.getClientId());
         billIncome.setOriginAmount(amount);

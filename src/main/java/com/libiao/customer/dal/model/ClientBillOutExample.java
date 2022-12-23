@@ -674,6 +674,76 @@ public class ClientBillOutExample {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
+
+        public Criteria andOperUserIsNull() {
+            addCriterion("oper_user is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserIsNotNull() {
+            addCriterion("oper_user is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserEqualTo(String value) {
+            addCriterion("oper_user =", value, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserNotEqualTo(String value) {
+            addCriterion("oper_user <>", value, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserGreaterThan(String value) {
+            addCriterion("oper_user >", value, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserGreaterThanOrEqualTo(String value) {
+            addCriterion("oper_user >=", value, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserLessThan(String value) {
+            addCriterion("oper_user <", value, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserLessThanOrEqualTo(String value) {
+            addCriterion("oper_user <=", value, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserLike(String value) {
+            addCriterion("oper_user like", value, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserNotLike(String value) {
+            addCriterion("oper_user not like", value, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserIn(List<String> values) {
+            addCriterion("oper_user in", values, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserNotIn(List<String> values) {
+            addCriterion("oper_user not in", values, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserBetween(String value1, String value2) {
+            addCriterion("oper_user between", value1, value2, "operUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperUserNotBetween(String value1, String value2) {
+            addCriterion("oper_user not between", value1, value2, "operUser");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

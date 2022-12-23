@@ -21,6 +21,8 @@ public class ClientBillOut {
 
     private String status;
 
+    private String operUser;
+
     public Long getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class ClientBillOut {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getOperUser() {
+        return operUser;
+    }
+
+    public void setOperUser(String operUser) {
+        this.operUser = operUser;
     }
 }

@@ -5,7 +5,6 @@ import lombok.NonNull;
 
 @Data
 public class BillIncomeAddReq {
-    @NonNull
     String clientId;
     Long operAmount;
     String desc;

@@ -7,9 +7,8 @@ import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.WebUtil;
 import com.libiao.customer.util.des.JwtUtil;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,17 +26,18 @@ import java.util.Objects;
 /**
  * 认证校验拦截器
  */
+@Slf4j
 public class TokenAuthInterceptor implements HandlerInterceptor {
-	private static final Logger LOGGER = LoggerFactory.getLogger(TokenAuthInterceptor.class);
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		String token = request.getHeader("token");
 		String servletPath = request.getServletPath();
+
 		if (StringUtils.isNotBlank(servletPath) && servletPath.contains("/api/login/account")){
 			return true;
 		}
-        LOGGER.info(">>>>>>>>> 用户认证，token is: {}", token);
+        log.info(">>>>>>>>> 用户认证，token is: {}", token);
 		try {
 			if (!(handler instanceof HandlerMethod)) {
 				return true;
@@ -49,14 +49,14 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
 			// 解析jwt, 存用户信息
             AccessToken accessToken = parseJwt(token);
 
-            LOGGER.info(">>>>>>>>>>> origin request URL：{}, token auth accessToken= {}", request.getRequestURI(), accessToken);
+            log.info(">>>>>>>>>>> origin request URL：{}, token auth accessToken= {}", request.getRequestURI(), accessToken);
             if (Objects.isNull(accessToken)) {
                 buildNeedLoginResponse(request, response, handler);
                 return false;
             }
 
 			String redisToken = AccessTokenCacheUtil.getToken(accessToken);
-            LOGGER.info(">>>>>>>>>>> token auth redisToken={}", redisToken);
+            log.info(">>>>>>>>>>> token auth redisToken={}", redisToken);
 
 			if (StringUtils.isBlank(redisToken)
 //                    || !accessToken.getToken().equals(redisToken)
@@ -68,18 +68,18 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
             WebUtil.putAccessToken(accessToken);
 			// 刷新token 缓存
             AccessTokenCacheUtil.putToken(accessToken);
-            LOGGER.info(request.getRequestURI() + accessToken.toString());
+            log.info(request.getRequestURI() + accessToken.toString());
 			return true;
 		} catch (Exception e) {
-            LOGGER.error("认证异常， msg is：{}", e.toString(), e);
+            log.error("认证异常， msg is：{}", e.toString(), e);
             if (Objects.nonNull(WebUtil.getAccessToken())) {
-                LOGGER.info("preHandle removeAccessToken, username is: {}", WebUtil.getAccessToken().getUsername());
+                log.info("preHandle removeAccessToken, username is: {}", WebUtil.getAccessToken().getUsername());
                 WebUtil.removeAccessToken();
             }
 			try {
 				buildNeedLoginResponse(request, response, handler);
 			} catch (IOException e1) {
-                LOGGER.error("构建失败认证响应体异常，msg is：{}", e1.toString(), e1);
+                log.error("构建失败认证响应体异常，msg is：{}", e1.toString(), e1);
 			}
 			return false;
 		}
@@ -88,11 +88,11 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        LOGGER.info("afterCompletion removeAccessToken, username is: {}", Objects.nonNull(WebUtil.getAccessToken())
+        log.info("afterCompletion removeAccessToken, username is: {}", Objects.nonNull(WebUtil.getAccessToken())
                 ? WebUtil.getAccessToken().getUsername()
                 : " null ");
         if (Objects.nonNull(WebUtil.getAccessToken())) {
-            LOGGER.info("postHandle removeAccessToken, username is: {}", WebUtil.getAccessToken().getUsername());
+            log.info("postHandle removeAccessToken, username is: {}", WebUtil.getAccessToken().getUsername());
             WebUtil.removeAccessToken();
         }
     }
@@ -100,7 +100,7 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         if (Objects.nonNull(WebUtil.getAccessToken())) {
-            LOGGER.info("afterCompletion removeAccessToken, username is: {}", WebUtil.getAccessToken().getUsername());
+            log.info("afterCompletion removeAccessToken, username is: {}", WebUtil.getAccessToken().getUsername());
             WebUtil.removeAccessToken();
         }
     }
@@ -113,7 +113,7 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
             accessToken.setUsername(userInfo.get("username"));
 			accessToken.setPermission(userInfo.get("permission"));
         } catch (Exception e) {
-            LOGGER.error("jwt token 解析异常， msg is：{}", e.toString(), e);
+            log.error("jwt token 解析异常， msg is：{}", e.toString(), e);
             return null;
         }
         return accessToken;

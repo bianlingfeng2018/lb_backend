@@ -1,8 +1,13 @@
 package com.libiao.customer.util;
 
+import com.libiao.customer.model.BaseResponseVO;
+import com.libiao.customer.model.ErrorMessage;
+import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
 import com.libiao.customer.util.model.ResponseVO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -56,5 +61,28 @@ public class ResponseUtil {
 
     public static ResponseVO error(ErrorCodeEnum errorCodeEnum){
         return error(errorCodeEnum.getCode(), errorCodeEnum.getDescription(), null);
+    }
+
+    public static ResponseEntity<BaseResponseVO> convert(ErrorMessage errorMessage){
+        return ResponseEntity.status(errorMessage.getStatus()).body(new BaseResponseVO(errorMessage.getErrMsg()));
+    }
+
+    public static ResponseEntity<BaseResponseVO> convert(HttpStatus httpStatus, String message){
+        return ResponseEntity.status(httpStatus).body(new BaseResponseVO(message));
+    }
+
+    public static ResponseEntity<BaseResponseVO> getDefaultResp() {
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponseVO("success"));
+    }
+
+    public static <T> ResponseEntity<T> getResponseVO(T data) {
+        return ResponseEntity.status(HttpStatus.OK).body(data);
+    }
+
+    public static <T> ResponseEntity<ListResponseVO<T>> getListResponseVO(List<T> data, long total) {
+        ListResponseVO<T> ResponseVO = new ListResponseVO<>();
+        ResponseVO.setDataList(data);
+        ResponseVO.setTotal(total);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseVO);
     }
 }

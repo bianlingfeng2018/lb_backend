@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.QuotationMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.Quotation">
+    <id column="quotation_id" jdbcType="VARCHAR" property="quotationId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="paid_amt" jdbcType="INTEGER" property="paidAmt" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="quote_date" jdbcType="DATE" property="quoteDate" />
+    <result column="quote_person" jdbcType="BIGINT" property="quotePerson" />
+    <result column="customer_id" jdbcType="BIGINT" property="customerId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from quotation
+    where quotation_id = #{quotationId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.Quotation">
+    insert into quotation (quotation_id, name, amount, 
+      paid_amt, state, quote_date, 
+      quote_person, customer_id)
+    values (#{quotationId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, 
+      #{paidAmt,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{quoteDate,jdbcType=DATE}, 
+      #{quotePerson,jdbcType=BIGINT}, #{customerId,jdbcType=BIGINT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.Quotation">
+    update quotation
+    set name = #{name,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=INTEGER},
+      paid_amt = #{paidAmt,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      quote_date = #{quoteDate,jdbcType=DATE},
+      quote_person = #{quotePerson,jdbcType=BIGINT},
+      customer_id = #{customerId,jdbcType=BIGINT}
+    where quotation_id = #{quotationId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select quotation_id, name, amount, paid_amt, state, quote_date, quote_person, customer_id
+    from quotation
+    where quotation_id = #{quotationId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select quotation_id, name, amount, paid_amt, state, quote_date, quote_person, customer_id
+    from quotation
+  </select>
+</mapper>

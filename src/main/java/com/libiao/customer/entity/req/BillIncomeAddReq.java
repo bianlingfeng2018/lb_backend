@@ -7,9 +7,11 @@ import lombok.NonNull;
 public class BillIncomeAddReq {
     @NonNull
     String clientId;
-    String operAmount;
+    Long operAmount;
     String desc;
     @NonNull
     String operType;
+
+    String operUser;
     
 }

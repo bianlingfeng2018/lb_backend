@@ -1,14 +1,13 @@
 package com.libiao.customer.service;
 
-import com.libiao.customer.entity.req.BillIncomeAddReq;
-import com.libiao.customer.entity.req.BillIncomeReq;
+import com.github.pagehelper.PageInfo;
+import com.libiao.customer.entity.req.BillOutAddReq;
+import com.libiao.customer.entity.req.BillOutReq;
 import com.libiao.customer.util.model.ResponseVO;
 
-import java.util.List;
-
 public interface BillOutService {
-   ResponseVO<List> getAllOutBill(BillIncomeReq req);
+   ResponseVO<PageInfo> getAllOutBill(BillOutReq req);
 
-   ResponseVO addOneOutBill(BillIncomeAddReq req);
+   ResponseVO addOneOutBill(BillOutAddReq req);
 
 }

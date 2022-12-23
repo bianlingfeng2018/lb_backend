@@ -2,12 +2,15 @@ package com.libiao.customer.entity.req;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-public class BillIncomeReq {
+public class BillIncomeReq extends PageReq{
     Integer id;
     String clientId;
-    String startTime;
-    String endTime;
+    Date startTime;
+    Date endTime;
     String operType;
+
 
 }

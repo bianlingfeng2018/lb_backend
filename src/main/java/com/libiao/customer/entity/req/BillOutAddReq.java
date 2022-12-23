@@ -6,10 +6,8 @@ import lombok.NonNull;
 @Data
 public class BillOutAddReq {
     @NonNull
+    Integer id;
     String clientId;
+    String tradeId;
     String operAmount;
-    String desc;
-    @NonNull
-    String operType;
-    
 }

@@ -3,6 +3,7 @@ package com.libiao.customer.controller;
 import com.libiao.customer.dal.model.User;
 import com.libiao.customer.entity.RegisterResult;
 import com.libiao.customer.service.UserBizService;
+import com.libiao.customer.util.ServletUtils;
 import com.libiao.customer.util.model.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

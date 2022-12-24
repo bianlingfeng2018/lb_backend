@@ -1,8 +1,11 @@
 package com.libiao.customer.config;
 
+import com.libiao.customer.interceptor.SessionInterceptor;
 import com.libiao.customer.interceptor.TokenAuthInterceptor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -18,6 +21,9 @@ import java.util.List;
 @Configuration
 @Slf4j
 public class MvcConfiguration implements WebMvcConfigurer {
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -46,7 +52,10 @@ public class MvcConfiguration implements WebMvcConfigurer {
         commonExcludePath.add("/api/certification/previewTest");
         commonExcludePath.add("/api/file");
 
-        registry.addInterceptor(new TokenAuthInterceptor()).addPathPatterns("/**").excludePathPatterns(commonExcludePath.toArray(new String[]{}));
+        SessionInterceptor sessionInterceptor = new SessionInterceptor();
+        sessionInterceptor.setRedisTemplate(redisTemplate);
+
+        registry.addInterceptor(sessionInterceptor).addPathPatterns("/**").excludePathPatterns(commonExcludePath.toArray(new String[]{}));
     }
 
     /**

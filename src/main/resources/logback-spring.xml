@@ -27,7 +27,7 @@
         <encoder>
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
             <!--<pattern>${FILE_LOG_PATTERN}</pattern>-->
-            <pattern>%X{vkey} %d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} %L : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{traceNo}] %-5level %logger{50} - %msg%n</pattern>
         </encoder>
     </appender>
 

@@ -9,6 +9,7 @@ import com.libiao.customer.model.bill.BillOutAddReq;
 import com.libiao.customer.model.bill.BillOutReq;
 import com.libiao.customer.service.BillIncomeService;
 import com.libiao.customer.service.BillOutService;
+import com.libiao.customer.util.AccessController;
 import com.libiao.customer.util.model.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("api/bill")
+@RequestMapping("bill")
 public class BillCtrl {
 
     @Autowired
@@ -30,7 +31,8 @@ public class BillCtrl {
      * 获取商户入账信息列表
      **/
     @ResponseBody
-    @RequestMapping(value = "/getAllIncomeBill", method = RequestMethod.POST)
+    @AccessController
+    @RequestMapping(value = "getAllIncomeBill", method = RequestMethod.POST)
     public ResponseEntity<ListResponseVO<ClientBillIncome>> getAllIncomeBill(@RequestBody BillIncomeReq req){
         return incomeService.getAllIncomeBill(req);
     }
@@ -38,7 +40,8 @@ public class BillCtrl {
      * 获取商户出账信息列表
      **/
     @ResponseBody
-    @RequestMapping(value = "/getAllOutBill", method = RequestMethod.POST)
+    @AccessController
+    @RequestMapping(value = "getAllOutBill", method = RequestMethod.POST)
     public ResponseEntity<ListResponseVO<ClientBillOut>> getAllOutBill(@RequestBody BillOutReq req){
         return outService.getAllOutBill(req);
     }
@@ -47,7 +50,7 @@ public class BillCtrl {
      * 入账
      **/
     @ResponseBody
-    @RequestMapping(value = "/addOneIncomeBill", method = RequestMethod.POST)
+    @RequestMapping(value = "addOneIncomeBill", method = RequestMethod.POST)
     public ResponseVO addOneIncomeBill(@RequestBody BillIncomeAddReq req){
         req.setOperType("入账");
         return incomeService.addOneIncomeBill(req);
@@ -57,7 +60,7 @@ public class BillCtrl {
      * 核销
      **/
     @ResponseBody
-    @RequestMapping(value = "/addOneOutBill", method = RequestMethod.POST)
+    @RequestMapping(value = "addOneOutBill", method = RequestMethod.POST)
     public ResponseVO addOneOutBill(@RequestBody BillOutAddReq req){
         return outService.addOneOutBill(req);
     }

@@ -89,7 +89,7 @@ public class BillOutServiceImpl implements BillOutService {
         billOut.setStatus("已核销");
         billOut.setOperTime(new Date());
         billOut.setUnAmt(0L);
-//        billOut.setOperUser(req.getOperUser());//TODO getuser
+        billOut.setOperUser(String.valueOf(req.getUser().getId()));
         log.info("核销结束 billOut= {},插入一条入账信息", billOut);
 
         BillIncomeAddReq addReq = new BillIncomeAddReq();

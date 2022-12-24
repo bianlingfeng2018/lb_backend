@@ -1,6 +1,7 @@
 package com.libiao.customer.controller;
 
 import com.libiao.customer.dal.model.Balance;
+import com.libiao.customer.dal.model.BalanceInfo;
 import com.libiao.customer.dal.model.CommissionChangeRecord;
 import com.libiao.customer.model.balance.BalanceReq;
 import com.libiao.customer.model.balance.BalanceVo;
@@ -8,6 +9,7 @@ import com.libiao.customer.model.balance.CommissionReq;
 import com.libiao.customer.model.balance.CreditLimitReq;
 import com.libiao.customer.service.BalanceService;
 import com.libiao.customer.service.CommissionService;
+import com.libiao.customer.util.AccessController;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
 import io.swagger.annotations.Api;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 @RestController
 @Slf4j
@@ -32,6 +36,7 @@ public class BalanceController {
     CommissionService commissionService;
 
     @PostMapping("getBalance")
+    @AccessController
     public ResponseEntity<BalanceVo> getBalance(@RequestBody BalanceReq req){
         final Balance balance = balanceService.getBalance(req.getClientId());
         BalanceVo balanceVo = BeanCopyUtil.copy(balance,BalanceVo.class);
@@ -51,13 +56,20 @@ public class BalanceController {
 
         BalanceReq balanceReq = BeanCopyUtil.copy(balance,BalanceReq.class);
         balanceReq.setCreditLimit(req.getCreditLimit());
-        //todo:添加操作一条记录
+        BalanceInfo balanceInfo = new BalanceInfo();
+        balanceInfo.setClientId(req.getClientId());
+        balanceInfo.setOperType("");
+        balanceInfo.setDesc("设置授信额度，系统自动添加");
+        balanceInfo.setOperTime(new Date());
+        balanceInfo.setOperUser(String.valueOf(req.getUser().getId()));
+        balanceInfo.setOperAmt(req.getCreditLimit());
         return balanceService.updateRecord(balanceReq);
     }
 
     @PostMapping("setCommission")
     public ResponseEntity setCommission(@RequestBody CommissionReq req){
         CommissionChangeRecord record = BeanCopyUtil.copy(req, CommissionChangeRecord.class);
+        record.setOperUser(String.valueOf(req.getUser().getId()));
         commissionService.addRecord(record);
         return ResponseUtil.getDefaultResp();
     }

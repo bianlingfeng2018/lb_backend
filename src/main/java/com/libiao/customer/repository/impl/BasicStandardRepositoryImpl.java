@@ -3,6 +3,7 @@ package com.libiao.customer.repository.impl;
 import com.libiao.customer.dal.mapper.BasicStandardMapper;
 import com.libiao.customer.dal.mapper.BasicTestItemMapper;
 import com.libiao.customer.dal.model.BasicStandard;
+import com.libiao.customer.dal.model.BasicStandardExample;
 import com.libiao.customer.repository.BasicStandardRepository;
 import com.libiao.customer.repository.BasicTestItemRepository;
 import java.util.List;
@@ -23,7 +24,7 @@ public class BasicStandardRepositoryImpl implements BasicStandardRepository {
 
   @Override
   public List<BasicStandard> selectAll() {
-    return basicStandardMapper.selectAll();
+    return basicStandardMapper.selectByExample(new BasicStandardExample());
   }
 
   @Override

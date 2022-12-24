@@ -5,13 +5,15 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.ClientBillIncomeMapper;
 import com.libiao.customer.dal.model.ClientBillIncome;
 import com.libiao.customer.dal.model.ClientBillIncomeExample;
-import com.libiao.customer.entity.req.BillIncomeAddReq;
-import com.libiao.customer.entity.req.BillIncomeReq;
+import com.libiao.customer.model.ListResponseVO;
+import com.libiao.customer.model.bill.BillIncomeAddReq;
+import com.libiao.customer.model.bill.BillIncomeReq;
 import com.libiao.customer.service.BillIncomeService;
 import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
 import com.libiao.customer.util.model.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -25,8 +27,8 @@ public class BillIncomeServiceImpl implements BillIncomeService {
 
 
     @Override
-    public ResponseVO<PageInfo> getAllIncomeBill(BillIncomeReq req) {
-        PageHelper.startPage(req.getPageNum(), req.getPageSize());
+    public ResponseEntity<ListResponseVO<ClientBillIncome>> getAllIncomeBill(BillIncomeReq req) {
+        PageHelper.startPage(req.getPage(), req.getPageSize());
         ClientBillIncomeExample example = new ClientBillIncomeExample();
         ClientBillIncomeExample.Criteria criteria = example.createCriteria();
         if (null != req.getClientId()) {
@@ -40,7 +42,7 @@ public class BillIncomeServiceImpl implements BillIncomeService {
         }
         List list = incomeMapper.selectByExample(example);
         PageInfo<ClientBillIncome> pageInfo = new PageInfo<ClientBillIncome>(list);
-        return ResponseUtil.success(pageInfo);
+        return ResponseUtil.getListResponseVO(pageInfo.getList(),pageInfo.getTotal());
     }
 
     @Override
@@ -49,7 +51,7 @@ public class BillIncomeServiceImpl implements BillIncomeService {
         billIncome.setClientId(req.getClientId());
         billIncome.setOperationAmount(req.getOperAmount());
         billIncome.setOperationTime(new Date());
-        billIncome.setOperUser(req.getOperUser());
+//        billIncome.setOperUser(req.getUser());//TODO user
         billIncome.setOprationType(req.getOperType());
         billIncome.setDesc(req.getDesc());
         long amount = getClientAccountAmount(req.getClientId());

@@ -1,15 +1,19 @@
 package com.libiao.customer.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.libiao.customer.entity.req.BillIncomeAddReq;
-import com.libiao.customer.entity.req.BillIncomeReq;
-import com.libiao.customer.entity.req.BillOutAddReq;
-import com.libiao.customer.entity.req.BillOutReq;
+import com.libiao.customer.dal.model.ClientBillIncome;
+import com.libiao.customer.dal.model.ClientBillOut;
+import com.libiao.customer.model.ListResponseVO;
+import com.libiao.customer.model.bill.BillIncomeAddReq;
+import com.libiao.customer.model.bill.BillIncomeReq;
+import com.libiao.customer.model.bill.BillOutAddReq;
+import com.libiao.customer.model.bill.BillOutReq;
 import com.libiao.customer.service.BillIncomeService;
 import com.libiao.customer.service.BillOutService;
 import com.libiao.customer.util.model.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -28,7 +32,7 @@ public class BillCtrl {
      **/
     @ResponseBody
     @RequestMapping(value = "/getAllIncomeBill", method = RequestMethod.POST)
-    public ResponseVO<PageInfo> getAllIncomeBill(@RequestBody BillIncomeReq req){
+    public ResponseEntity<ListResponseVO<ClientBillIncome>> getAllIncomeBill(@RequestBody BillIncomeReq req){
         return incomeService.getAllIncomeBill(req);
     }
     /**
@@ -36,7 +40,7 @@ public class BillCtrl {
      **/
     @ResponseBody
     @RequestMapping(value = "/getAllOutBill", method = RequestMethod.POST)
-    public ResponseVO<PageInfo> getAllOutBill(@RequestBody BillOutReq req){
+    public ResponseEntity<ListResponseVO<ClientBillOut>> getAllOutBill(@RequestBody BillOutReq req){
         return outService.getAllOutBill(req);
     }
 

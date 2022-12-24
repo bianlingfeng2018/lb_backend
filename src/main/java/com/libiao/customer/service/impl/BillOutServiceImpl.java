@@ -5,9 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.ClientBillOutMapper;
 import com.libiao.customer.dal.model.ClientBillOut;
 import com.libiao.customer.dal.model.ClientBillOutExample;
-import com.libiao.customer.entity.req.BillIncomeAddReq;
-import com.libiao.customer.entity.req.BillOutAddReq;
-import com.libiao.customer.entity.req.BillOutReq;
+import com.libiao.customer.model.ListResponseVO;
+import com.libiao.customer.model.bill.BillIncomeAddReq;
+import com.libiao.customer.model.bill.BillOutAddReq;
+import com.libiao.customer.model.bill.BillOutReq;
+import com.libiao.customer.model.quotation.QuotationListVO;
 import com.libiao.customer.service.BillIncomeService;
 import com.libiao.customer.service.BillOutService;
 import com.libiao.customer.util.ResponseUtil;
@@ -15,6 +17,7 @@ import com.libiao.customer.util.exception.ErrorCodeEnum;
 import com.libiao.customer.util.model.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +36,8 @@ public class BillOutServiceImpl implements BillOutService {
 
 
     @Override
-    public ResponseVO<PageInfo> getAllOutBill(BillOutReq req) {
-        PageHelper.startPage(req.getPageNum(), req.getPageSize());
+    public ResponseEntity<ListResponseVO<ClientBillOut>> getAllOutBill(BillOutReq req) {
+        PageHelper.startPage(req.getPage(), req.getPageSize());
         ClientBillOutExample example = new ClientBillOutExample();
         ClientBillOutExample.Criteria criteria = example.createCriteria();
         if (null != req.getClientId()) {
@@ -51,7 +54,7 @@ public class BillOutServiceImpl implements BillOutService {
         }
         List list = outMapper.selectByExample(example);
         PageInfo<ClientBillOut> pageInfo = new PageInfo<ClientBillOut>(list);
-        return ResponseUtil.success(pageInfo);
+        return ResponseUtil.getListResponseVO(pageInfo.getList(),pageInfo.getTotal());
     }
 
     @Override
@@ -71,11 +74,11 @@ public class BillOutServiceImpl implements BillOutService {
         billOut.setStatus("已核销");
         billOut.setOperTime(new Date());
         billOut.setUnAmt(0L);
-        billOut.setOperUser(req.getOperUser());
+//        billOut.setOperUser(req.getOperUser());//TODO getuser
         log.info("核销结束 billOut= {},插入一条入账信息", billOut);
 
-        BillIncomeAddReq addReq = new BillIncomeAddReq("核销");
-        addReq.setOperUser(req.getOperUser());
+        BillIncomeAddReq addReq = new BillIncomeAddReq();
+        addReq.setOperType("核销");
         addReq.setClientId(null);
         addReq.setOperAmount(req.getOperAmount());
         addReq.setDesc("核销");

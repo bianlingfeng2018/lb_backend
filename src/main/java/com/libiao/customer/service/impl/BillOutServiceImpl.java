@@ -3,15 +3,19 @@ package com.libiao.customer.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.ClientBillOutMapper;
+import com.libiao.customer.dal.model.Balance;
 import com.libiao.customer.dal.model.ClientBillOut;
 import com.libiao.customer.dal.model.ClientBillOutExample;
 import com.libiao.customer.model.ListResponseVO;
+import com.libiao.customer.model.balance.BalanceReq;
 import com.libiao.customer.model.bill.BillIncomeAddReq;
 import com.libiao.customer.model.bill.BillOutAddReq;
 import com.libiao.customer.model.bill.BillOutReq;
 import com.libiao.customer.model.quotation.QuotationListVO;
+import com.libiao.customer.service.BalanceService;
 import com.libiao.customer.service.BillIncomeService;
 import com.libiao.customer.service.BillOutService;
+import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
 import com.libiao.customer.util.model.ResponseVO;
@@ -33,6 +37,9 @@ public class BillOutServiceImpl implements BillOutService {
 
     @Autowired
     BillIncomeService incomeService;
+
+    @Autowired
+    BalanceService balanceService;
 
 
     @Override
@@ -65,9 +72,17 @@ public class BillOutServiceImpl implements BillOutService {
         example.createCriteria().andIdEqualTo(req.getId()).andClientIdEqualTo(req.getClientId());
         List<ClientBillOut> list =outMapper.selectByExample(example);
         if( list.size() == 0) return ResponseUtil.error(ErrorCodeEnum.NOT_FOUND);
-        if(req.getOperAmount()>0){ //TODO 这里要拿账户资金余额
+        Balance balance = balanceService.getBalance(req.getClientId());
+        long amount = balance.getBalanceAmt();
+        if(req.getOperAmount()>amount){
             return ResponseUtil.error(301,"账户资金不足");
         }
+
+        log.info("先修改余额");
+        balance.setBalanceAmt(amount-req.getOperAmount());
+        BalanceReq balanceReq = BeanCopyUtil.copy(balance,BalanceReq.class);
+        //TODO 还有其他金额？
+        balanceService.updateRecord(balanceReq);
 
         log.info("开始核销 = {}", req);
         ClientBillOut billOut = list.get(0);

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.BalanceMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.Balance">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="unsettled_amt" jdbcType="BIGINT" property="unsettledAmt" />
+    <result column="balance_amt" jdbcType="BIGINT" property="balanceAmt" />
+    <result column="credit_limit" jdbcType="BIGINT" property="creditLimit" />
+    <result column="commission_rate" jdbcType="BIGINT" property="commissionRate" />
+    <result column="unsettle_commission" jdbcType="BIGINT" property="unsettleCommission" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, client_id, unsettled_amt, balance_amt, credit_limit, commission_rate, unsettle_commission
+  </sql>
+  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.BalanceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from balance
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from balance
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from balance
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.BalanceExample">
+    delete from balance
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.Balance">
+    insert into balance (id, client_id, unsettled_amt, 
+      balance_amt, credit_limit, commission_rate, 
+      unsettle_commission)
+    values (#{id,jdbcType=BIGINT}, #{clientId,jdbcType=VARCHAR}, #{unsettledAmt,jdbcType=BIGINT}, 
+      #{balanceAmt,jdbcType=BIGINT}, #{creditLimit,jdbcType=BIGINT}, #{commissionRate,jdbcType=BIGINT}, 
+      #{unsettleCommission,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.Balance">
+    insert into balance
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="clientId != null">
+        client_id,
+      </if>
+      <if test="unsettledAmt != null">
+        unsettled_amt,
+      </if>
+      <if test="balanceAmt != null">
+        balance_amt,
+      </if>
+      <if test="creditLimit != null">
+        credit_limit,
+      </if>
+      <if test="commissionRate != null">
+        commission_rate,
+      </if>
+      <if test="unsettleCommission != null">
+        unsettle_commission,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clientId != null">
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="unsettledAmt != null">
+        #{unsettledAmt,jdbcType=BIGINT},
+      </if>
+      <if test="balanceAmt != null">
+        #{balanceAmt,jdbcType=BIGINT},
+      </if>
+      <if test="creditLimit != null">
+        #{creditLimit,jdbcType=BIGINT},
+      </if>
+      <if test="commissionRate != null">
+        #{commissionRate,jdbcType=BIGINT},
+      </if>
+      <if test="unsettleCommission != null">
+        #{unsettleCommission,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.libiao.customer.dal.model.BalanceExample" resultType="java.lang.Long">
+    select count(*) from balance
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update balance
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.clientId != null">
+        client_id = #{row.clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.unsettledAmt != null">
+        unsettled_amt = #{row.unsettledAmt,jdbcType=BIGINT},
+      </if>
+      <if test="row.balanceAmt != null">
+        balance_amt = #{row.balanceAmt,jdbcType=BIGINT},
+      </if>
+      <if test="row.creditLimit != null">
+        credit_limit = #{row.creditLimit,jdbcType=BIGINT},
+      </if>
+      <if test="row.commissionRate != null">
+        commission_rate = #{row.commissionRate,jdbcType=BIGINT},
+      </if>
+      <if test="row.unsettleCommission != null">
+        unsettle_commission = #{row.unsettleCommission,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update balance
+    set id = #{row.id,jdbcType=BIGINT},
+      client_id = #{row.clientId,jdbcType=VARCHAR},
+      unsettled_amt = #{row.unsettledAmt,jdbcType=BIGINT},
+      balance_amt = #{row.balanceAmt,jdbcType=BIGINT},
+      credit_limit = #{row.creditLimit,jdbcType=BIGINT},
+      commission_rate = #{row.commissionRate,jdbcType=BIGINT},
+      unsettle_commission = #{row.unsettleCommission,jdbcType=BIGINT}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.Balance">
+    update balance
+    <set>
+      <if test="clientId != null">
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="unsettledAmt != null">
+        unsettled_amt = #{unsettledAmt,jdbcType=BIGINT},
+      </if>
+      <if test="balanceAmt != null">
+        balance_amt = #{balanceAmt,jdbcType=BIGINT},
+      </if>
+      <if test="creditLimit != null">
+        credit_limit = #{creditLimit,jdbcType=BIGINT},
+      </if>
+      <if test="commissionRate != null">
+        commission_rate = #{commissionRate,jdbcType=BIGINT},
+      </if>
+      <if test="unsettleCommission != null">
+        unsettle_commission = #{unsettleCommission,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.Balance">
+    update balance
+    set client_id = #{clientId,jdbcType=VARCHAR},
+      unsettled_amt = #{unsettledAmt,jdbcType=BIGINT},
+      balance_amt = #{balanceAmt,jdbcType=BIGINT},
+      credit_limit = #{creditLimit,jdbcType=BIGINT},
+      commission_rate = #{commissionRate,jdbcType=BIGINT},
+      unsettle_commission = #{unsettleCommission,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

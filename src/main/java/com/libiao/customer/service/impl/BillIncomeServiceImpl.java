@@ -3,11 +3,13 @@ package com.libiao.customer.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.ClientBillIncomeMapper;
+import com.libiao.customer.dal.model.Balance;
 import com.libiao.customer.dal.model.ClientBillIncome;
 import com.libiao.customer.dal.model.ClientBillIncomeExample;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.bill.BillIncomeAddReq;
 import com.libiao.customer.model.bill.BillIncomeReq;
+import com.libiao.customer.service.BalanceService;
 import com.libiao.customer.service.BillIncomeService;
 import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
@@ -24,6 +26,9 @@ public class BillIncomeServiceImpl implements BillIncomeService {
 
     @Autowired
     ClientBillIncomeMapper incomeMapper;
+
+    @Autowired
+    BalanceService balanceService;
 
 
     @Override
@@ -54,18 +59,13 @@ public class BillIncomeServiceImpl implements BillIncomeService {
 //        billIncome.setOperUser(req.getUser());//TODO user
         billIncome.setOprationType(req.getOperType());
         billIncome.setDesc(req.getDesc());
-        long amount = getClientAccountAmount(req.getClientId());
+        Balance balance = balanceService.getBalance(req.getClientId());
+        long amount = balance.getBalanceAmt();
         billIncome.setOriginAmount(amount);
         billIncome.setFinalAmount(amount - req.getOperAmount());
         int row = incomeMapper.insertSelective(billIncome);
         return row == 1 ? ResponseUtil.success() : ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
     }
 
-
-    private Long getClientAccountAmount(String clientId) {
-
-
-        return 0L;
-    }
 
 }

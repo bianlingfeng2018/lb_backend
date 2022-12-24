@@ -1,6 +1,5 @@
 package com.libiao.customer.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.ClientBillIncome;
 import com.libiao.customer.dal.model.ClientBillOut;
 import com.libiao.customer.model.ListResponseVO;

@@ -1,11 +1,13 @@
 package com.libiao.customer.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
 import com.beust.jcommander.internal.Sets;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.libiao.customer.dal.model.Permission;
+import com.libiao.customer.dal.model.PermissionVO;
 import com.libiao.customer.dal.model.User;
 import com.libiao.customer.entity.CurrentUser;
 import com.libiao.customer.entity.SessionUser;
@@ -18,23 +20,25 @@ import com.libiao.customer.util.ServletUtils;
 import com.libiao.customer.util.WebUtil;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
 import com.libiao.customer.util.model.ResponseVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class UserBizServiceImpl implements UserBizService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
 
 
     @Override
@@ -53,7 +57,16 @@ public class UserBizServiceImpl implements UserBizService {
 
     @Override
     public ResponseVO<?> queryCurrentUser() {
-        return ResponseUtil.success(new CurrentUser(WebUtil.getAccessToken().getUsername(), WebUtil.getAccessToken().getPermission()));
+        final HttpSession session = ServletUtils.getSession();
+        final SessionUser user = (SessionUser) session.getAttribute(SessionInfoEnum.USER.getName());
+        Set<String> roleSet = (Set<String>) session.getAttribute(SessionInfoEnum.RULES.getName());
+        List<PermissionVO> list = new ArrayList<>();
+        roleSet.forEach(rule->{
+            final PermissionVO permissionVO = new PermissionVO();
+            permissionVO.setPath(rule);
+            list.add(permissionVO);
+        });
+        return ResponseUtil.success(new CurrentUser(user.getUsername(), JSON.toJSONString(list)));
     }
 
     /**
@@ -67,7 +80,10 @@ public class UserBizServiceImpl implements UserBizService {
         session.setAttribute(SessionInfoEnum.RULES.getName(),permissionVOList);
         SessionUser sessionUser = BeanCopyUtil.copy(user,SessionUser.class);
         session.setAttribute(SessionInfoEnum.USER.getName(), sessionUser);
-
+        log.info("保存的sessionId为{}",session.getId());
+        String key = "LOGIN_SESSION:" + sessionUser.getId();
+        //唯一登录校验
+        redisTemplate.opsForValue().set(key,session.getId());
     }
 
     @Override

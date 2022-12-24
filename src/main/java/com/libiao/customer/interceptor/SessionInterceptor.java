@@ -32,11 +32,12 @@ public class SessionInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         HttpSession session = request.getSession();
-        log.info("请求的URI:{}", request.getRequestURI());
+        log.info("请求的URI:{},sessionId={}", request.getRequestURI(),session.getId());
         //log.info("请求的IP地址:{}", getIpAddress(request));
         session.setAttribute(SessionInfoEnum.IP.getName(), getIpAddress(request));
         SessionUser sessionUser = (SessionUser) session.getAttribute(SessionInfoEnum.USER.getName());
         if (sessionUser == null) {
+            log.info("用户不存在，请登录");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }else {
@@ -49,10 +50,10 @@ public class SessionInterceptor implements HandlerInterceptor {
             }
 
             //check rule
-            Set<String> attribute = (Set<String>) session.getAttribute(SessionInfoEnum.RULES.getName());
+            /*Set<String> attribute = (Set<String>) session.getAttribute(SessionInfoEnum.RULES.getName());
             if (!CollectionUtils.isEmpty(attribute) && attribute.contains(ServletUtils.getPageUriCode(request))) {
                 return true;
-            }
+            }*/
             /*if (session.getRuleMap() != null && ssUser.getRuleMap().containsKey(pageUriCode)) {
                 //如果在user的RuleMap里 则通过
                 return true;

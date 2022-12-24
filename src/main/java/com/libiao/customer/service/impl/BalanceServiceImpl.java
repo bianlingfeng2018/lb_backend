@@ -1,13 +1,15 @@
 package com.libiao.customer.service.impl;
 
+import com.libiao.customer.dal.mapper.BalanceInfoMapper;
 import com.libiao.customer.dal.mapper.BalanceMapper;
 import com.libiao.customer.dal.model.Balance;
 import com.libiao.customer.dal.model.BalanceExample;
+import com.libiao.customer.dal.model.BalanceInfo;
+import com.libiao.customer.dal.model.BalanceInfoExample;
 import com.libiao.customer.model.balance.BalanceReq;
 import com.libiao.customer.service.BalanceService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
-import com.libiao.customer.util.exception.ErrorCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,9 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Autowired
     BalanceMapper balanceMapper;
+
+    @Autowired
+    BalanceInfoMapper balanceInfoMapper;
 
     @Override
     public Balance getBalance(String clientId) {
@@ -61,5 +66,18 @@ public class BalanceServiceImpl implements BalanceService {
         int row = balanceMapper.updateByPrimaryKeySelective(bean);
         if(row != 1) return ResponseUtil.convert(HttpStatus.INTERNAL_SERVER_ERROR,"系统错误");
         return ResponseUtil.getDefaultResp();
+    }
+
+    @Override
+    public boolean addInfo(BalanceInfo info) {
+       int row = balanceInfoMapper.insertSelective(info);
+        return row == 1;
+    }
+
+    @Override
+    public List<BalanceInfo> getBalanceInfoList(String clientId) {
+        BalanceInfoExample balanceExample = new BalanceInfoExample();
+        balanceExample.createCriteria().andClientIdEqualTo(clientId);
+        return  balanceInfoMapper.selectByExample(balanceExample);
     }
 }

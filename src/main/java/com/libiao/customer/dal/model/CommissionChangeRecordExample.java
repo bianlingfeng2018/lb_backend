@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CommissionRecordExample {
+public class CommissionChangeRecordExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public CommissionRecordExample() {
+    public CommissionChangeRecordExample() {
         oredCriteria = new ArrayList<>();
     }
 
@@ -682,6 +682,76 @@ public class CommissionRecordExample {
 
         public Criteria andAmountNotBetween(Long value1, Long value2) {
             addCriterion("amount not between", value1, value2, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdIsNull() {
+            addCriterion("trade_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdIsNotNull() {
+            addCriterion("trade_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdEqualTo(String value) {
+            addCriterion("trade_id =", value, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdNotEqualTo(String value) {
+            addCriterion("trade_id <>", value, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdGreaterThan(String value) {
+            addCriterion("trade_id >", value, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdGreaterThanOrEqualTo(String value) {
+            addCriterion("trade_id >=", value, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdLessThan(String value) {
+            addCriterion("trade_id <", value, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdLessThanOrEqualTo(String value) {
+            addCriterion("trade_id <=", value, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdLike(String value) {
+            addCriterion("trade_id like", value, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdNotLike(String value) {
+            addCriterion("trade_id not like", value, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdIn(List<String> values) {
+            addCriterion("trade_id in", values, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdNotIn(List<String> values) {
+            addCriterion("trade_id not in", values, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdBetween(String value1, String value2) {
+            addCriterion("trade_id between", value1, value2, "tradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradeIdNotBetween(String value1, String value2) {
+            addCriterion("trade_id not between", value1, value2, "tradeId");
             return (Criteria) this;
         }
     }

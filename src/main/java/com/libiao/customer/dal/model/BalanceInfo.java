@@ -2,24 +2,20 @@ package com.libiao.customer.dal.model;
 
 import java.util.Date;
 
-public class CommissionRecord {
+public class BalanceInfo {
     private Long id;
 
     private String clientId;
 
     private String operUser;
 
-    private Integer rate;
-
     private Date operTime;
 
-    private String status;
-
-    private Integer orgRate;
+    private Long operAmt;
 
     private String desc;
 
-    private Long amount;
+    private String operType;
 
     public Long getId() {
         return id;
@@ -45,14 +41,6 @@ public class CommissionRecord {
         this.operUser = operUser;
     }
 
-    public Integer getRate() {
-        return rate;
-    }
-
-    public void setRate(Integer rate) {
-        this.rate = rate;
-    }
-
     public Date getOperTime() {
         return operTime;
     }
@@ -61,20 +49,12 @@ public class CommissionRecord {
         this.operTime = operTime;
     }
 
-    public String getStatus() {
-        return status;
+    public Long getOperAmt() {
+        return operAmt;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getOrgRate() {
-        return orgRate;
-    }
-
-    public void setOrgRate(Integer orgRate) {
-        this.orgRate = orgRate;
+    public void setOperAmt(Long operAmt) {
+        this.operAmt = operAmt;
     }
 
     public String getDesc() {
@@ -85,11 +65,11 @@ public class CommissionRecord {
         this.desc = desc;
     }
 
-    public Long getAmount() {
-        return amount;
+    public String getOperType() {
+        return operType;
     }
 
-    public void setAmount(Long amount) {
-        this.amount = amount;
+    public void setOperType(String operType) {
+        this.operType = operType;
     }
 }

@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.libiao.customer.dal.mapper.CommissionRecordMapper">
-  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.CommissionRecord">
+<mapper namespace="com.libiao.customer.dal.mapper.BalanceInfoMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.BalanceInfo">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="client_id" jdbcType="VARCHAR" property="clientId" />
     <result column="oper_user" jdbcType="VARCHAR" property="operUser" />
-    <result column="rate" jdbcType="INTEGER" property="rate" />
     <result column="oper_time" jdbcType="TIMESTAMP" property="operTime" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="org_rate" jdbcType="INTEGER" property="orgRate" />
+    <result column="oper_amt" jdbcType="BIGINT" property="operAmt" />
     <result column="desc" jdbcType="VARCHAR" property="desc" />
-    <result column="amount" jdbcType="BIGINT" property="amount" />
+    <result column="oper_type" jdbcType="VARCHAR" property="operType" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,15 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, client_id, oper_user, rate, oper_time, status, org_rate, desc, amount
+    id, client_id, oper_user, oper_time, oper_amt, desc, oper_type
   </sql>
-  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.CommissionRecordExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.BalanceInfoExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from commission_record
+    from balance_info
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -90,31 +88,29 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from commission_record
+    from balance_info
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from commission_record
+    delete from balance_info
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.CommissionRecordExample">
-    delete from commission_record
+  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.BalanceInfoExample">
+    delete from balance_info
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.libiao.customer.dal.model.CommissionRecord">
-    insert into commission_record (id, client_id, oper_user, 
-      rate, oper_time, status, 
-      org_rate, desc, amount
-      )
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.BalanceInfo">
+    insert into balance_info (id, client_id, oper_user, 
+      oper_time, oper_amt, desc, 
+      oper_type)
     values (#{id,jdbcType=BIGINT}, #{clientId,jdbcType=VARCHAR}, #{operUser,jdbcType=VARCHAR}, 
-      #{rate,jdbcType=INTEGER}, #{operTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
-      #{orgRate,jdbcType=INTEGER}, #{desc,jdbcType=VARCHAR}, #{amount,jdbcType=BIGINT}
-      )
+      #{operTime,jdbcType=TIMESTAMP}, #{operAmt,jdbcType=BIGINT}, #{desc,jdbcType=VARCHAR}, 
+      #{operType,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.CommissionRecord">
-    insert into commission_record
+  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.BalanceInfo">
+    insert into balance_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -125,23 +121,17 @@
       <if test="operUser != null">
         oper_user,
       </if>
-      <if test="rate != null">
-        rate,
-      </if>
       <if test="operTime != null">
         oper_time,
       </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="orgRate != null">
-        org_rate,
+      <if test="operAmt != null">
+        oper_amt,
       </if>
       <if test="desc != null">
         desc,
       </if>
-      <if test="amount != null">
-        amount,
+      <if test="operType != null">
+        oper_type,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -154,34 +144,28 @@
       <if test="operUser != null">
         #{operUser,jdbcType=VARCHAR},
       </if>
-      <if test="rate != null">
-        #{rate,jdbcType=INTEGER},
-      </if>
       <if test="operTime != null">
         #{operTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="orgRate != null">
-        #{orgRate,jdbcType=INTEGER},
+      <if test="operAmt != null">
+        #{operAmt,jdbcType=BIGINT},
       </if>
       <if test="desc != null">
         #{desc,jdbcType=VARCHAR},
       </if>
-      <if test="amount != null">
-        #{amount,jdbcType=BIGINT},
+      <if test="operType != null">
+        #{operType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.libiao.customer.dal.model.CommissionRecordExample" resultType="java.lang.Long">
-    select count(*) from commission_record
+  <select id="countByExample" parameterType="com.libiao.customer.dal.model.BalanceInfoExample" resultType="java.lang.Long">
+    select count(*) from balance_info
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update commission_record
+    update balance_info
     <set>
       <if test="row.id != null">
         id = #{row.id,jdbcType=BIGINT},
@@ -192,23 +176,17 @@
       <if test="row.operUser != null">
         oper_user = #{row.operUser,jdbcType=VARCHAR},
       </if>
-      <if test="row.rate != null">
-        rate = #{row.rate,jdbcType=INTEGER},
-      </if>
       <if test="row.operTime != null">
         oper_time = #{row.operTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="row.status != null">
-        status = #{row.status,jdbcType=VARCHAR},
-      </if>
-      <if test="row.orgRate != null">
-        org_rate = #{row.orgRate,jdbcType=INTEGER},
+      <if test="row.operAmt != null">
+        oper_amt = #{row.operAmt,jdbcType=BIGINT},
       </if>
       <if test="row.desc != null">
         desc = #{row.desc,jdbcType=VARCHAR},
       </if>
-      <if test="row.amount != null">
-        amount = #{row.amount,jdbcType=BIGINT},
+      <if test="row.operType != null">
+        oper_type = #{row.operType,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="example != null">
@@ -216,22 +194,20 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update commission_record
+    update balance_info
     set id = #{row.id,jdbcType=BIGINT},
       client_id = #{row.clientId,jdbcType=VARCHAR},
       oper_user = #{row.operUser,jdbcType=VARCHAR},
-      rate = #{row.rate,jdbcType=INTEGER},
       oper_time = #{row.operTime,jdbcType=TIMESTAMP},
-      status = #{row.status,jdbcType=VARCHAR},
-      org_rate = #{row.orgRate,jdbcType=INTEGER},
+      oper_amt = #{row.operAmt,jdbcType=BIGINT},
       desc = #{row.desc,jdbcType=VARCHAR},
-      amount = #{row.amount,jdbcType=BIGINT}
+      oper_type = #{row.operType,jdbcType=VARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.CommissionRecord">
-    update commission_record
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.BalanceInfo">
+    update balance_info
     <set>
       <if test="clientId != null">
         client_id = #{clientId,jdbcType=VARCHAR},
@@ -239,37 +215,29 @@
       <if test="operUser != null">
         oper_user = #{operUser,jdbcType=VARCHAR},
       </if>
-      <if test="rate != null">
-        rate = #{rate,jdbcType=INTEGER},
-      </if>
       <if test="operTime != null">
         oper_time = #{operTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="orgRate != null">
-        org_rate = #{orgRate,jdbcType=INTEGER},
+      <if test="operAmt != null">
+        oper_amt = #{operAmt,jdbcType=BIGINT},
       </if>
       <if test="desc != null">
         desc = #{desc,jdbcType=VARCHAR},
       </if>
-      <if test="amount != null">
-        amount = #{amount,jdbcType=BIGINT},
+      <if test="operType != null">
+        oper_type = #{operType,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.CommissionRecord">
-    update commission_record
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.BalanceInfo">
+    update balance_info
     set client_id = #{clientId,jdbcType=VARCHAR},
       oper_user = #{operUser,jdbcType=VARCHAR},
-      rate = #{rate,jdbcType=INTEGER},
       oper_time = #{operTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=VARCHAR},
-      org_rate = #{orgRate,jdbcType=INTEGER},
+      oper_amt = #{operAmt,jdbcType=BIGINT},
       desc = #{desc,jdbcType=VARCHAR},
-      amount = #{amount,jdbcType=BIGINT}
+      oper_type = #{operType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

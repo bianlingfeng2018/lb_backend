@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.CustomerBillMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.CustomerBill">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="trade_id" jdbcType="VARCHAR" property="tradeId" />
+    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="order_amt" jdbcType="BIGINT" property="orderAmt" />
+    <result column="income_amt" jdbcType="BIGINT" property="incomeAmt" />
+    <result column="bill_path" jdbcType="VARCHAR" property="billPath" />
+    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
+    <result column="income_time" jdbcType="TIMESTAMP" property="incomeTime" />
+    <result column="oper_time" jdbcType="TIMESTAMP" property="operTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="oper_user" jdbcType="VARCHAR" property="operUser" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, trade_id, client_id, order_amt, income_amt, bill_path, upload_time, income_time, 
+    oper_time, status, oper_user
+  </sql>
+  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.CustomerBillExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from customer_bill
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customer_bill
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from customer_bill
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.CustomerBillExample">
+    delete from customer_bill
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.CustomerBill">
+    insert into customer_bill (id, trade_id, client_id, 
+      order_amt, income_amt, bill_path, 
+      upload_time, income_time, oper_time, 
+      status, oper_user)
+    values (#{id,jdbcType=BIGINT}, #{tradeId,jdbcType=VARCHAR}, #{clientId,jdbcType=VARCHAR}, 
+      #{orderAmt,jdbcType=BIGINT}, #{incomeAmt,jdbcType=BIGINT}, #{billPath,jdbcType=VARCHAR}, 
+      #{uploadTime,jdbcType=TIMESTAMP}, #{incomeTime,jdbcType=TIMESTAMP}, #{operTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=VARCHAR}, #{operUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.CustomerBill">
+    insert into customer_bill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tradeId != null">
+        trade_id,
+      </if>
+      <if test="clientId != null">
+        client_id,
+      </if>
+      <if test="orderAmt != null">
+        order_amt,
+      </if>
+      <if test="incomeAmt != null">
+        income_amt,
+      </if>
+      <if test="billPath != null">
+        bill_path,
+      </if>
+      <if test="uploadTime != null">
+        upload_time,
+      </if>
+      <if test="incomeTime != null">
+        income_time,
+      </if>
+      <if test="operTime != null">
+        oper_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="operUser != null">
+        oper_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="tradeId != null">
+        #{tradeId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null">
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAmt != null">
+        #{orderAmt,jdbcType=BIGINT},
+      </if>
+      <if test="incomeAmt != null">
+        #{incomeAmt,jdbcType=BIGINT},
+      </if>
+      <if test="billPath != null">
+        #{billPath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null">
+        #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="incomeTime != null">
+        #{incomeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operTime != null">
+        #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="operUser != null">
+        #{operUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.libiao.customer.dal.model.CustomerBillExample" resultType="java.lang.Long">
+    select count(*) from customer_bill
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update customer_bill
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.tradeId != null">
+        trade_id = #{row.tradeId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.clientId != null">
+        client_id = #{row.clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.orderAmt != null">
+        order_amt = #{row.orderAmt,jdbcType=BIGINT},
+      </if>
+      <if test="row.incomeAmt != null">
+        income_amt = #{row.incomeAmt,jdbcType=BIGINT},
+      </if>
+      <if test="row.billPath != null">
+        bill_path = #{row.billPath,jdbcType=VARCHAR},
+      </if>
+      <if test="row.uploadTime != null">
+        upload_time = #{row.uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.incomeTime != null">
+        income_time = #{row.incomeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.operTime != null">
+        oper_time = #{row.operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.status != null">
+        status = #{row.status,jdbcType=VARCHAR},
+      </if>
+      <if test="row.operUser != null">
+        oper_user = #{row.operUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update customer_bill
+    set id = #{row.id,jdbcType=BIGINT},
+      trade_id = #{row.tradeId,jdbcType=VARCHAR},
+      client_id = #{row.clientId,jdbcType=VARCHAR},
+      order_amt = #{row.orderAmt,jdbcType=BIGINT},
+      income_amt = #{row.incomeAmt,jdbcType=BIGINT},
+      bill_path = #{row.billPath,jdbcType=VARCHAR},
+      upload_time = #{row.uploadTime,jdbcType=TIMESTAMP},
+      income_time = #{row.incomeTime,jdbcType=TIMESTAMP},
+      oper_time = #{row.operTime,jdbcType=TIMESTAMP},
+      status = #{row.status,jdbcType=VARCHAR},
+      oper_user = #{row.operUser,jdbcType=VARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.CustomerBill">
+    update customer_bill
+    <set>
+      <if test="tradeId != null">
+        trade_id = #{tradeId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null">
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAmt != null">
+        order_amt = #{orderAmt,jdbcType=BIGINT},
+      </if>
+      <if test="incomeAmt != null">
+        income_amt = #{incomeAmt,jdbcType=BIGINT},
+      </if>
+      <if test="billPath != null">
+        bill_path = #{billPath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null">
+        upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="incomeTime != null">
+        income_time = #{incomeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operTime != null">
+        oper_time = #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="operUser != null">
+        oper_user = #{operUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.CustomerBill">
+    update customer_bill
+    set trade_id = #{tradeId,jdbcType=VARCHAR},
+      client_id = #{clientId,jdbcType=VARCHAR},
+      order_amt = #{orderAmt,jdbcType=BIGINT},
+      income_amt = #{incomeAmt,jdbcType=BIGINT},
+      bill_path = #{billPath,jdbcType=VARCHAR},
+      upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+      income_time = #{incomeTime,jdbcType=TIMESTAMP},
+      oper_time = #{operTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      oper_user = #{operUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

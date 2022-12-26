@@ -197,7 +197,7 @@ public class FileUtil {
      * @param testQuotation
      *
      */
-    public static File exportTestQuotation(TestQuotation testQuotation, String outpath) throws IOException {
+    /*public static File exportTestQuotation(TestQuotation testQuotation, String outpath) throws IOException {
 
         PdfWriter writer = new PdfWriter(outpath);
         com.itextpdf.kernel.pdf.PdfDocument pdfDocument = new com.itextpdf.kernel.pdf.PdfDocument(writer);
@@ -255,34 +255,7 @@ public class FileUtil {
         Table table1 = new Table(UnitValue.createPercentArray(new float[]{6.0f, 9.0f, 4.0f, 9.0f}));
         table1.setWidth(UnitValue.createPercentValue(100));
         table1.setFixedLayout();
-//        List<Pair<String, String>> testQuotationAttrs = getTestQuotationAttrs(testQuotation);
-//        int i = 0;
-//        for (Pair<String, String> pair : testQuotationAttrs) {
-//            Cell keyCell = new Cell();
-//            Paragraph keyPG = new Paragraph(pair.getKey());
-//            keyPG.addStyle(contentFontStyle);
-//            keyCell.add(keyPG);
-//            keyCell.setHorizontalAlignment(HorizontalAlignment.CENTER);
-//            keyCell.setVerticalAlignment(VerticalAlignment.MIDDLE);
-//            keyCell.setTextAlignment(TextAlignment.CENTER);
-//
-//            Cell valueCell = new Cell();
-//            Paragraph valuePG = new Paragraph(pair.getValue());
-//            valuePG.addStyle(contentFontStyle);
-//            valueCell.add(valuePG);
-//            valueCell.setHorizontalAlignment(HorizontalAlignment.CENTER);
-//            valueCell.setVerticalAlignment(VerticalAlignment.MIDDLE);
-//            valueCell.setTextAlignment(TextAlignment.CENTER);
-//            if(i%2 == 0){
-//                keyCell.setBorderLeft(new SolidBorder(1.4f));
-//            }else{
-//                valueCell.setBorderRight(new SolidBorder(1.4f));
-//            }
-//
-//            table1.addCell(keyCell);
-//            table1.addCell(valueCell);
-//            i += 1;
-//        }
+
         table1.setBorderBottom(Border.NO_BORDER);
         document.add(table1);
 
@@ -310,7 +283,7 @@ public class FileUtil {
         table3.addCell(new Cell().add(new Paragraph("备注").addStyle(contentFontStyle)));
         table3.addCell(new Cell().add(new Paragraph(testQuotation.getRemark()).addStyle(contentFontStyle)));
         table3.addCell(new Cell().add(new Paragraph("总费用").addStyle(contentFontStyle)));
-        table3.addCell(new Cell().add(new Paragraph(testQuotation.getTotalCost()).addStyle(contentFontStyle)));
+        table3.addCell(new Cell().add(new Paragraph(String.valueOf(testQuotation.getTotalCost())).addStyle(contentFontStyle)));
         table3.setBorderTop(Border.NO_BORDER);
         table3.setBorderLeft(new SolidBorder(1.4f));
         table3.setBorderRight(new SolidBorder(1.4f));
@@ -478,7 +451,7 @@ public class FileUtil {
         document.close();
         writer.close();
         return new File(outpath);
-    }
+    }*/
 
 //    private static List<Pair<String, String>> getTestQuotationAttrs(TestQuotation testQuotation){
 //        List<Pair<String, String>> result = new ArrayList<Pair<String, String>>();
@@ -500,7 +473,7 @@ public class FileUtil {
 //    }
 
 
-    private static java.util.List<String> getTestQuotationItems(TestQuotation testQuotation){
+    /*private static java.util.List<String> getTestQuotationItems(TestQuotation testQuotation){
         String[] headers = new String[]{
                 "序号\nNo.",
                 "报告编号\nReport No.",
@@ -543,7 +516,7 @@ public class FileUtil {
 
 
 
-    }
+    }*/
 
     public static File exportTestReport(TestReport testReport, String outpath) throws IOException {
         PdfFont coverFont = PdfFontFactory.createFont("STSong-Light", "UniGB-UCS2-H"); // 封面

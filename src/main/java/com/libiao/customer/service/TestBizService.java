@@ -25,13 +25,13 @@ public interface TestBizService {
 
     ResponseVO queryTestTradeList(int pageNum, int pageSize, String testName, String client, String status);
 
-    ResponseVO saveTestQuotation(TestQuotation testQuotation);
+    //ResponseVO saveTestQuotation(TestQuotation testQuotation);
 
-    ResponseVO updateTestQuotation(TestQuotation testQuotation);
+    //ResponseVO updateTestQuotation(TestQuotation testQuotation);
 
-    ResponseVO queryTestQuotationList(int pageNum, int pageSize);
+    //ResponseVO queryTestQuotationList(int pageNum, int pageSize);
 
-    ResponseVO exportTestQuotation(HttpServletResponse response, Long testTradeId); // 导出报价单pdf
+    //ResponseVO exportTestQuotation(HttpServletResponse response, Long testTradeId); // 导出报价单pdf
 
     ResponseVO saveTestApplicationForm(TestApplicationForm testApplicationForm);
 
@@ -51,7 +51,7 @@ public interface TestBizService {
 
     ResponseVO queryTestWorkOrderByTestTradeId(Long testTradeId);
 
-    ResponseVO queryAllFormByTestTradeId(Long testTradeId);
+    //ResponseVO queryAllFormByTestTradeId(Long testTradeId);
 
     ResponseVO saveTestReport(String testReport, MultipartFile[] imgList);
 
@@ -90,11 +90,11 @@ public interface TestBizService {
 
     ResponseVO exportTestReport(HttpServletResponse response, Long testTradeId);
 
-    ResponseVO<?> auditTestApply(Long testTradeId, String testTradeStatus, MultipartFile[] applyFileList, MultipartFile[] payFileList);
+    //ResponseVO<?> auditTestApply(Long testTradeId, String testTradeStatus, MultipartFile[] applyFileList, MultipartFile[] payFileList);
 
     ResponseVO<?> downloadTestAuditFileAsZip(HttpServletResponse response, Long testTradeId, String part);
 
-    ResponseEntity<?> previewTestQuotationByTestTradeId(Long testTradeId);
+    //ResponseEntity<?> previewTestQuotationByTestTradeId(Long testTradeId);
 
     ResponseEntity<?> previewTestApplyByTestTradeId(Long testTradeId);
 
@@ -120,5 +120,5 @@ public interface TestBizService {
 
     ResponseVO<?> getTestReportSampleImages(Long tradeId);
 
-    ResponseVO updateTestCustomService(Long testTradeId, Long serviceId);
+    //ResponseVO updateTestCustomService(Long testTradeId, Long serviceId);
 }

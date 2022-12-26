@@ -3,10 +3,7 @@ package com.libiao.customer.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.libiao.customer.dal.model.TestApplicationForm;
-import com.libiao.customer.dal.model.TestTrade;
-import com.libiao.customer.dal.model.TestWorkOrder;
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.*;
 import com.libiao.customer.service.TestBizService;
 import com.libiao.customer.util.model.ResponseVO;
 import java.util.List;
@@ -86,20 +83,20 @@ public class TestTradeCtrl {
     /**
      * 保存报价单
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/saveTestQuotation", method = RequestMethod.POST)
     public ResponseVO saveTestQuotation(@RequestBody TestQuotation testQuotation){
         return testBizService.saveTestQuotation(testQuotation);
-    }
+    }*/
 
     /**
      * 更新报价单
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/updateTestQuotation", method = RequestMethod.POST)
     public ResponseVO updateTestQuotation(@RequestBody TestQuotation testQuotation){
         return testBizService.updateTestQuotation(testQuotation);
-    }
+    }*/
 
   /**
    * 删除报价单
@@ -145,35 +142,35 @@ public class TestTradeCtrl {
     /**
      * 查询报价单
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/queryTestQuotationList", method = RequestMethod.GET)
     public ResponseVO queryTestQuotationList(@RequestParam(name="pageNum", required = false, defaultValue = "1") int pageNum,
                                          @RequestParam(name="pageSize", required = false, defaultValue = "10") int pageSize){
         return testBizService.queryTestQuotationList(pageNum, pageSize);
-    }
+    }*/
 
 
 
     /**
      * 报价单生成pdf
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/downloadTestQuotation", method = RequestMethod.GET)
     public ResponseVO exportTestQuotation(HttpServletResponse response,
         @RequestParam(name = "testTradeId", required = true) Long testTradeId){
         return testBizService.exportTestQuotation(response, testTradeId);
-    }
+    }*/
 
   /**
    * 预览检测报价单
    * @param testTradeId
    * @return
    */
-  @ResponseBody
+  /*@ResponseBody
     @RequestMapping(value = "/previewTestQuotation", method = RequestMethod.GET)
     public ResponseEntity<?> previewTestQuotation(@RequestParam("testTradeId") Long testTradeId){
         return testBizService.previewTestQuotationByTestTradeId(testTradeId);
-    }
+    }*/
 
     /**
      * 保存申请表
@@ -296,11 +293,11 @@ public class TestTradeCtrl {
     /**
      * 根据检测交易单id，返回对应的检测交易单，报价单，申请单，以及工作单
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/queryAllFormByTestTradeId", method = RequestMethod.GET)
     public ResponseVO queryAllFormByTestTradeId(@RequestParam(name="testTradeId", required = true) Long testTradeId){
         return testBizService.queryAllFormByTestTradeId(testTradeId);
-    }
+    }*/
 
     @ResponseBody
     @RequestMapping(value = "/saveTestReport", method = RequestMethod.POST)
@@ -432,7 +429,7 @@ public class TestTradeCtrl {
    * @param payFileList 付款单截图
    * @return
    */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/auditTestApply", method = RequestMethod.POST)
     public ResponseVO<?> auditTestApply(
         @RequestParam("testTradeId") Long testTradeId,
@@ -440,7 +437,7 @@ public class TestTradeCtrl {
         @RequestParam("applyFileList") MultipartFile[] applyFileList,
         @RequestParam("payFileList") MultipartFile[] payFileList){
         return testBizService.auditTestApply(testTradeId, testTradeStatus, applyFileList, payFileList);
-    }
+    }*/
 
   /**
    * 打包下载审核时上传的文件
@@ -477,11 +474,11 @@ public class TestTradeCtrl {
    * @param serviceId 客服id
    * @return
    */
-  @ResponseBody
+  /*@ResponseBody
   @RequestMapping(value = "/updateTestCustomService", method = RequestMethod.POST)
   public ResponseVO updateTestCustomService(
       @RequestParam("testTradeId") Long testTradeId,
       @RequestParam("serviceId") Long serviceId){
     return testBizService.updateTestCustomService(testTradeId, serviceId);
-  }
+  }*/
 }

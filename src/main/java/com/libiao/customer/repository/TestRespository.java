@@ -47,7 +47,7 @@ public interface TestRespository {
      * @param row
      * @return
      */
-    public int insertTestQuotation(TestQuotation row);
+    //public int insertTestQuotation(TestQuotation row);
 
     /**
      * 插入测试报价单子项
@@ -61,7 +61,7 @@ public interface TestRespository {
      */
     public int batchInsertQuotationItem(List<TestQuotationItem> testQuotationItemList);
 
-    public List<TestQuotation> queryTestQuotation(int pageNum, int pageSize);
+    //public List<TestQuotation> queryTestQuotation(int pageNum, int pageSize);
 
     public List<TestQuotationItem> queryTestQuotationItemByQuotationId(Long testQuotationId);
 
@@ -92,7 +92,7 @@ public interface TestRespository {
     public List<TestWorkOrderItem> queryTestWorkOrderItemByWorkOrderId(Long testWorkOrderId);
     /********************************************* 测试工作单 *********************************************/
 
-    public TestQuotation queryTestQuotationByTestTradeId(Long testTradeId);
+    //public TestQuotation queryTestQuotationByTestTradeId(Long testTradeId);
 
     public TestApplicationForm queryTestApplicationFormByTestTradeId(Long testTradeId);
 

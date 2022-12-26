@@ -3,20 +3,8 @@ package com.libiao.customer.repository.impl;
 import static com.libiao.customer.util.UserRolePermissionUtil.isAdmin;
 
 import com.github.pagehelper.PageHelper;
-import com.libiao.customer.dal.mapper.TestApplicationFormMapper;
-import com.libiao.customer.dal.mapper.TestApplicationItemMapper;
-import com.libiao.customer.dal.mapper.TestQuotationItemMapper;
-import com.libiao.customer.dal.mapper.TestReportMapper;
-import com.libiao.customer.dal.mapper.TestTradeMapper;
-import com.libiao.customer.dal.mapper.TestWorkOrderItemMapper;
-import com.libiao.customer.dal.mapper.TestWorkOrderMapper;
-import com.libiao.customer.dal.model.TestApplicationForm;
-import com.libiao.customer.dal.model.TestApplicationItem;
-import com.libiao.customer.dal.model.TestQuotationItem;
-import com.libiao.customer.dal.model.TestReport;
-import com.libiao.customer.dal.model.TestTrade;
-import com.libiao.customer.dal.model.TestWorkOrder;
-import com.libiao.customer.dal.model.TestWorkOrderItem;
+import com.libiao.customer.dal.mapper.*;
+import com.libiao.customer.dal.model.*;
 import com.libiao.customer.repository.TestRespository;
 import com.libiao.customer.util.WebUtil;
 import java.util.Date;
@@ -89,14 +77,14 @@ public class TestRespositoryImpl implements TestRespository {
         return testTradeMapper.selectAllByOwner(owner);
     }
 
-    @Override
+    /*@Override
     public int insertTestQuotation(TestQuotation row) {
         testQuotationMapper.insert(row);
         for(TestQuotationItem item : row.getTestQuotationItemList()){
             item.setTestQuotationId(row.getId());
         }
         return testQuotationItemMapper.batchInsert(row.getTestQuotationItemList());
-    }
+    }*/
 
     @Override
     public int insertTestQuotationItem(TestQuotationItem testQuotationItem) {
@@ -108,7 +96,7 @@ public class TestRespositoryImpl implements TestRespository {
         return testQuotationItemMapper.batchInsert(testQuotationItemList);
     }
 
-    @Override
+    /*@Override
     public List<TestQuotation> queryTestQuotation(int pageNum, int pageSize){
         String userName = WebUtil.getAccessToken().getUsername();
         String permission = WebUtil.getAccessToken().getPermission();
@@ -121,7 +109,7 @@ public class TestRespositoryImpl implements TestRespository {
             testQuotationList = testQuotationMapper.selectAllByOwner(userName);
         }
         return testQuotationList;
-    }
+    }*/
 
     @Override
     public List<TestQuotationItem> queryTestQuotationItemByQuotationId(Long testQuotationId) {
@@ -221,7 +209,7 @@ public class TestRespositoryImpl implements TestRespository {
         return testWorkOrderItemMapper.selectByTestWorkOrderId(testWorkOrderId);
     }
 
-    @Override
+    /*@Override
     public TestQuotation queryTestQuotationByTestTradeId(Long testTradeId) {
         List<TestQuotation> testQuotationList = testQuotationMapper.queryTestQuotationByTestTradeId(testTradeId);
         if(testQuotationList != null && testQuotationList.size() != 0){
@@ -230,7 +218,7 @@ public class TestRespositoryImpl implements TestRespository {
             return testQuotation;
         }
         return null;
-    }
+    }*/
 
     @Override
     public TestApplicationForm queryTestApplicationFormByTestTradeId(Long testTradeId) {

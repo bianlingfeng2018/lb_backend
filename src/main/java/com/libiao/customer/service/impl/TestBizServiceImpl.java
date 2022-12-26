@@ -26,19 +26,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.libiao.customer.dal.model.Finance;
-import com.libiao.customer.dal.model.TestApplicationForm;
-import com.libiao.customer.dal.model.TestApplicationFormVO;
-import com.libiao.customer.dal.model.TestApplicationItem;
-import com.libiao.customer.dal.model.TestQuotationItem;
-import com.libiao.customer.dal.model.TestQuotationVO;
-import com.libiao.customer.dal.model.TestReport;
-import com.libiao.customer.dal.model.TestReportVO;
-import com.libiao.customer.dal.model.TestTrade;
-import com.libiao.customer.dal.model.TestWorkOrder;
-import com.libiao.customer.dal.model.TestWorkOrderItem;
-import com.libiao.customer.dal.model.TestWorkOrderVO;
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.*;
 import com.libiao.customer.repository.FinanceRepository;
 import com.libiao.customer.repository.TestRespository;
 import com.libiao.customer.repository.UserRepository;
@@ -213,7 +201,7 @@ public class TestBizServiceImpl implements TestBizService {
      * @param testQuotation
      * @return
      */
-    @Override
+    /*@Override
     public ResponseVO  saveTestQuotation(TestQuotation testQuotation) {
         try{
             TestTrade testTrade = testRespository.selectTestTradeById(testQuotation.getTestTradeId());
@@ -233,14 +221,14 @@ public class TestBizServiceImpl implements TestBizService {
             e.printStackTrace();
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
     /**
      * 更新报价单
      * @param testQuotation
      * @return
      */
-    @Override
+    /*@Override
     public ResponseVO updateTestQuotation(TestQuotation testQuotation) {
         try {
             if (testQuotation.getId() == null) {
@@ -281,7 +269,7 @@ public class TestBizServiceImpl implements TestBizService {
             e.printStackTrace();
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
   /**
    * 查询报价单
@@ -290,7 +278,7 @@ public class TestBizServiceImpl implements TestBizService {
    * @param pageSize
    * @return
    */
-  @Override
+  /*@Override
   public ResponseVO queryTestQuotationList(int pageNum, int pageSize) {
     try {
       List<TestQuotation> testQuotationList = testRespository.queryTestQuotation(pageNum, pageSize);
@@ -318,15 +306,15 @@ public class TestBizServiceImpl implements TestBizService {
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
     }
-  }
+  }*/
 
     /**
      * @param response
      * @param testTradeId
      * @return
      */
-    @Override
-    public ResponseVO exportTestQuotation(HttpServletResponse response, Long testTradeId) {
+    //@Override
+    /*public ResponseVO exportTestQuotation(HttpServletResponse response, Long testTradeId) {
         try{
             TestTrade testTrade = testRespository.selectTestTradeById(testTradeId); // 查找检测交易单
             if(testTrade == null){
@@ -355,7 +343,7 @@ public class TestBizServiceImpl implements TestBizService {
             e.printStackTrace();
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
   /**
    * 保存申请单
@@ -582,7 +570,7 @@ public class TestBizServiceImpl implements TestBizService {
         return null;
     }
 
-    @Override
+    /*@Override
     public ResponseVO queryAllFormByTestTradeId(Long testTradeId) {
         try{
             JSONObject allFormsResult = new JSONObject();
@@ -620,7 +608,7 @@ public class TestBizServiceImpl implements TestBizService {
         }catch (Exception e){
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
     @Override
     public ResponseVO saveTestReport(String testReportStr, MultipartFile[] imgList) {
@@ -832,7 +820,7 @@ public class TestBizServiceImpl implements TestBizService {
         }
     }
 
-    @Override
+    /*@Override
     public ResponseVO<?> auditTestApply(Long testTradeId, String testTradeStatus,
         MultipartFile[] applyFileList, MultipartFile[] payFileList) {
         try {
@@ -868,7 +856,7 @@ public class TestBizServiceImpl implements TestBizService {
             e.printStackTrace();
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
     @Override
     public ResponseVO<?> downloadTestAuditFileAsZip(HttpServletResponse response, Long testTradeId,
@@ -908,7 +896,7 @@ public class TestBizServiceImpl implements TestBizService {
         }
     }
 
-  @Override
+  /*@Override
   public ResponseEntity<?> previewTestQuotationByTestTradeId(Long testTradeId) {
       try {
           TestTrade testTrade = testRespository.selectTestTradeById(testTradeId);
@@ -935,7 +923,7 @@ public class TestBizServiceImpl implements TestBizService {
           return new ResponseEntity(new LibiaoException(ErrorCodeEnum.UNKNOWN_ERROR),
               HttpStatus.INTERNAL_SERVER_ERROR);
       }
-  }
+  }*/
 
     @Override
     public ResponseEntity<?> previewTestApplyByTestTradeId(Long testTradeId) {
@@ -1254,7 +1242,7 @@ public class TestBizServiceImpl implements TestBizService {
    * @param serviceId 客服人员id
    * @return
    */
-  @Override
+  /*@Override
   public ResponseVO updateTestCustomService(Long testTradeId, Long serviceId) {
     try {
       TestTrade testTrade = testRespository.selectTestTradeById(testTradeId);
@@ -1288,7 +1276,7 @@ public class TestBizServiceImpl implements TestBizService {
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
     }
-  }
+  }*/
 
   /**
    * 更新检测交易参与人员，包括客户、销售、客服、测试、编校审等，

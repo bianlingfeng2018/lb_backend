@@ -36,7 +36,6 @@ public class CommissionServiceImpl implements CommissionService {
     public boolean addRecord(CommissionChangeRecord req) {
         req.setStatus(CommissionStatus.IN_APPROVE.getName());
         req.setOperTime(new Date());
-//        req.setOperUser();
         return recordMapper.insertSelective(req) == 1;
     }
 
@@ -50,7 +49,7 @@ public class CommissionServiceImpl implements CommissionService {
         CommissionChangeRecord record = list.get(0);
         record.setStatus(CommissionStatus.IN_APPROVE.getName());
         record.setRate(record.getRate());
-//        record.setOperUser();
+        record.setOperUser(String.valueOf(req.getUser().getId()));
         record.setOperTime(new Date());
         int row = recordMapper.updateByPrimaryKey(record);
         if(row != 1) return  ResponseUtil.convert(HttpStatus.INTERNAL_SERVER_ERROR,"系统错误");
@@ -68,7 +67,7 @@ public class CommissionServiceImpl implements CommissionService {
         record.setStatus(CommissionStatus.valueOf(req.getStatus()).getName());
         record.setDesc(req.getDesc());
         record.setRate(req.getRate());
-        //        record.setOperUser();
+        record.setOperUser(String.valueOf(req.getUser().getId()));
         record.setOperTime(new Date());
         int row = recordMapper.updateByPrimaryKey(record);
         if(row != 1) return  ResponseUtil.convert(HttpStatus.INTERNAL_SERVER_ERROR,"系统错误");

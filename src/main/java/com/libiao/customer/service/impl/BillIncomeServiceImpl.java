@@ -56,7 +56,7 @@ public class BillIncomeServiceImpl implements BillIncomeService {
         billIncome.setClientId(req.getClientId());
         billIncome.setOperationAmount(req.getOperAmount());
         billIncome.setOperationTime(new Date());
-//        billIncome.setOperUser(req.getUser());//TODO user
+        billIncome.setOperUser(String.valueOf(req.getUser().getId()));
         billIncome.setOprationType(req.getOperType());
         billIncome.setDesc(req.getDesc());
         Balance balance = balanceService.getBalance(req.getClientId());

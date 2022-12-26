@@ -30,7 +30,6 @@ import com.libiao.customer.dal.model.Finance;
 import com.libiao.customer.dal.model.TestApplicationForm;
 import com.libiao.customer.dal.model.TestApplicationFormVO;
 import com.libiao.customer.dal.model.TestApplicationItem;
-import com.libiao.customer.dal.model.TestQuotation;
 import com.libiao.customer.dal.model.TestQuotationItem;
 import com.libiao.customer.dal.model.TestQuotationVO;
 import com.libiao.customer.dal.model.TestReport;

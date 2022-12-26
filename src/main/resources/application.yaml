@@ -24,6 +24,8 @@ spring:
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
+  configuration:
+    mapUnderscoreToCamelCase: true
 
 swagger:
   show: true

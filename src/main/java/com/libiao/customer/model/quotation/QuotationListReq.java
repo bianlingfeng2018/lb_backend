@@ -10,9 +10,20 @@ import lombok.Data;
 public class QuotationListReq extends BasePageReq {
 
     @ApiModelProperty("报价单编号")
-    private String quotationId;
+    private String quotationNum;
+
+    @ApiModelProperty("客户中文名称")
+    private String clientName;
+
+    @ApiModelProperty("检测交易名称")
+    private String tradeName;
 
     @ApiModelProperty("进度")
-    private Integer state;
+    private Byte step;
+
+    @ApiModelProperty("支付状态")
+    private Byte payStatus;
+
+
 
 }

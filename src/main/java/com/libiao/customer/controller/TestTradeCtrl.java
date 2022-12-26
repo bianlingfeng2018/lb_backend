@@ -1,12 +1,9 @@
 package com.libiao.customer.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.libiao.customer.dal.model.TestApplicationForm;
-import com.libiao.customer.dal.model.TestQuotation;
-import com.libiao.customer.dal.model.TestReport;
 import com.libiao.customer.dal.model.TestTrade;
 import com.libiao.customer.dal.model.TestWorkOrder;
 import com.libiao.customer.dal.model.User;

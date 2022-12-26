@@ -21,5 +21,5 @@ public class SessionUser implements Serializable {
 
     private String status;
 
-
+    private String orgNo;
 }

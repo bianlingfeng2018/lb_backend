@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.Quotation;
 import com.libiao.customer.dal.model.TestQuotation;
 import com.libiao.customer.model.ListResponseVO;
+import com.libiao.customer.model.quotation.CreateQuotationReq;
 import com.libiao.customer.model.quotation.QuotationListReq;
 import com.libiao.customer.model.quotation.QuotationListVO;
 import com.libiao.customer.service.QuotationService;
@@ -40,6 +41,11 @@ public class QuotationController {
     }
 
     //新增报价单
+    public void create(@RequestBody CreateQuotationReq req){
+
+    }
+
+
 
     //编辑报价单
 

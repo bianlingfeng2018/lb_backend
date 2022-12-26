@@ -39,7 +39,7 @@ public class ControllerAspect {
 		MethodSignature methodSignature = (MethodSignature) point.getSignature();
 		String URI = ServletUtils.getPath();
 
-		final AccessController accessController = methodSignature.getMethod().getAnnotation(AccessController.class);
+		/*final AccessController accessController = methodSignature.getMethod().getAnnotation(AccessController.class);
 		if(accessController == null){
 			//去校验权限
 			if(!checkRule(session,URI)){
@@ -52,7 +52,7 @@ public class ControllerAspect {
 				log.info("权限认证失败");
 				return ResponseUtil.convert(ErrorMessage.FORBIDDEN);
 			}
-		}
+		}*/
 
 		for (Object arg : args) {
 			if (arg != null && BaseRequest.class.isAssignableFrom(arg.getClass())) {

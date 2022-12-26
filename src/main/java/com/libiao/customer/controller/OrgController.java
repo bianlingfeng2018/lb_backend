@@ -1,10 +1,8 @@
 package com.libiao.customer.controller;
 
 import com.libiao.customer.model.BaseResponseVO;
-import com.libiao.customer.model.org.CreateOrgReq;
-import com.libiao.customer.model.org.ModifyOrgReq;
-import com.libiao.customer.model.org.OrgListVO;
-import com.libiao.customer.model.org.SubOrgListReq;
+import com.libiao.customer.model.BaseSessionReq;
+import com.libiao.customer.model.org.*;
 import com.libiao.customer.service.OrgService;
 import com.libiao.customer.util.ResponseUtil;
 import io.swagger.annotations.Api;
@@ -48,6 +46,13 @@ public class OrgController {
     public ResponseEntity<List<OrgListVO>> list(@RequestBody SubOrgListReq req){
         final List<OrgListVO> list = orgService.list(req.getParentOrgNo());
         return ResponseUtil.getResponseVO(list);
+    }
+
+    @PostMapping("tree")
+    @ApiOperation("获取组织机构树")
+    public ResponseEntity<OrgComboVO> tree(@RequestBody BaseSessionReq req){
+        final OrgComboVO orgComboVO = orgService.selectAll();
+        return ResponseUtil.getResponseVO(orgComboVO);
     }
 
 }

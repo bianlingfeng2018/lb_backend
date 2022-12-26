@@ -6,12 +6,18 @@ import com.libiao.customer.dal.model.DepartmentOrg;
 import com.libiao.customer.dal.model.DepartmentOrgExample;
 import com.libiao.customer.model.org.CreateOrgReq;
 import com.libiao.customer.model.org.ModifyOrgReq;
+import com.libiao.customer.model.org.OrgComboVO;
 import com.libiao.customer.model.org.OrgListVO;
 import com.libiao.customer.service.OrgService;
+import com.libiao.customer.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class OrgServiceImpl implements OrgService {
@@ -20,6 +26,8 @@ public class OrgServiceImpl implements OrgService {
     private DepartmentOrgMapper departmentOrgMapper;
     @Autowired
     private OrgMapperExt orgMapperExt;
+
+    public static final String TOP_ORG = "100";
 
     @Override
     public void createOrg(CreateOrgReq req){
@@ -56,5 +64,46 @@ public class OrgServiceImpl implements OrgService {
     @Override
     public List<OrgListVO> list(String parentOrgNo){
         return orgMapperExt.getSubOrgList(parentOrgNo);
+    }
+
+    @Override
+    public OrgComboVO selectAll(){
+        final List<DepartmentOrg> departmentOrgs = departmentOrgMapper.selectByExample(new DepartmentOrgExample());
+        //把list转map
+        final Map<String, List<DepartmentOrg>> collect = departmentOrgs.stream().collect(Collectors.groupingBy(DepartmentOrg::getParentOrgNo));
+        //map递归为tree
+        final List<DepartmentOrg> trunk = collect.get(TOP_ORG);
+        List<OrgComboVO> rootList = new ArrayList<>();
+        OrgComboVO root = new OrgComboVO();
+        root.setOrgNo(TOP_ORG);
+        root.setOrgName(TOP_ORG);
+        if (trunk != null){
+            trunk.forEach(org->{
+                final OrgComboVO copy = BeanCopyUtil.copy(org, OrgComboVO.class);
+                //查询copy下的子节点
+                convert2Tree(copy,collect);
+                rootList.add(copy);
+            });
+        }
+        root.setSubOrgList(rootList);
+        return root;
+    }
+
+    private void convert2Tree(OrgComboVO node, Map<String, List<DepartmentOrg>> map){
+        if (node == null){
+            return;
+        }
+        final List<DepartmentOrg> trunk = map.get(node.getOrgNo());
+        if (CollectionUtils.isEmpty(trunk)){
+            return;
+        }
+        List<OrgComboVO> leafList = new ArrayList<>();
+        trunk.forEach(org->{
+            final OrgComboVO copy = BeanCopyUtil.copy(org, OrgComboVO.class);
+            //查询copy下的子节点
+            convert2Tree(copy,map);
+            leafList.add(copy);
+        });
+        node.setSubOrgList(leafList);
     }
 }

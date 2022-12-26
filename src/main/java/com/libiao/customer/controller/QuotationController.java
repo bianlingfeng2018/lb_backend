@@ -39,4 +39,20 @@ public class QuotationController {
         return ResponseUtil.getListResponseVO(voList,list.getTotal());
     }
 
+    //新增报价单
+
+    //编辑报价单
+
+    //审核报价单->判断下，是否新增一条待核销记录
+
+    //加测报价单
+
+    //复测报价单
+
+    //报价单详情
+
+    //上传水单
+
+    //预览下载水单
+
 }

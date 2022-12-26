@@ -38,7 +38,9 @@ public class BalanceController {
     @PostMapping("getBalance")
     @AccessController
     public ResponseEntity<BalanceVo> getBalance(@RequestBody BalanceReq req){
+        log.info("获取商户账户信息：clientID={}",req.getClientId());
         final Balance balance = balanceService.getBalance(req.getClientId());
+        log.info("查询到的商户账户信息：balance={}",balance);
         BalanceVo balanceVo = BeanCopyUtil.copy(balance,BalanceVo.class);
         return ResponseUtil.getResponseVO(balanceVo);
     }
@@ -59,7 +61,7 @@ public class BalanceController {
         BalanceInfo balanceInfo = new BalanceInfo();
         balanceInfo.setClientId(req.getClientId());
         balanceInfo.setOperType("");
-        balanceInfo.setDesc("设置授信额度，系统自动添加");
+        balanceInfo.setDescp("设置授信额度，系统自动添加");
         balanceInfo.setOperTime(new Date());
         balanceInfo.setOperUser(String.valueOf(req.getUser().getId()));
         balanceInfo.setOperAmt(req.getCreditLimit());
@@ -68,8 +70,19 @@ public class BalanceController {
 
     @PostMapping("setCommission")
     public ResponseEntity setCommission(@RequestBody CommissionReq req){
-        CommissionChangeRecord record = BeanCopyUtil.copy(req, CommissionChangeRecord.class);
+        Balance balance = balanceService.getBalance(req.getClientId());
+        if(null == balance){
+            return ResponseUtil.convert(HttpStatus.NOT_FOUND,"商户记录不存在");
+        }
+        CommissionChangeRecord record = new CommissionChangeRecord();
+        if(balance.getCommissionRate() == null){
+            balance.setCommissionRate(0L);
+        }
+        record.setOrgRate(balance.getCommissionRate().intValue());
+        balance.setCommissionRate(req.getRate().longValue());
+
         record.setOperUser(String.valueOf(req.getUser().getId()));
+        record.setAmount(balance.getBalanceAmt());
         commissionService.addRecord(record);
         return ResponseUtil.getDefaultResp();
     }

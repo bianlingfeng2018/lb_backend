@@ -17,7 +17,7 @@ public class CommissionChangeRecord {
 
     private Integer orgRate;
 
-    private String desc;
+    private String descp;
 
     private Long amount;
 
@@ -79,12 +79,12 @@ public class CommissionChangeRecord {
         this.orgRate = orgRate;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescp() {
+        return descp;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescp(String descp) {
+        this.descp = descp;
     }
 
     public Long getAmount() {

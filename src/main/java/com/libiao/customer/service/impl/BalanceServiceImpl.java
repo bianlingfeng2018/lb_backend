@@ -33,6 +33,7 @@ public class BalanceServiceImpl implements BalanceService {
         BalanceExample balanceExample = new BalanceExample();
         balanceExample.createCriteria().andClientIdEqualTo(clientId);
         List<Balance> list = balanceMapper.selectByExample(balanceExample);
+        log.info("getBalance list={}",list);
         if(list.size() !=1){
             return null;
         }

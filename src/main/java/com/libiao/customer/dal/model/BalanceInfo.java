@@ -13,7 +13,7 @@ public class BalanceInfo {
 
     private Long operAmt;
 
-    private String desc;
+    private String descp;
 
     private String operType;
 
@@ -57,12 +57,12 @@ public class BalanceInfo {
         this.operAmt = operAmt;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescp() {
+        return descp;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescp(String descp) {
+        this.descp = descp;
     }
 
     public String getOperType() {

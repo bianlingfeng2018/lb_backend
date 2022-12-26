@@ -10,7 +10,7 @@
     <result column="final_amount" jdbcType="BIGINT" property="finalAmount" />
     <result column="operation_time" jdbcType="TIMESTAMP" property="operationTime" />
     <result column="oper_user" jdbcType="VARCHAR" property="operUser" />
-    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="descp" jdbcType="VARCHAR" property="descp" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,7 +72,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, client_id, opration_type, origin_amount, operation_amount, final_amount, operation_time, 
-    oper_user, desc
+    oper_user, descp
   </sql>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.ClientBillIncomeExample" resultMap="BaseResultMap">
     select
@@ -107,11 +107,11 @@
   <insert id="insert" parameterType="com.libiao.customer.dal.model.ClientBillIncome">
     insert into client_bill_income (id, client_id, opration_type, 
       origin_amount, operation_amount, final_amount, 
-      operation_time, oper_user, desc
+      operation_time, oper_user, descp
       )
     values (#{id,jdbcType=BIGINT}, #{clientId,jdbcType=VARCHAR}, #{oprationType,jdbcType=VARCHAR}, 
       #{originAmount,jdbcType=BIGINT}, #{operationAmount,jdbcType=BIGINT}, #{finalAmount,jdbcType=BIGINT}, 
-      #{operationTime,jdbcType=TIMESTAMP}, #{operUser,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}
+      #{operationTime,jdbcType=TIMESTAMP}, #{operUser,jdbcType=VARCHAR}, #{descp,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.ClientBillIncome">
@@ -141,8 +141,8 @@
       <if test="operUser != null">
         oper_user,
       </if>
-      <if test="desc != null">
-        desc,
+      <if test="descp != null">
+        descp,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -170,8 +170,8 @@
       <if test="operUser != null">
         #{operUser,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null">
-        #{desc,jdbcType=VARCHAR},
+      <if test="descp != null">
+        #{descp,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -208,8 +208,8 @@
       <if test="row.operUser != null">
         oper_user = #{row.operUser,jdbcType=VARCHAR},
       </if>
-      <if test="row.desc != null">
-        desc = #{row.desc,jdbcType=VARCHAR},
+      <if test="row.descp != null">
+        descp = #{row.descp,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="example != null">
@@ -226,7 +226,7 @@
       final_amount = #{row.finalAmount,jdbcType=BIGINT},
       operation_time = #{row.operationTime,jdbcType=TIMESTAMP},
       oper_user = #{row.operUser,jdbcType=VARCHAR},
-      desc = #{row.desc,jdbcType=VARCHAR}
+      descp = #{row.descp,jdbcType=VARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -255,8 +255,8 @@
       <if test="operUser != null">
         oper_user = #{operUser,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="descp != null">
+        descp = #{descp,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -270,7 +270,7 @@
       final_amount = #{finalAmount,jdbcType=BIGINT},
       operation_time = #{operationTime,jdbcType=TIMESTAMP},
       oper_user = #{operUser,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR}
+      descp = #{descp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -1,12 +1,13 @@
 package com.libiao.customer.model.balance;
 
+import com.libiao.customer.model.BaseSessionReq;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
 @ApiModel("余额请求参数")
-public class BalanceReq {
+public class BalanceReq extends BaseSessionReq {
     @ApiModelProperty("id")
     Long id;
     @ApiModelProperty("客户ID")

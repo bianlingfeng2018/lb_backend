@@ -12,6 +12,7 @@ import com.libiao.customer.service.CustomerBillService;
 import com.libiao.customer.util.AccessController;
 import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.model.ResponseVO;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("bill")
+@Api(tags = "账单接口")
 public class BillCtrl {
 
     @Autowired

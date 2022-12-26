@@ -13,7 +13,7 @@ public class BillIncomeAddReq extends BaseSessionReq {
     @ApiModelProperty("操作金额")
     Long operAmount;
     @ApiModelProperty("备注")
-    String desc;
+    String descp;
     @ApiModelProperty(value = "操作类型")
     String operType;
 

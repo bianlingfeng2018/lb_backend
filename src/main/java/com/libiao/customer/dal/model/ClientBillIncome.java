@@ -19,7 +19,7 @@ public class ClientBillIncome {
 
     private String operUser;
 
-    private String desc;
+    private String descp;
 
     public Long getId() {
         return id;
@@ -85,11 +85,11 @@ public class ClientBillIncome {
         this.operUser = operUser;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescp() {
+        return descp;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescp(String descp) {
+        this.descp = descp;
     }
 }

@@ -96,7 +96,7 @@ public class BillOutServiceImpl implements BillOutService {
         addReq.setOperType("核销");
         addReq.setClientId(null);
         addReq.setOperAmount(req.getOperAmount());
-        addReq.setDesc("核销");
+        addReq.setDescp("核销");
         incomeService.addOneIncomeBill(addReq);
 
         //todo 保存佣金记录、修改客户状态为成交客户，修改最后放出日期：当前日期+30天（数字做成可配置参数）

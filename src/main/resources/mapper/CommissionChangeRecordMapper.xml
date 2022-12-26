@@ -9,7 +9,7 @@
     <result column="oper_time" jdbcType="TIMESTAMP" property="operTime" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="org_rate" jdbcType="INTEGER" property="orgRate" />
-    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="descp" jdbcType="VARCHAR" property="descp" />
     <result column="amount" jdbcType="BIGINT" property="amount" />
     <result column="trade_id" jdbcType="VARCHAR" property="tradeId" />
   </resultMap>
@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, client_id, oper_user, rate, oper_time, status, org_rate, desc, amount, trade_id
+    id, client_id, oper_user, rate, oper_time, status, org_rate, descp, amount, trade_id
   </sql>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.CommissionChangeRecordExample" resultMap="BaseResultMap">
     select
@@ -107,11 +107,11 @@
   <insert id="insert" parameterType="com.libiao.customer.dal.model.CommissionChangeRecord">
     insert into commission_change_record (id, client_id, oper_user, 
       rate, oper_time, status, 
-      org_rate, desc, amount, 
+      org_rate, descp, amount, 
       trade_id)
     values (#{id,jdbcType=BIGINT}, #{clientId,jdbcType=VARCHAR}, #{operUser,jdbcType=VARCHAR}, 
       #{rate,jdbcType=INTEGER}, #{operTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
-      #{orgRate,jdbcType=INTEGER}, #{desc,jdbcType=VARCHAR}, #{amount,jdbcType=BIGINT}, 
+      #{orgRate,jdbcType=INTEGER}, #{descp,jdbcType=VARCHAR}, #{amount,jdbcType=BIGINT}, 
       #{tradeId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.CommissionChangeRecord">
@@ -138,8 +138,8 @@
       <if test="orgRate != null">
         org_rate,
       </if>
-      <if test="desc != null">
-        desc,
+      <if test="descp != null">
+        descp,
       </if>
       <if test="amount != null">
         amount,
@@ -170,8 +170,8 @@
       <if test="orgRate != null">
         #{orgRate,jdbcType=INTEGER},
       </if>
-      <if test="desc != null">
-        #{desc,jdbcType=VARCHAR},
+      <if test="descp != null">
+        #{descp,jdbcType=VARCHAR},
       </if>
       <if test="amount != null">
         #{amount,jdbcType=BIGINT},
@@ -211,8 +211,8 @@
       <if test="row.orgRate != null">
         org_rate = #{row.orgRate,jdbcType=INTEGER},
       </if>
-      <if test="row.desc != null">
-        desc = #{row.desc,jdbcType=VARCHAR},
+      <if test="row.descp != null">
+        descp = #{row.descp,jdbcType=VARCHAR},
       </if>
       <if test="row.amount != null">
         amount = #{row.amount,jdbcType=BIGINT},
@@ -234,7 +234,7 @@
       oper_time = #{row.operTime,jdbcType=TIMESTAMP},
       status = #{row.status,jdbcType=VARCHAR},
       org_rate = #{row.orgRate,jdbcType=INTEGER},
-      desc = #{row.desc,jdbcType=VARCHAR},
+      descp = #{row.descp,jdbcType=VARCHAR},
       amount = #{row.amount,jdbcType=BIGINT},
       trade_id = #{row.tradeId,jdbcType=VARCHAR}
     <if test="example != null">
@@ -262,8 +262,8 @@
       <if test="orgRate != null">
         org_rate = #{orgRate,jdbcType=INTEGER},
       </if>
-      <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="descp != null">
+        descp = #{descp,jdbcType=VARCHAR},
       </if>
       <if test="amount != null">
         amount = #{amount,jdbcType=BIGINT},
@@ -282,7 +282,7 @@
       oper_time = #{operTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=VARCHAR},
       org_rate = #{orgRate,jdbcType=INTEGER},
-      desc = #{desc,jdbcType=VARCHAR},
+      descp = #{descp,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=BIGINT},
       trade_id = #{tradeId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}

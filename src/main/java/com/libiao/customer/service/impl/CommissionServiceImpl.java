@@ -1,5 +1,6 @@
 package com.libiao.customer.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.libiao.customer.dal.mapper.CommissionChangeRecordMapper;
 import com.libiao.customer.dal.model.Balance;
 import com.libiao.customer.dal.model.CommissionChangeRecord;
@@ -36,6 +37,7 @@ public class CommissionServiceImpl implements CommissionService {
     public boolean addRecord(CommissionChangeRecord req) {
         req.setStatus(CommissionStatus.IN_APPROVE.getName());
         req.setOperTime(new Date());
+        log.info("修改佣金，添加一条佣金记录：req={}", JSONObject.toJSONString(req,true));
         return recordMapper.insertSelective(req) == 1;
     }
 
@@ -65,7 +67,7 @@ public class CommissionServiceImpl implements CommissionService {
         if(list.size()!=1) return ResponseUtil.convert(HttpStatus.NOT_FOUND,"记录未找到");
         CommissionChangeRecord record = list.get(0);
         record.setStatus(CommissionStatus.valueOf(req.getStatus()).getName());
-        record.setDesc(req.getDesc());
+        record.setDescp(req.getDescp());
         record.setRate(req.getRate());
         record.setOperUser(String.valueOf(req.getUser().getId()));
         record.setOperTime(new Date());

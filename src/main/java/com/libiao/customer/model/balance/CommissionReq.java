@@ -11,6 +11,6 @@ public class CommissionReq extends BaseSessionReq {
 
     private Integer rate;
 
-    private String desc;
+    private String descp;
     private String status;
 }

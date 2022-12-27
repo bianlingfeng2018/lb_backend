@@ -1,13 +1,11 @@
 package com.libiao.customer.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.DepartmentOrgMapper;
 import com.libiao.customer.dal.mapper.OrgMapperExt;
 import com.libiao.customer.dal.model.DepartmentOrg;
 import com.libiao.customer.dal.model.DepartmentOrgExample;
-import com.libiao.customer.model.org.CreateOrgReq;
-import com.libiao.customer.model.org.ModifyOrgReq;
-import com.libiao.customer.model.org.OrgComboVO;
-import com.libiao.customer.model.org.OrgListVO;
+import com.libiao.customer.model.org.*;
 import com.libiao.customer.service.OrgService;
 import com.libiao.customer.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +60,13 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public List<OrgListVO> list(String parentOrgNo){
-        return orgMapperExt.getSubOrgList(parentOrgNo);
+    public PageInfo<OrgListVO> list(SubOrgListReq req){
+        PageInfo<OrgListVO> page = new PageInfo<>();
+        page.setPageSize(req.getPageSize());
+        page.setPageNum(req.getPage());
+        final List<OrgListVO> subOrgList = orgMapperExt.getSubOrgList(req.getParentOrgNo());
+        page = new PageInfo<>(subOrgList);
+        return page;
     }
 
     @Override

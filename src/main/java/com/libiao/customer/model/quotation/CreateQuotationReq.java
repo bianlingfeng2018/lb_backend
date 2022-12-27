@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 public class CreateQuotationReq extends BaseSessionReq {
@@ -48,7 +49,7 @@ public class CreateQuotationReq extends BaseSessionReq {
     private Integer reportFee;
 
     @ApiModelProperty("商品")
-    private CreateQuotaGoodsReqVO goods;
+    private List<CreateQuotaGoodsReqVO> goods;
 
     @ApiModelProperty("报价单类型 1普通报价单 2加测报价单 3复测报价单")
     private Byte type;

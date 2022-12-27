@@ -1,7 +1,9 @@
 package com.libiao.customer.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.BaseSessionReq;
+import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.org.*;
 import com.libiao.customer.service.OrgService;
 import com.libiao.customer.util.ResponseUtil;
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * 组织架构管理
@@ -43,9 +43,9 @@ public class OrgController {
 
     @PostMapping("list")
     @ApiOperation("下属组织列表")
-    public ResponseEntity<List<OrgListVO>> list(@RequestBody SubOrgListReq req){
-        final List<OrgListVO> list = orgService.list(req.getParentOrgNo());
-        return ResponseUtil.getResponseVO(list);
+    public ResponseEntity<ListResponseVO<OrgListVO>> list(@RequestBody SubOrgListReq req){
+        final PageInfo<OrgListVO> list = orgService.list(req);
+        return ResponseUtil.getListResponseVO(list.getList(),list.getTotal());
     }
 
     @PostMapping("tree")

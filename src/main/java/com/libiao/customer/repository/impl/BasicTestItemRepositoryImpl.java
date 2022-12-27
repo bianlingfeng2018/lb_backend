@@ -2,6 +2,7 @@ package com.libiao.customer.repository.impl;
 
 import com.libiao.customer.dal.mapper.BasicTestItemMapper;
 import com.libiao.customer.dal.model.BasicTestItem;
+import com.libiao.customer.dal.model.BasicTestItemExample;
 import com.libiao.customer.repository.BasicTestItemRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class BasicTestItemRepositoryImpl implements BasicTestItemRepository {
 
   @Override
   public List<BasicTestItem> selectAll() {
-    return basicTestItemMapper.selectAll();
+    return basicTestItemMapper.selectByExample(new BasicTestItemExample());
   }
 
   @Override

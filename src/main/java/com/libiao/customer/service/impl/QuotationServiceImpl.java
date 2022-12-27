@@ -6,6 +6,7 @@ import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.quotation.CreateQuotaGoodsReqVO;
 import com.libiao.customer.model.quotation.CreateQuotationReq;
+import com.libiao.customer.model.quotation.QuotaGoodsItemVO;
 import com.libiao.customer.model.quotation.QuotationListReq;
 import com.libiao.customer.service.QuotationService;
 import com.libiao.customer.util.BeanCopyUtil;
@@ -18,6 +19,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class QuotationServiceImpl implements QuotationService {
@@ -34,6 +36,8 @@ public class QuotationServiceImpl implements QuotationService {
     private TestQuotationItemMapper testQuotationItemMapper;
     @Autowired
     private SystemParameterMapper systemParameterMapper;
+    @Autowired
+    private MallGoodsMapper mallGoodsMapper;
 
 
 
@@ -72,13 +76,16 @@ public class QuotationServiceImpl implements QuotationService {
     public void create(CreateQuotationReq req){
         //获取所有测试项目
         Map<Integer,Integer> itemMap = new HashMap<>();
+        Map<Long,List<Integer>> goodsMap = new HashMap<>();
         int trans_amount = 0;
         for (CreateQuotaGoodsReqVO goods : req.getGoods()) {
             trans_amount += goods.getTestPrice();
-            goods.getItems().forEach(item->{
-                //项目
+            List<Integer> itemsIds = new ArrayList<>();
+            for (QuotaGoodsItemVO item : goods.getItems()) {
                 itemMap.put(item.getItemId(), item.getQuantity());
-            });
+                itemsIds.add(item.getItemId());
+            }
+            goodsMap.put(goods.getGoodsId(),itemsIds);
         }
         //计算折扣前的总金额
         final Set<Integer> itemIds = itemMap.keySet();
@@ -106,10 +113,52 @@ public class QuotationServiceImpl implements QuotationService {
         }
 
         //生产报价单号
-        redisUtil.getNo(DateUtils.getDate("yyyyMMdd"));
+        String quotNo = redisUtil.getNo(DateUtils.getDate("yyyyMMdd"));
+        record.setQuotationNum(quotNo);
+
+        MallGoods mallGoods = mallGoodsMapper.selectByPrimaryKey(1L);
+        TestQuotationGoods testQuotationGoods = new TestQuotationGoods();
+        testQuotationGoods.setGoodsId(mallGoods.getId());
+        testQuotationGoods.setGoodsName(mallGoods.getGoodsName());
+        testQuotationGoods.setHsCode(mallGoods.getHscode());
+        testQuotationGoods.setMaterial(mallGoods.getMaterial());
+        testQuotationGoods.setExportCountry(mallGoods.getExport());
+        testQuotationGoods.setStandard(mallGoods.getStandard());
+        testQuotationGoods.setTestPeriod(req.getGoods().get(0).getTestPeriod());
+        testQuotationGoods.setSampleNum(req.getGoods().get(0).getSampleNum());
+        testQuotationGoods.setService(req.getGoods().get(0).getService());
+        testQuotationGoods.setAmount(req.getGoods().get(0).getTestPrice());
+
+        StringBuilder sb = new StringBuilder();
+        for(Integer str : req.getGoods().get(0).getReportTypes()){
+            sb.append(str).append(",");
+        }
+        String result3 = sb.deleteCharAt(sb.length()-1).toString();
+        testQuotationGoods.setReprotType(result3);
+        testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
+        //TODO 根据勾选的报告类型添加报告费
+        testQuotationGoods.setReportAmt(0);
+        //对应下属测试项目组装
+        //
+        //quotation_idbigint(20) unsigned NOT NULL
+        //goods_idbigint(20) NOT NULL
+        //goods_namevarchar(100) NULL产品名称
+        //hs_codevarchar(100) NULL
+        //materialvarchar(100) NULL材质
+        //export_countryvarchar(100) NULL出口国
+        //standardvarchar(100) NULL检测标准
+        //test_periodint(11) NULL测试周期
+        //sample_numvarchar(100) NULL样品数量
+        //servicetinyint(4) NULL0普通 1加急 2特级
+        //amountint(11) NULL费用
+        //reprot_typevarchar(100) NULL报告类型
+        //org_priceint(11) NULL定价
+        //discountint(11) NULL折扣
+        //report_amtint(11) NULL报告费
 
         //插入报价单
         testQuotationMapper.insert(record);
+
 
 
 

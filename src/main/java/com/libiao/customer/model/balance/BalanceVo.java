@@ -10,6 +10,8 @@ public class BalanceVo {
 
     @ApiModelProperty("客户ID")
     String clientId;
+    @ApiModelProperty("客户名称")
+    String name;
     @ApiModelProperty("账户余额")
     Long balanceAmt;
     @ApiModelProperty("未结算的资金")
@@ -20,5 +22,7 @@ public class BalanceVo {
     Long commissionRate;
     @ApiModelProperty("未结算的佣金")
     Long unsettleCommission;
+    @ApiModelProperty("剩余收款金额")
+    Long leftIncomeAmt;
 
 }

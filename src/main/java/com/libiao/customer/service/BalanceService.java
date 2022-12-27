@@ -6,6 +6,7 @@ import com.libiao.customer.dal.model.BalanceInfo;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.balance.BalanceListReq;
 import com.libiao.customer.model.balance.BalanceReq;
+import com.libiao.customer.model.balance.BalanceVo;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface BalanceService {
 
     Balance getBalance(String clientId);
-    PageInfo<Balance> getBalanceList(BalanceListReq listReq);
+    PageInfo<BalanceVo> getBalanceList(BalanceListReq listReq);
     boolean addRecord(BalanceReq balance);
     ResponseEntity updateRecord(BalanceReq balance);
 

@@ -15,6 +15,7 @@ import com.libiao.customer.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,18 +44,17 @@ public class BalanceController {
 
     @PostMapping("getBalanceList")
     @AccessController
-    @ApiModelProperty("获取商户账户列表")
+    @ApiOperation("获取商户账户列表")
     public ResponseEntity<ListResponseVO<BalanceVo>> getBalanceList(@RequestBody BalanceListReq req){
         log.info("获取商户账户列表：clientID={}",req.getClient());
-         PageInfo<Balance> balances = balanceService.getBalanceList(req);
-         List<BalanceVo> vo = new ArrayList<>();
-         balances.getList().forEach(balance -> vo.add(BeanCopyUtil.copy(balance,BalanceVo.class)));
-        return ResponseUtil.getListResponseVO(vo,balances.getTotal());
+         PageInfo<BalanceVo> balances = balanceService.getBalanceList(req);
+
+        return ResponseUtil.getListResponseVO(balances.getList(),balances.getTotal());
     }
 
     @PostMapping("getBalance")
     @AccessController
-    @ApiModelProperty("获取单个商户账户")
+    @ApiOperation("获取单个商户账户")
     public ResponseEntity<BalanceVo> getBalance(@RequestBody BalanceReq req){
         log.info("获取商户账户信息：clientID={}",req.getClientId());
         final Balance balance = balanceService.getBalance(req.getClientId());
@@ -64,13 +64,13 @@ public class BalanceController {
     }
 
     @PostMapping("update")
-    @ApiModelProperty("修改商户账户")
+    @ApiOperation("修改商户账户")
     public ResponseEntity updateBalance(@RequestBody BalanceReq req){
         return balanceService.updateRecord(req);
     }
 
     @PostMapping("setCreditLimit")
-    @ApiModelProperty("设置商户账户信用额度")
+    @ApiOperation("设置商户账户信用额度")
     public ResponseEntity setCreditLimit(@RequestBody CreditLimitReq req){
         Balance balance = balanceService.getBalance(req.getClientId());
         if(null == balance) return ResponseUtil.convert(HttpStatus.NOT_FOUND,"商户不存在");
@@ -89,7 +89,7 @@ public class BalanceController {
     }
 
     @PostMapping("setCommission")
-    @ApiModelProperty("设置商户账户佣金")
+    @ApiOperation("设置商户账户佣金")
     public ResponseEntity setCommission(@RequestBody CommissionReq req){
         Balance balance = balanceService.getBalance(req.getClientId());
         if(null == balance){
@@ -109,13 +109,13 @@ public class BalanceController {
     }
 
     @PostMapping("updateCommission")
-    @ApiModelProperty("修改商户账户佣金")
+    @ApiOperation("修改商户账户佣金")
     public ResponseEntity updateCommission(@RequestBody CommissionReq req){
         return commissionService.changeRate(req);
     }
 
     @PostMapping("approveCommission")
-    @ApiModelProperty("审核佣金")
+    @ApiOperation("审核佣金")
     public ResponseEntity approveCommission(@RequestBody CommissionReq req){
         return commissionService.approve(req);
     }

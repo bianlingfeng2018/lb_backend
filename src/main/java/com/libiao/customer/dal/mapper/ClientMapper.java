@@ -1,36 +1,31 @@
 package com.libiao.customer.dal.mapper;
 
 import com.libiao.customer.dal.model.Client;
-import com.libiao.customer.dal.model.ClientExample;
+import com.libiao.customer.dal.model.ClientParamVO;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface ClientMapper {
-    long countByExample(ClientExample example);
 
-    int deleteByExample(ClientExample example);
+  int deleteByPrimaryKey(Long id);
 
-    int deleteByPrimaryKey(Long id);
+  int insert(Client row);
 
-    int insert(Client row);
+  Client selectByPrimaryKey(Long id);
 
-    int insertSelective(Client row);
+  List<Client> selectAll();
 
-    List<Client> selectByExampleWithBLOBs(ClientExample example);
+  int updateByPrimaryKey(Client row);
 
-    List<Client> selectByExample(ClientExample example);
+  Client selectByName(@Param("name") String name);
 
-    Client selectByPrimaryKey(Long id);
+  int unlockClientById(@Param("id") Long id);
 
-    int updateByExampleSelective(@Param("row") Client row, @Param("example") ClientExample example);
+  int lockClientById(@Param("id") Long id, @Param("uid") Long userId);
 
-    int updateByExampleWithBLOBs(@Param("row") Client row, @Param("example") ClientExample example);
+  List<Client> selectByTraceUserId(@Param("uid") Long traceUserId, @Param("vo") ClientParamVO vo);
 
-    int updateByExample(@Param("row") Client row, @Param("example") ClientExample example);
+  List<Client> selectByTraceUserIdIsNull(ClientParamVO vo);
 
-    int updateByPrimaryKeySelective(Client row);
-
-    int updateByPrimaryKeyWithBLOBs(Client row);
-
-    int updateByPrimaryKey(Client row);
+  List<Client> selectAllByCondition(ClientParamVO vo);
 }

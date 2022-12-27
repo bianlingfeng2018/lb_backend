@@ -41,7 +41,7 @@ public class BalanceController {
 
 
 
-    @PostMapping("getBalance")
+    @PostMapping("getBalanceList")
     @AccessController
     @ApiModelProperty("获取商户账户列表")
     public ResponseEntity<ListResponseVO<BalanceVo>> getBalanceList(@RequestBody BalanceListReq req){

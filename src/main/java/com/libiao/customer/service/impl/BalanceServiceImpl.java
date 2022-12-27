@@ -9,9 +9,12 @@ import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.balance.BalanceListReq;
 import com.libiao.customer.model.balance.BalanceReq;
+import com.libiao.customer.repository.ClientRepository;
 import com.libiao.customer.service.BalanceService;
+import com.libiao.customer.service.ClientService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
+import com.libiao.customer.util.model.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +35,7 @@ public class BalanceServiceImpl implements BalanceService {
     BalanceInfoMapper balanceInfoMapper;
 
     @Autowired
-    ClientMapper clientMapper;
+    ClientRepository clientRepository;
 
     @Override
     public Balance getBalance(String clientId) {
@@ -48,21 +51,25 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     public PageInfo<Balance> getBalanceList(BalanceListReq listReq) {
-        ClientExample clientExample = new ClientExample();
-        ClientExample.Criteria criteria =  clientExample.createCriteria();
-        ClientExample.Criteria criteria2 =  clientExample.createCriteria();
-        if(null != listReq.getClient()){
-            criteria.andClientNumLike(listReq.getClient());
-            criteria2.andNameLike(listReq.getClient());
-        }
-
-        if(null !=listReq.getStartTime() && null !=listReq.getEndTime()){ //时间是varchar类型？
-//            criteria.andReserveDaysBetween(listReq.getStartTime(),listReq.getEndTime());
-//            criteria2.andReserveDaysBetween(listReq.getStartTime(),listReq.getEndTime());
-        }
-        clientExample.or(criteria2);
-        List<Client> clients = clientMapper.selectByExample(clientExample);
-        if(clients.size() == 0) return new PageInfo<>();
+//        ClientExample clientExample = new ClientExample();
+//        ClientExample.Criteria criteria =  clientExample.createCriteria();
+//        ClientExample.Criteria criteria2 =  clientExample.createCriteria();
+//        if(null != listReq.getClient()){
+//            criteria.andClientNumLike(listReq.getClient());
+//            criteria2.andNameLike(listReq.getClient());
+//        }
+//
+//        if(null !=listReq.getStartTime() && null !=listReq.getEndTime()){ //时间是varchar类型？
+////            criteria.andReserveDaysBetween(listReq.getStartTime(),listReq.getEndTime());
+////            criteria2.andReserveDaysBetween(listReq.getStartTime(),listReq.getEndTime());
+//        }
+//        clientExample.or(criteria2);
+//        List<Client> clients = clientMapper.selectByExample(clientExample);
+        ClientParamVO paramVO = new ClientParamVO();
+        paramVO.setCnameOrAbbr(listReq.getClient());
+        List<Client> clients = clientRepository.selectAllByCondition(paramVO);
+//        List<Client> clients = vo.getData();
+        if(clients.size() == 0) return new PageInfo<>(new ArrayList<>());
 
         List<String> clientIds = new ArrayList<>();
         clients.forEach(client -> clientIds.add(client.getClientNum()));

@@ -1,12 +1,12 @@
 package com.libiao.customer.service.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.libiao.customer.constant.QuotationEnum;
 import com.libiao.customer.dal.mapper.BasicTestItemMapper;
+import com.libiao.customer.dal.mapper.TestQuotationGoodsMapper;
+import com.libiao.customer.dal.mapper.TestQuotationItemMapper;
 import com.libiao.customer.dal.mapper.TestQuotationMapper;
-import com.libiao.customer.dal.model.BasicTestItem;
-import com.libiao.customer.dal.model.BasicTestItemExample;
-import com.libiao.customer.dal.model.TestQuotation;
-import com.libiao.customer.dal.model.TestQuotationExample;
+import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.quotation.CreateQuotationReq;
 import com.libiao.customer.model.quotation.QuotaGoodsItemVO;
 import com.libiao.customer.model.quotation.QuotationListReq;
@@ -31,6 +31,12 @@ public class QuotationServiceImpl implements QuotationService {
     private RedisUtil redisUtil;
     @Autowired
     private BasicTestItemMapper basicTestItemMapper;
+    @Autowired
+    private TestQuotationGoodsMapper testQuotationGoodsMapper;
+    @Autowired
+    private TestQuotationItemMapper testQuotationItemMapper;
+
+
 
 
     @Override
@@ -82,18 +88,33 @@ public class QuotationServiceImpl implements QuotationService {
         for (BasicTestItem item : basicTestItems) {
             amount += item.getPrice() * itemMap.get(item.getId());
         }
-        //然后再对比实际的金额来计算折扣
+        //然后再对比实际的金额来计算折扣 报价/基本售价 = 折扣
         final BigDecimal discount = new BigDecimal(req.getTotalCost()).multiply(new BigDecimal(100)).divide(new BigDecimal(amount)).setScale(0, RoundingMode.HALF_UP);
-
-
-        //计算金额和折扣
+        int dis = discount.intValue();
         TestQuotation record = new TestQuotation();
         BeanCopyUtil.copy(req,record);
+        record.setDiscount(String.valueOf(dis));
+        if (dis < req.getUser().getDiscount()){
+            //状态设置为待审核
+            record.setState(QuotationEnum.STEP_QUOT_CHECK.getCode());
+            record.setStep(QuotationEnum.STEP_QUOT_CHECK.getCode());
+        }else {
+            //状态设置为报价审核通过
+            record.setState(QuotationEnum.STEP_QUOT_CHECKED.getCode());
+            record.setStep(QuotationEnum.STEP_QUOT_CHECKED.getCode());
+        }
+
         //生产报价单号
         redisUtil.getNo(DateUtils.getDate("yyyyMMdd"));
-        //先自动审核，自动审核不过，再走人工审核
 
+        //插入报价单
         testQuotationMapper.insert(record);
+
+        /*//插入报价单下属商品
+        testQuotationGoodsMapper.insert(goods);
+
+        //插入报价单下属测试项
+        testQuotationItemMapper.insert(itmes);*/
 
     }
 

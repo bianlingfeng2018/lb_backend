@@ -14,5 +14,7 @@ public class Role {
 
     private String desc;
 
+    private Integer discount;//折扣
+
     private List<Permission> permission;
 }

@@ -34,7 +34,7 @@ public class OrgServiceImpl implements OrgService {
         example.createCriteria().andParentOrgNoEqualTo(req.getParentOrgNo());
         example.setOrderByClause("org_no desc limit 1");
         final List<DepartmentOrg> departmentOrgs = departmentOrgMapper.selectByExample(example);
-        if (departmentOrgs != null){
+        if (!CollectionUtils.isEmpty(departmentOrgs)){
             final String orgNo = departmentOrgs.get(0).getOrgNo();
             long newOrgNo = Long.parseLong(orgNo) + 1;
             orgNoStr = String.valueOf(newOrgNo);

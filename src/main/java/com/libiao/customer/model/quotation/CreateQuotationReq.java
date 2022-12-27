@@ -40,7 +40,6 @@ public class CreateQuotationReq extends BaseSessionReq {
     @ApiModelProperty("邮寄地址")
     private String deliveryAddress;
 
-    @NotNull
     @ApiModelProperty("总费用")
     private Integer totalCost;
     @ApiModelProperty("快递费")

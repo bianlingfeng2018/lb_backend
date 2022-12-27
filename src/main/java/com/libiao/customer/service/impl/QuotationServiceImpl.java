@@ -2,13 +2,10 @@ package com.libiao.customer.service.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.constant.QuotationEnum;
-import com.libiao.customer.dal.mapper.BasicTestItemMapper;
-import com.libiao.customer.dal.mapper.TestQuotationGoodsMapper;
-import com.libiao.customer.dal.mapper.TestQuotationItemMapper;
-import com.libiao.customer.dal.mapper.TestQuotationMapper;
+import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
+import com.libiao.customer.model.quotation.CreateQuotaGoodsReqVO;
 import com.libiao.customer.model.quotation.CreateQuotationReq;
-import com.libiao.customer.model.quotation.QuotaGoodsItemVO;
 import com.libiao.customer.model.quotation.QuotationListReq;
 import com.libiao.customer.service.QuotationService;
 import com.libiao.customer.util.BeanCopyUtil;
@@ -35,6 +32,8 @@ public class QuotationServiceImpl implements QuotationService {
     private TestQuotationGoodsMapper testQuotationGoodsMapper;
     @Autowired
     private TestQuotationItemMapper testQuotationItemMapper;
+    @Autowired
+    private SystemParameterMapper systemParameterMapper;
 
 
 
@@ -73,12 +72,14 @@ public class QuotationServiceImpl implements QuotationService {
     public void create(CreateQuotationReq req){
         //获取所有测试项目
         Map<Integer,Integer> itemMap = new HashMap<>();
-        req.getGoods().forEach(goods->{
+        int trans_amount = 0;
+        for (CreateQuotaGoodsReqVO goods : req.getGoods()) {
+            trans_amount += goods.getTestPrice();
             goods.getItems().forEach(item->{
                 //项目
                 itemMap.put(item.getItemId(), item.getQuantity());
             });
-        });
+        }
         //计算折扣前的总金额
         final Set<Integer> itemIds = itemMap.keySet();
         final BasicTestItemExample basicTestItemExample = new BasicTestItemExample();
@@ -89,7 +90,7 @@ public class QuotationServiceImpl implements QuotationService {
             amount += item.getPrice() * itemMap.get(item.getId());
         }
         //然后再对比实际的金额来计算折扣 报价/基本售价 = 折扣
-        final BigDecimal discount = new BigDecimal(req.getTotalCost()).multiply(new BigDecimal(100)).divide(new BigDecimal(amount)).setScale(0, RoundingMode.HALF_UP);
+        final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100)).divide(new BigDecimal(amount)).setScale(0, RoundingMode.HALF_UP);
         int dis = discount.intValue();
         TestQuotation record = new TestQuotation();
         BeanCopyUtil.copy(req,record);
@@ -110,6 +111,8 @@ public class QuotationServiceImpl implements QuotationService {
         //插入报价单
         testQuotationMapper.insert(record);
 
+
+
         /*//插入报价单下属商品
         testQuotationGoodsMapper.insert(goods);
 
@@ -118,4 +121,8 @@ public class QuotationServiceImpl implements QuotationService {
 
     }
 
+    @Override
+    public String getRate(){
+        return systemParameterMapper.selectByPrimaryKey("TAX_RATE").getParamValue();
+    }
 }

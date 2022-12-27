@@ -41,13 +41,13 @@ public class SessionInterceptor implements HandlerInterceptor {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }else {
-            String key = "LOGIN_SESSION:" + sessionUser.getId();
             //唯一登录校验
+            /*String key = "LOGIN_SESSION:" + sessionUser.getId();
             String sessionId = (String) redisTemplate.opsForValue().get(key);
             if (!session.getId().equals(sessionId)) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 return false;
-            }
+            }*/
 
             //check rule
             /*Set<String> attribute = (Set<String>) session.getAttribute(SessionInfoEnum.RULES.getName());

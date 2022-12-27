@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.libiao.customer.dal.model.BasicTestItemExample;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -78,7 +80,7 @@ public class ImportBasicTableTest {
 
   @Test
   void testImportStandardOfTestItem() throws IOException {
-    List<BasicTestItem> allTestItems = basicTestItemMapper.selectAll();
+    List<BasicTestItem> allTestItems = basicTestItemMapper.selectByExample(new BasicTestItemExample());
     int startRowIndex = 1;
     File file = new File("基础数据整理12.6.xlsx");
     String fileName = file.getName();
@@ -137,7 +139,7 @@ public class ImportBasicTableTest {
       // data
       BasicTestItem testItem = new BasicTestItem();
       testItem.setName(getCellValue(row, 1));
-      testItem.setPrice(getCellValue(row, 2));
+      testItem.setPrice(Integer.parseInt(getCellValue(row, 2)));
       testItem.setPeriod(getCellValue(row, 3));
       testItem.setQuantity(getCellValue(row, 4));
       testItem.setSubContract(getCellValue(row, 5));

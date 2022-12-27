@@ -1,11 +1,14 @@
 package com.libiao.customer.model.quotation;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
 public class QuotaGoodsItemVO {
 
-    private Long itemId;
+    @ApiModelProperty("项目ID")
+    private Integer itemId;
+    @ApiModelProperty("测试点数")
     private Integer quantity;
 
 }

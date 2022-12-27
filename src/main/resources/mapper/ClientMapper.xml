@@ -8,8 +8,6 @@
     <result column="abbr" jdbcType="VARCHAR" property="abbr" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="source" jdbcType="VARCHAR" property="source" />
-    <result column="asso_com" jdbcType="LONGVARCHAR" property="assoCom" />
-    <result column="asso_invoice" jdbcType="LONGVARCHAR" property="assoInvoice" />
     <result column="invoice_name" jdbcType="VARCHAR" property="invoiceName" />
     <result column="invoice_tax_num" jdbcType="VARCHAR" property="invoiceTaxNum" />
     <result column="invoice_addr" jdbcType="VARCHAR" property="invoiceAddr" />
@@ -30,34 +28,589 @@
     <result column="trace_user_id" jdbcType="BIGINT" property="traceUserId" />
     <result column="en_name" jdbcType="VARCHAR" property="enName" />
   </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.libiao.customer.dal.model.Client">
+    <result column="asso_com" jdbcType="LONGVARCHAR" property="assoCom" />
+    <result column="asso_invoice" jdbcType="LONGVARCHAR" property="assoInvoice" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, addr, abbr, nickname, source, invoice_name, invoice_tax_num, invoice_addr, 
+    invoice_tel, invoice_bank, invoice_acc, invoice_is_spec, client_class, indust_class, 
+    client_level, client_num, status, opp_numb, not_comp_quot, last_finish_date, last_trace_user, 
+    reserve_days, trace_user_id, en_name
+  </sql>
+  <sql id="Blob_Column_List">
+    asso_com, asso_invoice
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.libiao.customer.dal.model.ClientExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from client
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.ClientExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from client
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from client
+    where id = #{id,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from client
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.ClientExample">
+    delete from client
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
   <insert id="insert" parameterType="com.libiao.customer.dal.model.Client">
     insert into client (id, name, addr, 
       abbr, nickname, source, 
-      asso_com, asso_invoice, invoice_name, invoice_tax_num,
-      invoice_addr, invoice_tel, invoice_bank, 
-      invoice_acc, invoice_is_spec, client_class, 
-      indust_class, client_level, client_num,
-      status, opp_numb, not_comp_quot, last_finish_date,
-      last_trace_user, reserve_days, trace_user_id, en_name
+      invoice_name, invoice_tax_num, invoice_addr, 
+      invoice_tel, invoice_bank, invoice_acc, 
+      invoice_is_spec, client_class, indust_class, 
+      client_level, client_num, status, 
+      opp_numb, not_comp_quot, last_finish_date, 
+      last_trace_user, reserve_days, trace_user_id, 
+      en_name, asso_com, asso_invoice
       )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, 
       #{abbr,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, 
-      #{assoCom,jdbcType=VARCHAR}, #{assoInvoice,jdbcType=VARCHAR}, #{invoiceName,jdbcType=VARCHAR}, #{invoiceTaxNum,jdbcType=VARCHAR},
-      #{invoiceAddr,jdbcType=VARCHAR}, #{invoiceTel,jdbcType=VARCHAR}, #{invoiceBank,jdbcType=VARCHAR}, 
-      #{invoiceAcc,jdbcType=VARCHAR}, #{invoiceIsSpec,jdbcType=VARCHAR}, #{clientClass,jdbcType=VARCHAR}, 
-      #{industClass,jdbcType=VARCHAR}, #{clientLevel,jdbcType=VARCHAR}, #{clientNum,jdbcType=VARCHAR},
-      #{status,jdbcType=VARCHAR}, #{oppNumb,jdbcType=VARCHAR}, #{notCompQuot,jdbcType=VARCHAR},
-      #{lastFinishDate,jdbcType=VARCHAR}, #{lastTraceUser,jdbcType=VARCHAR}, #{reserveDays,jdbcType=VARCHAR},
-      #{traceUserId,jdbcType=BIGINT}, #{enName,jdbcType=BIGINT}
+      #{invoiceName,jdbcType=VARCHAR}, #{invoiceTaxNum,jdbcType=VARCHAR}, #{invoiceAddr,jdbcType=VARCHAR}, 
+      #{invoiceTel,jdbcType=VARCHAR}, #{invoiceBank,jdbcType=VARCHAR}, #{invoiceAcc,jdbcType=VARCHAR}, 
+      #{invoiceIsSpec,jdbcType=VARCHAR}, #{clientClass,jdbcType=VARCHAR}, #{industClass,jdbcType=VARCHAR}, 
+      #{clientLevel,jdbcType=VARCHAR}, #{clientNum,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{oppNumb,jdbcType=VARCHAR}, #{notCompQuot,jdbcType=VARCHAR}, #{lastFinishDate,jdbcType=VARCHAR}, 
+      #{lastTraceUser,jdbcType=VARCHAR}, #{reserveDays,jdbcType=VARCHAR}, #{traceUserId,jdbcType=BIGINT}, 
+      #{enName,jdbcType=VARCHAR}, #{assoCom,jdbcType=LONGVARCHAR}, #{assoInvoice,jdbcType=LONGVARCHAR}
       )
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      select LAST_INSERT_ID()
-    </selectKey>
   </insert>
+  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.Client">
+    insert into client
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="addr != null">
+        addr,
+      </if>
+      <if test="abbr != null">
+        abbr,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="invoiceName != null">
+        invoice_name,
+      </if>
+      <if test="invoiceTaxNum != null">
+        invoice_tax_num,
+      </if>
+      <if test="invoiceAddr != null">
+        invoice_addr,
+      </if>
+      <if test="invoiceTel != null">
+        invoice_tel,
+      </if>
+      <if test="invoiceBank != null">
+        invoice_bank,
+      </if>
+      <if test="invoiceAcc != null">
+        invoice_acc,
+      </if>
+      <if test="invoiceIsSpec != null">
+        invoice_is_spec,
+      </if>
+      <if test="clientClass != null">
+        client_class,
+      </if>
+      <if test="industClass != null">
+        indust_class,
+      </if>
+      <if test="clientLevel != null">
+        client_level,
+      </if>
+      <if test="clientNum != null">
+        client_num,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="oppNumb != null">
+        opp_numb,
+      </if>
+      <if test="notCompQuot != null">
+        not_comp_quot,
+      </if>
+      <if test="lastFinishDate != null">
+        last_finish_date,
+      </if>
+      <if test="lastTraceUser != null">
+        last_trace_user,
+      </if>
+      <if test="reserveDays != null">
+        reserve_days,
+      </if>
+      <if test="traceUserId != null">
+        trace_user_id,
+      </if>
+      <if test="enName != null">
+        en_name,
+      </if>
+      <if test="assoCom != null">
+        asso_com,
+      </if>
+      <if test="assoInvoice != null">
+        asso_invoice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="abbr != null">
+        #{abbr,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceName != null">
+        #{invoiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceTaxNum != null">
+        #{invoiceTaxNum,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAddr != null">
+        #{invoiceAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceTel != null">
+        #{invoiceTel,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceBank != null">
+        #{invoiceBank,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAcc != null">
+        #{invoiceAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceIsSpec != null">
+        #{invoiceIsSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="clientClass != null">
+        #{clientClass,jdbcType=VARCHAR},
+      </if>
+      <if test="industClass != null">
+        #{industClass,jdbcType=VARCHAR},
+      </if>
+      <if test="clientLevel != null">
+        #{clientLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="clientNum != null">
+        #{clientNum,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="oppNumb != null">
+        #{oppNumb,jdbcType=VARCHAR},
+      </if>
+      <if test="notCompQuot != null">
+        #{notCompQuot,jdbcType=VARCHAR},
+      </if>
+      <if test="lastFinishDate != null">
+        #{lastFinishDate,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTraceUser != null">
+        #{lastTraceUser,jdbcType=VARCHAR},
+      </if>
+      <if test="reserveDays != null">
+        #{reserveDays,jdbcType=VARCHAR},
+      </if>
+      <if test="traceUserId != null">
+        #{traceUserId,jdbcType=BIGINT},
+      </if>
+      <if test="enName != null">
+        #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="assoCom != null">
+        #{assoCom,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="assoInvoice != null">
+        #{assoInvoice,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.libiao.customer.dal.model.ClientExample" resultType="java.lang.Long">
+    select count(*) from client
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update client
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.name != null">
+        name = #{row.name,jdbcType=VARCHAR},
+      </if>
+      <if test="row.addr != null">
+        addr = #{row.addr,jdbcType=VARCHAR},
+      </if>
+      <if test="row.abbr != null">
+        abbr = #{row.abbr,jdbcType=VARCHAR},
+      </if>
+      <if test="row.nickname != null">
+        nickname = #{row.nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="row.source != null">
+        source = #{row.source,jdbcType=VARCHAR},
+      </if>
+      <if test="row.invoiceName != null">
+        invoice_name = #{row.invoiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="row.invoiceTaxNum != null">
+        invoice_tax_num = #{row.invoiceTaxNum,jdbcType=VARCHAR},
+      </if>
+      <if test="row.invoiceAddr != null">
+        invoice_addr = #{row.invoiceAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="row.invoiceTel != null">
+        invoice_tel = #{row.invoiceTel,jdbcType=VARCHAR},
+      </if>
+      <if test="row.invoiceBank != null">
+        invoice_bank = #{row.invoiceBank,jdbcType=VARCHAR},
+      </if>
+      <if test="row.invoiceAcc != null">
+        invoice_acc = #{row.invoiceAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="row.invoiceIsSpec != null">
+        invoice_is_spec = #{row.invoiceIsSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="row.clientClass != null">
+        client_class = #{row.clientClass,jdbcType=VARCHAR},
+      </if>
+      <if test="row.industClass != null">
+        indust_class = #{row.industClass,jdbcType=VARCHAR},
+      </if>
+      <if test="row.clientLevel != null">
+        client_level = #{row.clientLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="row.clientNum != null">
+        client_num = #{row.clientNum,jdbcType=VARCHAR},
+      </if>
+      <if test="row.status != null">
+        status = #{row.status,jdbcType=VARCHAR},
+      </if>
+      <if test="row.oppNumb != null">
+        opp_numb = #{row.oppNumb,jdbcType=VARCHAR},
+      </if>
+      <if test="row.notCompQuot != null">
+        not_comp_quot = #{row.notCompQuot,jdbcType=VARCHAR},
+      </if>
+      <if test="row.lastFinishDate != null">
+        last_finish_date = #{row.lastFinishDate,jdbcType=VARCHAR},
+      </if>
+      <if test="row.lastTraceUser != null">
+        last_trace_user = #{row.lastTraceUser,jdbcType=VARCHAR},
+      </if>
+      <if test="row.reserveDays != null">
+        reserve_days = #{row.reserveDays,jdbcType=VARCHAR},
+      </if>
+      <if test="row.traceUserId != null">
+        trace_user_id = #{row.traceUserId,jdbcType=BIGINT},
+      </if>
+      <if test="row.enName != null">
+        en_name = #{row.enName,jdbcType=VARCHAR},
+      </if>
+      <if test="row.assoCom != null">
+        asso_com = #{row.assoCom,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="row.assoInvoice != null">
+        asso_invoice = #{row.assoInvoice,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update client
+    set id = #{row.id,jdbcType=BIGINT},
+      name = #{row.name,jdbcType=VARCHAR},
+      addr = #{row.addr,jdbcType=VARCHAR},
+      abbr = #{row.abbr,jdbcType=VARCHAR},
+      nickname = #{row.nickname,jdbcType=VARCHAR},
+      source = #{row.source,jdbcType=VARCHAR},
+      invoice_name = #{row.invoiceName,jdbcType=VARCHAR},
+      invoice_tax_num = #{row.invoiceTaxNum,jdbcType=VARCHAR},
+      invoice_addr = #{row.invoiceAddr,jdbcType=VARCHAR},
+      invoice_tel = #{row.invoiceTel,jdbcType=VARCHAR},
+      invoice_bank = #{row.invoiceBank,jdbcType=VARCHAR},
+      invoice_acc = #{row.invoiceAcc,jdbcType=VARCHAR},
+      invoice_is_spec = #{row.invoiceIsSpec,jdbcType=VARCHAR},
+      client_class = #{row.clientClass,jdbcType=VARCHAR},
+      indust_class = #{row.industClass,jdbcType=VARCHAR},
+      client_level = #{row.clientLevel,jdbcType=VARCHAR},
+      client_num = #{row.clientNum,jdbcType=VARCHAR},
+      status = #{row.status,jdbcType=VARCHAR},
+      opp_numb = #{row.oppNumb,jdbcType=VARCHAR},
+      not_comp_quot = #{row.notCompQuot,jdbcType=VARCHAR},
+      last_finish_date = #{row.lastFinishDate,jdbcType=VARCHAR},
+      last_trace_user = #{row.lastTraceUser,jdbcType=VARCHAR},
+      reserve_days = #{row.reserveDays,jdbcType=VARCHAR},
+      trace_user_id = #{row.traceUserId,jdbcType=BIGINT},
+      en_name = #{row.enName,jdbcType=VARCHAR},
+      asso_com = #{row.assoCom,jdbcType=LONGVARCHAR},
+      asso_invoice = #{row.assoInvoice,jdbcType=LONGVARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update client
+    set id = #{row.id,jdbcType=BIGINT},
+      name = #{row.name,jdbcType=VARCHAR},
+      addr = #{row.addr,jdbcType=VARCHAR},
+      abbr = #{row.abbr,jdbcType=VARCHAR},
+      nickname = #{row.nickname,jdbcType=VARCHAR},
+      source = #{row.source,jdbcType=VARCHAR},
+      invoice_name = #{row.invoiceName,jdbcType=VARCHAR},
+      invoice_tax_num = #{row.invoiceTaxNum,jdbcType=VARCHAR},
+      invoice_addr = #{row.invoiceAddr,jdbcType=VARCHAR},
+      invoice_tel = #{row.invoiceTel,jdbcType=VARCHAR},
+      invoice_bank = #{row.invoiceBank,jdbcType=VARCHAR},
+      invoice_acc = #{row.invoiceAcc,jdbcType=VARCHAR},
+      invoice_is_spec = #{row.invoiceIsSpec,jdbcType=VARCHAR},
+      client_class = #{row.clientClass,jdbcType=VARCHAR},
+      indust_class = #{row.industClass,jdbcType=VARCHAR},
+      client_level = #{row.clientLevel,jdbcType=VARCHAR},
+      client_num = #{row.clientNum,jdbcType=VARCHAR},
+      status = #{row.status,jdbcType=VARCHAR},
+      opp_numb = #{row.oppNumb,jdbcType=VARCHAR},
+      not_comp_quot = #{row.notCompQuot,jdbcType=VARCHAR},
+      last_finish_date = #{row.lastFinishDate,jdbcType=VARCHAR},
+      last_trace_user = #{row.lastTraceUser,jdbcType=VARCHAR},
+      reserve_days = #{row.reserveDays,jdbcType=VARCHAR},
+      trace_user_id = #{row.traceUserId,jdbcType=BIGINT},
+      en_name = #{row.enName,jdbcType=VARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.Client">
+    update client
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        addr = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="abbr != null">
+        abbr = #{abbr,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceName != null">
+        invoice_name = #{invoiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceTaxNum != null">
+        invoice_tax_num = #{invoiceTaxNum,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAddr != null">
+        invoice_addr = #{invoiceAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceTel != null">
+        invoice_tel = #{invoiceTel,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceBank != null">
+        invoice_bank = #{invoiceBank,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAcc != null">
+        invoice_acc = #{invoiceAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceIsSpec != null">
+        invoice_is_spec = #{invoiceIsSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="clientClass != null">
+        client_class = #{clientClass,jdbcType=VARCHAR},
+      </if>
+      <if test="industClass != null">
+        indust_class = #{industClass,jdbcType=VARCHAR},
+      </if>
+      <if test="clientLevel != null">
+        client_level = #{clientLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="clientNum != null">
+        client_num = #{clientNum,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="oppNumb != null">
+        opp_numb = #{oppNumb,jdbcType=VARCHAR},
+      </if>
+      <if test="notCompQuot != null">
+        not_comp_quot = #{notCompQuot,jdbcType=VARCHAR},
+      </if>
+      <if test="lastFinishDate != null">
+        last_finish_date = #{lastFinishDate,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTraceUser != null">
+        last_trace_user = #{lastTraceUser,jdbcType=VARCHAR},
+      </if>
+      <if test="reserveDays != null">
+        reserve_days = #{reserveDays,jdbcType=VARCHAR},
+      </if>
+      <if test="traceUserId != null">
+        trace_user_id = #{traceUserId,jdbcType=BIGINT},
+      </if>
+      <if test="enName != null">
+        en_name = #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="assoCom != null">
+        asso_com = #{assoCom,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="assoInvoice != null">
+        asso_invoice = #{assoInvoice,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.libiao.customer.dal.model.Client">
+    update client
+    set name = #{name,jdbcType=VARCHAR},
+      addr = #{addr,jdbcType=VARCHAR},
+      abbr = #{abbr,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      invoice_name = #{invoiceName,jdbcType=VARCHAR},
+      invoice_tax_num = #{invoiceTaxNum,jdbcType=VARCHAR},
+      invoice_addr = #{invoiceAddr,jdbcType=VARCHAR},
+      invoice_tel = #{invoiceTel,jdbcType=VARCHAR},
+      invoice_bank = #{invoiceBank,jdbcType=VARCHAR},
+      invoice_acc = #{invoiceAcc,jdbcType=VARCHAR},
+      invoice_is_spec = #{invoiceIsSpec,jdbcType=VARCHAR},
+      client_class = #{clientClass,jdbcType=VARCHAR},
+      indust_class = #{industClass,jdbcType=VARCHAR},
+      client_level = #{clientLevel,jdbcType=VARCHAR},
+      client_num = #{clientNum,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      opp_numb = #{oppNumb,jdbcType=VARCHAR},
+      not_comp_quot = #{notCompQuot,jdbcType=VARCHAR},
+      last_finish_date = #{lastFinishDate,jdbcType=VARCHAR},
+      last_trace_user = #{lastTraceUser,jdbcType=VARCHAR},
+      reserve_days = #{reserveDays,jdbcType=VARCHAR},
+      trace_user_id = #{traceUserId,jdbcType=BIGINT},
+      en_name = #{enName,jdbcType=VARCHAR},
+      asso_com = #{assoCom,jdbcType=LONGVARCHAR},
+      asso_invoice = #{assoInvoice,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
   <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.Client">
     update client
     set name = #{name,jdbcType=VARCHAR},
@@ -65,8 +618,6 @@
       abbr = #{abbr,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
       source = #{source,jdbcType=VARCHAR},
-      asso_com = #{assoCom,jdbcType=LONGVARCHAR},
-      asso_invoice = #{assoInvoice,jdbcType=LONGVARCHAR},
       invoice_name = #{invoiceName,jdbcType=VARCHAR},
       invoice_tax_num = #{invoiceTaxNum,jdbcType=VARCHAR},
       invoice_addr = #{invoiceAddr,jdbcType=VARCHAR},
@@ -88,109 +639,4 @@
       en_name = #{enName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="unlockClientById">
-    update client
-    set
-      trace_user_id = null
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="lockClientById">
-    update client
-    set
-      trace_user_id = #{uid,jdbcType=BIGINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select *
-    from client
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select *
-    from client
-    where name = #{name,jdbcType=VARCHAR}
-  </select>
-  <select id="selectByTraceUserId" parameterType="com.libiao.customer.dal.model.ClientParamVO" resultMap="BaseResultMap">
-    select *
-    from client
-    where trace_user_id = #{uid,jdbcType=BIGINT}
-    <if test="vo.cnameOrAbbr != null and vo.cnameOrAbbr !='%%'">
-      and (name like #{vo.cnameOrAbbr,jdbcType=VARCHAR} or abbr like #{vo.cnameOrAbbr,jdbcType=VARCHAR})
-    </if>
-    <if test="vo.industry != null and vo.industry !='%%'">
-      and indust_class like #{vo.industry,jdbcType=VARCHAR}
-    </if>
-    <if test="vo.status != null and vo.status !='%%'">
-      and status like #{vo.status,jdbcType=VARCHAR}
-    </if>
-    <if test="vo.type != null and vo.type !='%%'">
-      and client_class like #{vo.type,jdbcType=VARCHAR}
-    </if>
-    <if test="vo.source != null and vo.source !='%%'">
-      and `source` like #{vo.source,jdbcType=VARCHAR}
-    </if>
-    <if test="vo.startDate != null and vo.startDate !=''">
-      and DATEDIFF(invoice_name, #{vo.startDate,jdbcType=VARCHAR}) <![CDATA[ >= ]]> 0
-    </if>
-    <if test="vo.endDate != null and vo.endDate !=''">
-      and DATEDIFF(invoice_name, #{vo.endDate,jdbcType=VARCHAR}) <![CDATA[ <= ]]> 0
-    </if>
-  </select>
-  <select id="selectByTraceUserIdIsNull" parameterType="com.libiao.customer.dal.model.ClientParamVO" resultMap="BaseResultMap">
-    select *
-    from client
-    where trace_user_id is null
-    <if test="cnameOrAbbr != null and cnameOrAbbr !='%%'">
-      and (name like #{cnameOrAbbr,jdbcType=VARCHAR} or abbr like #{cnameOrAbbr,jdbcType=VARCHAR})
-    </if>
-    <if test="industry != null and industry !='%%'">
-      and indust_class like #{industry,jdbcType=VARCHAR}
-    </if>
-    <if test="status != null and status !='%%'">
-      and status like #{status,jdbcType=VARCHAR}
-    </if>
-    <if test="type != null and type !='%%'">
-      and client_class like #{type,jdbcType=VARCHAR}
-    </if>
-    <if test="source != null and source !='%%'">
-      and `source` like #{source,jdbcType=VARCHAR}
-    </if>
-    <if test="startDate != null and startDate !=''">
-      and DATEDIFF(invoice_name, #{startDate,jdbcType=VARCHAR}) <![CDATA[ >= ]]> 0
-    </if>
-    <if test="endDate != null and endDate !=''">
-      and DATEDIFF(invoice_name, #{endDate,jdbcType=VARCHAR}) <![CDATA[ <= ]]> 0
-    </if>
-  </select>
-  <select id="selectAllByCondition" parameterType="com.libiao.customer.dal.model.ClientParamVO" resultMap="BaseResultMap">
-    select *
-    from client
-    <where>
-      <if test="cnameOrAbbr != null and cnameOrAbbr !='%%'">
-        and (name like #{cnameOrAbbr,jdbcType=VARCHAR} or abbr like #{cnameOrAbbr,jdbcType=VARCHAR})
-      </if>
-      <if test="industry != null and industry !='%%'">
-        and indust_class like #{industry,jdbcType=VARCHAR}
-      </if>
-      <if test="status != null and status !='%%'">
-        and status like #{status,jdbcType=VARCHAR}
-      </if>
-      <if test="type != null and type !='%%'">
-        and client_class like #{type,jdbcType=VARCHAR}
-      </if>
-      <if test="source != null and source !='%%'">
-        and `source` like #{source,jdbcType=VARCHAR}
-      </if>
-      <if test="startDate != null and startDate !=''">
-        and DATEDIFF(invoice_name, #{startDate,jdbcType=VARCHAR}) <![CDATA[ >= ]]> 0
-      </if>
-      <if test="endDate != null and endDate !=''">
-        and DATEDIFF(invoice_name, #{endDate,jdbcType=VARCHAR}) <![CDATA[ <= ]]> 0
-      </if>
-    </where>
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select *
-    from client
-  </select>
 </mapper>

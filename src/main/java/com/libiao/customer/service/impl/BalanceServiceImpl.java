@@ -1,11 +1,13 @@
 package com.libiao.customer.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.BalanceInfoMapper;
 import com.libiao.customer.dal.mapper.BalanceMapper;
-import com.libiao.customer.dal.model.Balance;
-import com.libiao.customer.dal.model.BalanceExample;
-import com.libiao.customer.dal.model.BalanceInfo;
-import com.libiao.customer.dal.model.BalanceInfoExample;
+import com.libiao.customer.dal.mapper.ClientMapper;
+import com.libiao.customer.dal.model.*;
+import com.libiao.customer.model.ListResponseVO;
+import com.libiao.customer.model.balance.BalanceListReq;
 import com.libiao.customer.model.balance.BalanceReq;
 import com.libiao.customer.service.BalanceService;
 import com.libiao.customer.util.BeanCopyUtil;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,6 +31,9 @@ public class BalanceServiceImpl implements BalanceService {
     @Autowired
     BalanceInfoMapper balanceInfoMapper;
 
+    @Autowired
+    ClientMapper clientMapper;
+
     @Override
     public Balance getBalance(String clientId) {
         BalanceExample balanceExample = new BalanceExample();
@@ -39,6 +45,34 @@ public class BalanceServiceImpl implements BalanceService {
         }
         return list.get(0);
     }
+
+    @Override
+    public PageInfo<Balance> getBalanceList(BalanceListReq listReq) {
+        ClientExample clientExample = new ClientExample();
+        ClientExample.Criteria criteria =  clientExample.createCriteria();
+        ClientExample.Criteria criteria2 =  clientExample.createCriteria();
+        if(null != listReq.getClient()){
+            criteria.andClientNumLike(listReq.getClient());
+            criteria2.andNameLike(listReq.getClient());
+        }
+
+        if(null !=listReq.getStartTime() && null !=listReq.getEndTime()){ //时间是varchar类型？
+//            criteria.andReserveDaysBetween(listReq.getStartTime(),listReq.getEndTime());
+//            criteria2.andReserveDaysBetween(listReq.getStartTime(),listReq.getEndTime());
+        }
+        clientExample.or(criteria2);
+        List<Client> clients = clientMapper.selectByExample(clientExample);
+        if(clients.size() == 0) return new PageInfo<>();
+
+        List<String> clientIds = new ArrayList<>();
+        clients.forEach(client -> clientIds.add(client.getClientNum()));
+        PageHelper.startPage(listReq.getPage(),listReq.getPageSize());
+        BalanceExample balanceExample = new BalanceExample();
+        balanceExample.createCriteria().andClientIdIn(clientIds);
+        List<Balance> balances = balanceMapper.selectByExample(balanceExample);
+        return new PageInfo<>(balances);
+    }
+
 
     @Override
     public boolean addRecord(BalanceReq req) {

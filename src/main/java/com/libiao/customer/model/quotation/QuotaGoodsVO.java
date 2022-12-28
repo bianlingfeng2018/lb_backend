@@ -31,6 +31,9 @@ public class QuotaGoodsVO {
     @ApiModelProperty("报告类型")
     private List<Byte> reportTypes;
     @ApiModelProperty("测试项目")
-    private List<QuotaGoodsItemVO> items;
-
+    private List<QuotaDetailItemVO> items;
+    @ApiModelProperty("报告费")
+    private Integer reportAmt;
+    @ApiModelProperty("检测费")
+    private Integer amount;
 }

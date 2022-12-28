@@ -24,6 +24,7 @@ public class QuotationListReq extends BasePageReq {
     @ApiModelProperty("支付状态")
     private Byte payStatus;
 
-
+    @ApiModelProperty("跟进的客服ID")
+    private Long serviceId;
 
 }

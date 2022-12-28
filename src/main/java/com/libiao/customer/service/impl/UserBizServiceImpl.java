@@ -5,10 +5,9 @@ import com.alibaba.fastjson2.JSON;
 import com.beust.jcommander.internal.Sets;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import com.libiao.customer.dal.model.Permission;
 import com.libiao.customer.dal.model.PermissionVO;
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.entity.CurrentUser;
 import com.libiao.customer.entity.SessionUser;
 import com.libiao.customer.interceptor.SessionInfoEnum;
@@ -17,7 +16,6 @@ import com.libiao.customer.service.UserBizService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.ServletUtils;
-import com.libiao.customer.util.WebUtil;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
 import com.libiao.customer.util.model.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
@@ -42,11 +40,11 @@ public class UserBizServiceImpl implements UserBizService {
 
 
     @Override
-    public ResponseVO<?> login(User user){
-        User currentUser = userRepository.selectByUsernamePassword(user.getUsername(), user.getPassword());
-        if(ObjectUtils.isNotEmpty(currentUser)) {
+    public ResponseVO<?> login(UserExt userExt){
+        UserExt currentUserExt = userRepository.selectByUsernamePassword(userExt.getUsername(), userExt.getPassword());
+        if(ObjectUtils.isNotEmpty(currentUserExt)) {
             //验证通过 获取token
-            onLogin(currentUser);
+            onLogin(currentUserExt);
             JSONObject loginResult = new JSONObject(true);
             loginResult.put("token", "123");
             loginResult.put("msg", "登录认证成功.");
@@ -72,13 +70,13 @@ public class UserBizServiceImpl implements UserBizService {
     /**
      * 获取token
      */
-    private void onLogin(User user) {
+    private void onLogin(UserExt userExt) {
         final HttpSession session = ServletUtils.getSession();
 
-        List<Permission> permissionList = user.getRole().getPermission();
+        List<Permission> permissionList = userExt.getRole().getPermission();
         Set<String> permissionVOList = convertToPermissionVOList(permissionList);
         session.setAttribute(SessionInfoEnum.RULES.getName(),permissionVOList);
-        SessionUser sessionUser = BeanCopyUtil.copy(user,SessionUser.class);
+        SessionUser sessionUser = BeanCopyUtil.copy(userExt,SessionUser.class);
         session.setAttribute(SessionInfoEnum.USER.getName(), sessionUser);
         log.info("保存的sessionId为{}",session.getId());
         String key = "LOGIN_SESSION:" + sessionUser.getId();
@@ -89,11 +87,11 @@ public class UserBizServiceImpl implements UserBizService {
     @Override
     public ResponseVO queryUserList(String role) {
         try{
-            List<User> users = userRepository.selectAll();
+            List<UserExt> userExts = userRepository.selectAll();
             if(!StringUtils.isEmpty(role)){ // 角色不为空
-                users = users.stream().filter(user -> user.getPermission().equals(role)).collect(Collectors.toList());
+                userExts = userExts.stream().filter(user -> user.getPermission().equals(role)).collect(Collectors.toList());
             }
-            return ResponseUtil.success(users);
+            return ResponseUtil.success(userExts);
         }catch (Exception e){
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
@@ -104,8 +102,8 @@ public class UserBizServiceImpl implements UserBizService {
         try{
             PageHelper.startPage(pageNum,  pageSize);
             PageHelper.orderBy("id desc");
-            List<User> users = userRepository.selectAll();
-            PageInfo<User> pageInfo = new PageInfo<User>(users);
+            List<UserExt> userExts = userRepository.selectAll();
+            PageInfo<UserExt> pageInfo = new PageInfo<UserExt>(userExts);
             return ResponseUtil.success(pageInfo);
         }catch (Exception e){
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
@@ -126,21 +124,21 @@ public class UserBizServiceImpl implements UserBizService {
     }
 
     @Override
-    public ResponseVO saveUser(User user) {
+    public ResponseVO saveUser(UserExt userExt) {
         try {
-            if (StringUtils.isEmpty(user.getPassword())) {
-                user.setPassword("123456"); // 初始密码
+            if (StringUtils.isEmpty(userExt.getPassword())) {
+                userExt.setPassword("123456"); // 初始密码
             }
-            user.setGmtCreate(new Date());
-            user.setGmtModify(new Date());
-            User find = userRepository.selectByUsername(user.getUsername());
+            userExt.setGmtCreate(new Date());
+            userExt.setGmtModify(new Date());
+            UserExt find = userRepository.selectByUsername(userExt.getUsername());
             if (Objects.nonNull(find)) {
                 return ResponseUtil.error(400, "用户名已存在，新增失败");
             }
-            int affectedRows = userRepository.insert(user);
+            int affectedRows = userRepository.insert(userExt);
             JSONObject saveUserResult = new JSONObject(true);
             saveUserResult.put("affectedRows", affectedRows);
-            saveUserResult.put("userId", user.getId());
+            saveUserResult.put("userId", userExt.getId());
             saveUserResult.put("msg", "用户写入成功");
             return ResponseUtil.success(saveUserResult);
         }catch (Exception e){

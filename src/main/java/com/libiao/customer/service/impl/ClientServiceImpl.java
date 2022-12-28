@@ -10,17 +10,8 @@ import com.beust.jcommander.internal.Lists;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.controller.PageVO;
-import com.libiao.customer.dal.model.AddrVO;
-import com.libiao.customer.dal.model.Area;
-import com.libiao.customer.dal.model.City;
-import com.libiao.customer.dal.model.Client;
-import com.libiao.customer.dal.model.ClientParamVO;
-import com.libiao.customer.dal.model.ClientVO;
-import com.libiao.customer.dal.model.Province;
-import com.libiao.customer.dal.model.Role;
-import com.libiao.customer.dal.model.TfArea;
-import com.libiao.customer.dal.model.TraceHistory;
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.*;
+import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.repository.ClientRepository;
 import com.libiao.customer.repository.RoleRepository;
 import com.libiao.customer.repository.TraceHistoryRepository;
@@ -100,10 +91,10 @@ public class ClientServiceImpl implements ClientService {
     try {
       refineVO(vo);
       String userName = WebUtil.getAccessToken().getUsername();
-      User loginUser = userRepository.selectByUsername(userName);
+      UserExt loginUserExt = userRepository.selectByUsername(userName);
       PageHelper.startPage(pageNo, pageSize);
       PageHelper.orderBy("id desc");
-      List<Client> clients = clientRepository.selectByTraceUserId(loginUser.getId(), vo);
+      List<Client> clients = clientRepository.selectByTraceUserId(loginUserExt.getId(), vo);
       PageInfo<Client> pageInfo = new PageInfo<>(clients);
       return ResponseUtil.success(pageInfo);
     } catch (Exception e) {
@@ -162,8 +153,8 @@ public class ClientServiceImpl implements ClientService {
     try {
       refineVO(vo);
       String userName = WebUtil.getAccessToken().getUsername();
-      User loginUser = userRepository.selectByUsername(userName);
-      List<Client> clients = clientRepository.selectByTraceUserId(loginUser.getId(), vo);
+      UserExt loginUserExt = userRepository.selectByUsername(userName);
+      List<Client> clients = clientRepository.selectByTraceUserId(loginUserExt.getId(), vo);
       return getResponseEntity(clients);
     } catch (Exception e) {
       e.printStackTrace();
@@ -267,9 +258,9 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
-  public ResponseVO<?> checkContactNameExist(User user) {
+  public ResponseVO<?> checkContactNameExist(UserExt userExt) {
     try {
-      boolean exist = existContactName(user);
+      boolean exist = existContactName(userExt);
       return ResponseUtil.success(exist);
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
@@ -277,9 +268,9 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
-  public ResponseVO<?> checkContactPhoneNumExist(User user) {
+  public ResponseVO<?> checkContactPhoneNumExist(UserExt userExt) {
     try {
-      boolean exist = existContactPhoneNum(user);
+      boolean exist = existContactPhoneNum(userExt);
       return ResponseUtil.success(exist);
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
@@ -287,9 +278,9 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
-  public ResponseVO<List<User>> getContactListByClientId(Long id) {
+  public ResponseVO<List<UserExt>> getContactListByClientId(Long id) {
     try {
-      List<User> contactList = userRepository.selectByClientId(id);
+      List<UserExt> contactList = userRepository.selectByClientId(id);
       return ResponseUtil.success(contactList);
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
@@ -310,9 +301,9 @@ public class ClientServiceImpl implements ClientService {
     }
     int update = clientRepository.updateByPrimaryKey(clientVO);
     // 更新客户联系人列表
-    List<User> contactList = clientVO.getContactList();
-    for (User user : contactList) {
-      updateUser(find, user);
+    List<UserExt> contactList = clientVO.getContactList();
+    for (UserExt userExt : contactList) {
+      updateUser(find, userExt);
     }
     JSONObject result = new JSONObject();
     result.put("msg", "更新成功");
@@ -334,9 +325,9 @@ public class ClientServiceImpl implements ClientService {
     }
     int insert = clientRepository.insertClient(clientVO);
     // 更新客户联系人列表
-    List<User> contactList = clientVO.getContactList();
-    for (User user : contactList) {
-      updateUser(clientVO, user);
+    List<UserExt> contactList = clientVO.getContactList();
+    for (UserExt userExt : contactList) {
+      updateUser(clientVO, userExt);
     }
 
     // 锁定客户
@@ -354,7 +345,7 @@ public class ClientServiceImpl implements ClientService {
   public ResponseVO<?> getClientById(Long id) {
     try {
       Client client = clientRepository.selectById(id);
-      List<User> contactList = userRepository.selectByClientId(id);
+      List<UserExt> contactList = userRepository.selectByClientId(id);
       ClientVO vo = new ClientVO();
       BeanUtils.copyProperties(client, vo);
       vo.setContactList(contactList);
@@ -388,18 +379,18 @@ public class ClientServiceImpl implements ClientService {
     try {
       // 更新跟进历史
       String userName = WebUtil.getAccessToken().getUsername();
-      User loginUser = userRepository.selectByUsername(userName);
+      UserExt loginUserExt = userRepository.selectByUsername(userName);
       Date date = new Date();
       Date protectDate = addDays(date, 30);
       String protectedDays = getSDF().format(protectDate);
       String lastTraceDate = getSDF().format(date);
       String lastTraceDateTime = getSdfTime().format(date);
       traceHistoryRepository.insertTraceHistory(
-          new TraceHistory(null, client.getId(), loginUser.getId(), loginUser.getNickname(),
+          new TraceHistory(null, client.getId(), loginUserExt.getId(), loginUserExt.getNickname(),
               "放出", lastTraceDateTime, protectedDays));
       // 更新客户跟进人
       client.setTraceUserId(null);
-      client.setLastTraceUser(loginUser.getUsername());
+      client.setLastTraceUser(loginUserExt.getUsername());
       client.setReserveDays("30");
       client.setInvoiceName(lastTraceDate);
       int i = clientRepository.updateByPrimaryKey(client);
@@ -433,69 +424,69 @@ public class ClientServiceImpl implements ClientService {
     }
   }
 
-  private void updateUser(Client client, User user) {
+  private void updateUser(Client client, UserExt userExt) {
     Role role = roleRepository.selectByRoleName(ROLE_CLIENT);
-    user.setRole(role);
-    user.setComId(client.getId());
-    if (user.getId() == null) {
+    userExt.setRole(role);
+    userExt.setComId(client.getId());
+    if (userExt.getId() == null) {
       // 新建用户
-      if (StringUtils.isEmpty(user.getPassword())) {
-        user.setPassword("123456"); // 初始密码
+      if (StringUtils.isEmpty(userExt.getPassword())) {
+        userExt.setPassword("123456"); // 初始密码
       }
-      user.setGmtCreate(new Date());
-      user.setGmtModify(new Date());
-      User findByUserName = userRepository.selectByUsername(user.getUsername());
-      if (Objects.nonNull(findByUserName)) {
+      userExt.setGmtCreate(new Date());
+      userExt.setGmtModify(new Date());
+      UserExt findByUserNameExt = userRepository.selectByUsername(userExt.getUsername());
+      if (Objects.nonNull(findByUserNameExt)) {
         throw new RuntimeException("用户名已存在，新增失败");
       }
-      List<User> findByUserPhoneNum = userRepository.selectByPhoneNum(user.getPhoneNum());
-      if (!CollectionUtils.isEmpty(findByUserPhoneNum)) {
-        throw new RuntimeException("手机号" + user.getPhoneNum() + "已存在，新增失败");
+      List<UserExt> findByUserPhoneNumExt = userRepository.selectByPhoneNum(userExt.getPhoneNum());
+      if (!CollectionUtils.isEmpty(findByUserPhoneNumExt)) {
+        throw new RuntimeException("手机号" + userExt.getPhoneNum() + "已存在，新增失败");
       }
-      int affectedRows = userRepository.insert(user);
+      int affectedRows = userRepository.insert(userExt);
     } else {
       // 更新用户
-      User userById = userRepository.selectByPrimaryKey(user.getId());
-      if (Objects.isNull(userById)) {
+      UserExt userExtById = userRepository.selectByPrimaryKey(userExt.getId());
+      if (Objects.isNull(userExtById)) {
         throw new RuntimeException("用户不存在，更新失败");
       }
-      User findByUserName = userRepository.selectByUsername(user.getUsername());
-      if (Objects.nonNull(findByUserName) && !findByUserName.getId().equals(userById.getId())) {
-        throw new RuntimeException("登陆名" + findByUserName.getUsername() + "已存在，更新失败");
+      UserExt findByUserNameExt = userRepository.selectByUsername(userExt.getUsername());
+      if (Objects.nonNull(findByUserNameExt) && !findByUserNameExt.getId().equals(userExtById.getId())) {
+        throw new RuntimeException("登陆名" + findByUserNameExt.getUsername() + "已存在，更新失败");
       }
-      validatePhoneNum(user, userById);
-      user.setGmtModify(new Date());
-      userRepository.updateByPrimaryKey(user);
+      validatePhoneNum(userExt, userExtById);
+      userExt.setGmtModify(new Date());
+      userRepository.updateByPrimaryKey(userExt);
     }
   }
 
-  private void validatePhoneNum(User user, User userById) {
-    List<User> findByUserPhoneNum = userRepository.selectByPhoneNum(user.getPhoneNum());
-    if (!CollectionUtils.isEmpty(findByUserPhoneNum)) {
-      if (findByUserPhoneNum.size() == 1) {
-        if (!findByUserPhoneNum.get(0).getId().equals(userById.getId())) {
-          throw new RuntimeException("手机号" + user.getPhoneNum() + "已存在，更新失败");
+  private void validatePhoneNum(UserExt userExt, UserExt userExtById) {
+    List<UserExt> findByUserPhoneNumExt = userRepository.selectByPhoneNum(userExt.getPhoneNum());
+    if (!CollectionUtils.isEmpty(findByUserPhoneNumExt)) {
+      if (findByUserPhoneNumExt.size() == 1) {
+        if (!findByUserPhoneNumExt.get(0).getId().equals(userExtById.getId())) {
+          throw new RuntimeException("手机号" + userExt.getPhoneNum() + "已存在，更新失败");
         }
       } else {
-        throw new RuntimeException("手机号" + user.getPhoneNum() + "已存在，更新失败");
+        throw new RuntimeException("手机号" + userExt.getPhoneNum() + "已存在，更新失败");
       }
     }
   }
 
   private void doTransferClient(Client client, Long userId) {
     // 更新跟进历史
-    User transUser = userRepository.selectByPrimaryKey(userId);
+    UserExt transUserExt = userRepository.selectByPrimaryKey(userId);
     Date date = new Date();
     Date protectDate = addDays(date, 30);
     String protectedDays = getSDF().format(protectDate);
     String lastTraceDate = getSDF().format(date);
     String lastTraceDateTime = getSdfTime().format(date);
     traceHistoryRepository.insertTraceHistory(
-        new TraceHistory(null, client.getId(), transUser.getId(), transUser.getNickname(),
+        new TraceHistory(null, client.getId(), transUserExt.getId(), transUserExt.getNickname(),
             "转移", lastTraceDateTime, protectedDays));
     // 更新客户跟进人
     client.setTraceUserId(userId);
-    client.setLastTraceUser(transUser.getUsername());
+    client.setLastTraceUser(transUserExt.getUsername());
     client.setReserveDays("30");
     client.setInvoiceName(lastTraceDate);
     int i = clientRepository.updateByPrimaryKey(client);
@@ -504,18 +495,18 @@ public class ClientServiceImpl implements ClientService {
   private void doLockClient(Client client) {
     // 更新跟进历史
     String userName = WebUtil.getAccessToken().getUsername();
-    User loginUser = userRepository.selectByUsername(userName);
+    UserExt loginUserExt = userRepository.selectByUsername(userName);
     Date date = new Date();
     Date protectDate = addDays(date, 30);
     String protectedDays = getSDF().format(protectDate);
     String lastTraceDate = getSDF().format(date);
     String lastTraceDateTime = getSdfTime().format(date);
     traceHistoryRepository.insertTraceHistory(
-        new TraceHistory(null, client.getId(), loginUser.getId(), loginUser.getNickname(),
+        new TraceHistory(null, client.getId(), loginUserExt.getId(), loginUserExt.getNickname(),
             "锁定", lastTraceDateTime, protectedDays));
     // 更新客户跟进人
-    client.setTraceUserId(loginUser.getId());
-    client.setLastTraceUser(loginUser.getUsername());
+    client.setTraceUserId(loginUserExt.getId());
+    client.setLastTraceUser(loginUserExt.getUsername());
     client.setReserveDays("30");
     client.setInvoiceName(lastTraceDate);
     int i = clientRepository.updateByPrimaryKey(client);
@@ -559,38 +550,38 @@ public class ClientServiceImpl implements ClientService {
     return addrDesc;
   }
 
-  private boolean existContactName(User user) {
-    Long id = user.getId();
+  private boolean existContactName(UserExt userExt) {
+    Long id = userExt.getId();
     if (id == null) {
       // 新建用户
-      User findByUserName = userRepository.selectByUsername(user.getUsername());
-      if (Objects.nonNull(findByUserName)) {
+      UserExt findByUserNameExt = userRepository.selectByUsername(userExt.getUsername());
+      if (Objects.nonNull(findByUserNameExt)) {
         return true;
       }
     } else {
       // 更新用户
-      User findByUserName = userRepository.selectByUsername(user.getUsername());
-      if (Objects.nonNull(findByUserName) && !findByUserName.getId().equals(id)) {
+      UserExt findByUserNameExt = userRepository.selectByUsername(userExt.getUsername());
+      if (Objects.nonNull(findByUserNameExt) && !findByUserNameExt.getId().equals(id)) {
         return true;
       }
     }
     return false;
   }
 
-  private boolean existContactPhoneNum(User user) {
-    Long id = user.getId();
+  private boolean existContactPhoneNum(UserExt userExt) {
+    Long id = userExt.getId();
     if (id == null) {
       // 新建用户
-      List<User> findByUserPhoneNum = userRepository.selectByPhoneNum(user.getPhoneNum());
-      if (!CollectionUtils.isEmpty(findByUserPhoneNum)) {
+      List<UserExt> findByUserPhoneNumExt = userRepository.selectByPhoneNum(userExt.getPhoneNum());
+      if (!CollectionUtils.isEmpty(findByUserPhoneNumExt)) {
         return true;
       }
     } else {
       // 更新用户
-      List<User> findByUserPhoneNum = userRepository.selectByPhoneNum(user.getPhoneNum());
-      if (!CollectionUtils.isEmpty(findByUserPhoneNum)) {
-        if (findByUserPhoneNum.size() == 1) {
-          if (!findByUserPhoneNum.get(0).getId().equals(id)) {
+      List<UserExt> findByUserPhoneNumExt = userRepository.selectByPhoneNum(userExt.getPhoneNum());
+      if (!CollectionUtils.isEmpty(findByUserPhoneNumExt)) {
+        if (findByUserPhoneNumExt.size() == 1) {
+          if (!findByUserPhoneNumExt.get(0).getId().equals(id)) {
             return true;
           }
         } else {

@@ -1,7 +1,7 @@
 package com.libiao.customer.repository.impl;
 
-import com.libiao.customer.dal.mapper.UserMapper;
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.mapper.UserMapperExt;
+import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.repository.UserRepository;
 import java.util.List;
 import org.springframework.stereotype.Repository;
@@ -9,91 +9,91 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-  private final UserMapper userMapper;
+  private final UserMapperExt userMapperExt;
 
-  public UserRepositoryImpl(UserMapper userMapper) {
-    this.userMapper = userMapper;
+  public UserRepositoryImpl(UserMapperExt userMapperExt) {
+    this.userMapperExt = userMapperExt;
   }
 
 
   @Override
-  public List<User> selectAll() {
-    return userMapper.selectAll();
+  public List<UserExt> selectAll() {
+    return userMapperExt.selectAll();
   }
 
   @Override
-  public List<User> selectAllWithRole() {
-    return userMapper.selectAllWithRole();
+  public List<UserExt> selectAllWithRole() {
+    return userMapperExt.selectAllWithRole();
   }
 
   @Override
-  public List<User> selectAllWithRoleByRole(String role) {
-    return userMapper.selectAllWithRoleByRole(role);
+  public List<UserExt> selectAllWithRoleByRole(String role) {
+    return userMapperExt.selectAllWithRoleByRole(role);
   }
 
   @Override
-  public User selectByUsername(String userName) {
-    return userMapper.selectByUsername(userName);
+  public UserExt selectByUsername(String userName) {
+    return userMapperExt.selectByUsername(userName);
   }
 
   @Override
-  public List<User> selectAllWithRoleByRoleAndCreatedBy(String roleName, Long id) {
-    return userMapper.selectAllWithRoleByRoleAndCreatedBy(roleName, id);
+  public List<UserExt> selectAllWithRoleByRoleAndCreatedBy(String roleName, Long id) {
+    return userMapperExt.selectAllWithRoleByRoleAndCreatedBy(roleName, id);
   }
 
   @Override
-  public List<User> selectAllWithRoleByRoleInSameTestTrade(String roleName, String loginUsername) {
-    return userMapper.selectAllWithRoleByRoleInSameTestTrade(roleName, loginUsername);
+  public List<UserExt> selectAllWithRoleByRoleInSameTestTrade(String roleName, String loginUsername) {
+    return userMapperExt.selectAllWithRoleByRoleInSameTestTrade(roleName, loginUsername);
   }
 
   @Override
-  public User selectByRoleAndTestTrade(String role, Long tradeId) {
-    return userMapper.selectByRoleAndTestTrade(role, tradeId);
+  public UserExt selectByRoleAndTestTrade(String role, Long tradeId) {
+    return userMapperExt.selectByRoleAndTestTrade(role, tradeId);
   }
 
   @Override
-  public List<User> selectAllWithRoleByNotRole(String role) {
-    return userMapper.selectAllWithRoleByNotRole(role);
+  public List<UserExt> selectAllWithRoleByNotRole(String role) {
+    return userMapperExt.selectAllWithRoleByNotRole(role);
   }
 
   @Override
-  public User selectByPrimaryKeyWithRole(Long id) {
-    return userMapper.selectByPrimaryKeyWithRole(id);
+  public UserExt selectByPrimaryKeyWithRole(Long id) {
+    return userMapperExt.selectByPrimaryKeyWithRole(id);
   }
 
   @Override
-  public List<User> selectByClientId(Long id) {
-    return userMapper.selectByClientId(id);
+  public List<UserExt> selectByClientId(Long id) {
+    return userMapperExt.selectByClientId(id);
   }
 
   @Override
-  public List<User> selectByPhoneNum(String phoneNum) {
-    return userMapper.selectByPhoneNum(phoneNum);
+  public List<UserExt> selectByPhoneNum(String phoneNum) {
+    return userMapperExt.selectByPhoneNum(phoneNum);
   }
 
   @Override
-  public User selectByPrimaryKey(Long id) {
-    return userMapper.selectByPrimaryKey(id);
+  public UserExt selectByPrimaryKey(Long id) {
+    return userMapperExt.selectByPrimaryKey(id);
   }
 
   @Override
-  public User selectByUsernamePassword(String username, String password) {
-    return userMapper.selectByUsernamePassword(username, password);
+  public UserExt selectByUsernamePassword(String username, String password) {
+    return userMapperExt.selectByUsernamePassword(username, password);
   }
 
   @Override
   public int deleteByPrimaryKey(Long id) {
-    return userMapper.deleteByPrimaryKey(id);
+    return userMapperExt.deleteByPrimaryKey(id);
   }
 
   @Override
-  public int insert(User user) {
-    return userMapper.insert(user);
+  public int insert(UserExt userExt) {
+    return userMapperExt.insert(userExt);
   }
 
   @Override
-  public int updateByPrimaryKey(User row) {
-    return userMapper.updateByPrimaryKey(row);
+  public int updateByPrimaryKey(UserExt row) {
+    return userMapperExt.updateByPrimaryKey(row);
   }
 
 }

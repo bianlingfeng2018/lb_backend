@@ -23,12 +23,12 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.libiao.customer.dal.model.TestWorkOrder">
-    insert into test_work_order (id, work_order_num, issuer, 
-      busy_status, gmt_create, gmt_output, 
+    insert into test_work_order (id, work_order_num, issuer,
+      busy_status, gmt_create, gmt_output,
       withdraw, employee, customer, test_trade_id, test_id, editor_id, reviewer_id, approver_id, flex_obj
       )
-    values (#{id,jdbcType=BIGINT}, #{workOrderNum,jdbcType=VARCHAR}, #{issuer,jdbcType=VARCHAR}, 
-      #{busyStatus,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtOutput,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=BIGINT}, #{workOrderNum,jdbcType=VARCHAR}, #{issuer,jdbcType=VARCHAR},
+      #{busyStatus,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtOutput,jdbcType=TIMESTAMP},
       #{withdraw,jdbcType=VARCHAR}, #{employee,jdbcType=VARCHAR}, #{customer,jdbcType=VARCHAR}, #{testTradeId, jdbcType=BIGINT}, #{testId, jdbcType=BIGINT},
       #{editorId,jdbcType=BIGINT},#{reviewerId,jdbcType=BIGINT},#{approverId,jdbcType=BIGINT},#{flexObj, jdbcType=LONGVARCHAR})
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -54,13 +54,13 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, work_order_num, issuer, busy_status, gmt_create, gmt_output, withdraw, 
+    select id, work_order_num, issuer, busy_status, gmt_create, gmt_output, withdraw,
     employee, customer, test_trade_id, test_id, editor_id, reviewer_id, approver_id,flex_obj
     from test_work_order
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, work_order_num, issuer, busy_status, gmt_create, gmt_output, withdraw, 
+    select id, work_order_num, issuer, busy_status, gmt_create, gmt_output, withdraw,
     employee, customer, test_trade_id, test_id, editor_id, reviewer_id, approver_id,flex_obj
     from test_work_order
   </select>
@@ -81,7 +81,7 @@
     from test_work_order a
            left join user_test_trade b
                      on a.test_trade_id = b.test_trade_id
-           left join user c
+           left join userExt c
                      on b.user_id = c.id
     where c.username = #{owner,jdbcType=VARCHAR}
   </select>

@@ -3,7 +3,7 @@ package com.libiao.customer.controller;
 import com.libiao.customer.dal.model.Client;
 import com.libiao.customer.dal.model.ClientParamVO;
 import com.libiao.customer.dal.model.ClientVO;
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.service.ClientService;
 import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.model.ResponseVO;
@@ -101,7 +101,7 @@ public class ClientComCtrl {
    * @return
    */
   @RequestMapping(value = "/api/contacts-by-com-id", method = RequestMethod.GET)
-  public ResponseVO<List<User>> getContactListByClientId(@RequestParam("id") Long id) {
+  public ResponseVO<List<UserExt>> getContactListByClientId(@RequestParam("id") Long id) {
     return clientService.getContactListByClientId(id);
   }
 
@@ -190,13 +190,13 @@ public class ClientComCtrl {
   }
 
   @RequestMapping(value = "/api/check-contact-name-exist", method = RequestMethod.POST)
-  public ResponseVO<?> checkContactNameExist(@RequestBody User user) {
-    return clientService.checkContactNameExist(user);
+  public ResponseVO<?> checkContactNameExist(@RequestBody UserExt userExt) {
+    return clientService.checkContactNameExist(userExt);
   }
 
   @RequestMapping(value = "/api/check-contact-phone-num-exist", method = RequestMethod.POST)
-  public ResponseVO<?> checkContactPhoneNumExist(@RequestBody User user) {
-    return clientService.checkContactPhoneNumExist(user);
+  public ResponseVO<?> checkContactPhoneNumExist(@RequestBody UserExt userExt) {
+    return clientService.checkContactPhoneNumExist(userExt);
   }
 
 }

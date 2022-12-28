@@ -3,13 +3,13 @@ package com.libiao.customer.dal.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
-import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class User {
+public class UserExt {
 
     private Long id;
 

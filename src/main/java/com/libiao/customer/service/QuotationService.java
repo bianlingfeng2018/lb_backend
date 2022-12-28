@@ -20,5 +20,7 @@ public interface QuotationService {
 
     void addQuot(AddQuotationReq req);
 
+    QuotationDetailVO detail(QuotationDetailReq req);
+
     String getRate();
 }

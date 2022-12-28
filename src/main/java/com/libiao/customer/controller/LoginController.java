@@ -1,10 +1,9 @@
 package com.libiao.customer.controller;
 
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.entity.RegisterResult;
 import com.libiao.customer.service.UserBizService;
 import com.libiao.customer.util.AccessController;
-import com.libiao.customer.util.ServletUtils;
 import com.libiao.customer.util.model.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +24,9 @@ public class LoginController {
     @AccessController
     @ResponseBody
     @RequestMapping(value = "/login/account", method = RequestMethod.POST)
-    public ResponseVO login(@RequestBody User user){
-        log.info(">>>>>>>>> 用户登录接口 param：{}", user.toString());
-        return userBizService.login(user);
+    public ResponseVO login(@RequestBody UserExt userExt){
+        log.info(">>>>>>>>> 用户登录接口 param：{}", userExt.toString());
+        return userBizService.login(userExt);
     }
 
     /**

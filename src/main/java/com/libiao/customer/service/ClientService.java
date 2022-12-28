@@ -4,7 +4,7 @@ import com.libiao.customer.controller.PageVO;
 import com.libiao.customer.dal.model.Client;
 import com.libiao.customer.dal.model.ClientParamVO;
 import com.libiao.customer.dal.model.ClientVO;
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.util.model.ResponseVO;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public interface ClientService {
 
   ResponseVO<PageVO<Client>> getMyClientByPage(int pageNo, int pageSize, ClientParamVO vo);
 
-  ResponseVO<List<User>> getContactListByClientId(Long id);
+  ResponseVO<List<UserExt>> getContactListByClientId(Long id);
 
   ResponseVO<?> updateClientCom(ClientVO client);
 
@@ -49,7 +49,7 @@ public interface ClientService {
 
   ResponseVO<?> checkClientNameExist(ClientVO clientVO);
 
-  ResponseVO<?> checkContactNameExist(User user);
+  ResponseVO<?> checkContactNameExist(UserExt userExt);
 
-  ResponseVO<?> checkContactPhoneNumExist(User user);
+  ResponseVO<?> checkContactPhoneNumExist(UserExt userExt);
 }

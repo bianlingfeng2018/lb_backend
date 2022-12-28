@@ -2,10 +2,9 @@ package com.libiao.customer.controller;
 
 import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_CLIENT;
 
-import com.alibaba.fastjson.JSONObject;
 import com.libiao.customer.dal.model.Permission;
 import com.libiao.customer.dal.model.Role;
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.service.UserRolePermissionService;
 import com.libiao.customer.util.model.ResponseVO;
 import java.util.List;
@@ -30,33 +29,33 @@ public class UserRolePermissionCtrl {
   }
 
   @RequestMapping(value = "/api/users-page", method = RequestMethod.GET)
-  public ResponseVO<PageVO<User>> getUsersPage(int pageNo, int pageSize) {
+  public ResponseVO<PageVO<UserExt>> getUsersPage(int pageNo, int pageSize) {
     log.info("pageNo = {}, pageSize = {}", pageNo, pageSize);
     return userService.getUsersByPage(pageNo, pageSize);
   }
 
   @RequestMapping(value = "/api/users", method = RequestMethod.GET)
-  public ResponseVO<List<User>> getAllUsers() {
+  public ResponseVO<List<UserExt>> getAllUsers() {
     return userService.getAllUsers();
   }
 
   @RequestMapping(value = "/api/users-by-role", method = RequestMethod.GET)
-  public ResponseVO<List<User>> getAllUsersByRole(String role) {
+  public ResponseVO<List<UserExt>> getAllUsersByRole(String role) {
     return userService.getAllUsersByRole(role);
   }
 
   @RequestMapping(value = "/api/clients-by-owner", method = RequestMethod.GET)
-  public ResponseVO<List<User>> getAllClientsByOwner(String role) {
+  public ResponseVO<List<UserExt>> getAllClientsByOwner(String role) {
     return userService.getAllClientsByOwner(role);
   }
 
   @RequestMapping(value = "/api/clients-page-by-owner", method = RequestMethod.GET)
-  public ResponseVO<PageVO<User>> getClientsPageByOwner(int pageNo, int pageSize, String role) {
+  public ResponseVO<PageVO<UserExt>> getClientsPageByOwner(int pageNo, int pageSize, String role) {
     return userService.getClientsByPageAndOwner(pageNo, pageSize, ROLE_CLIENT);
   }
 
   @RequestMapping(value = "/api/employee-page", method = RequestMethod.GET)
-  public ResponseVO<PageVO<User>> getEmployeePage(int pageNo, int pageSize) {
+  public ResponseVO<PageVO<UserExt>> getEmployeePage(int pageNo, int pageSize) {
     return userService.getEmployeePage(pageNo, pageSize);
   }
 
@@ -77,8 +76,8 @@ public class UserRolePermissionCtrl {
 
   @RequestMapping(value = "/api/user/{id}", method = RequestMethod.PUT)
   public ResponseVO<Void> updateUser(@PathVariable(value = "id") String id,
-      @RequestBody User user) {
-    return userService.updateUser(user);
+      @RequestBody UserExt userExt) {
+    return userService.updateUser(userExt);
   }
 
   @RequestMapping(value = "/api/role/{id}", method = RequestMethod.PUT)
@@ -94,8 +93,8 @@ public class UserRolePermissionCtrl {
   }
 
   @RequestMapping(value = "/api/user", method = RequestMethod.POST)
-  public ResponseVO<Void> addUser(@RequestBody User user) {
-    return userService.addUser(user);
+  public ResponseVO<Void> addUser(@RequestBody UserExt userExt) {
+    return userService.addUser(userExt);
   }
 
   @RequestMapping(value = "/api/role", method = RequestMethod.POST)
@@ -124,7 +123,7 @@ public class UserRolePermissionCtrl {
   }
 
   @RequestMapping(value = "/api/user-by-username", method = RequestMethod.GET)
-  public ResponseVO<User> getUserByUsername(@RequestParam(value = "username") String username) {
+  public ResponseVO<UserExt> getUserByUsername(@RequestParam(value = "username") String username) {
     return userService.getUserByUsername(username);
   }
 
@@ -134,7 +133,7 @@ public class UserRolePermissionCtrl {
   }
 
   @RequestMapping(value = "/api/user-by-role-and-trade-id", method = RequestMethod.GET)
-  public ResponseVO<User> getUserByRoleAndTradeId(
+  public ResponseVO<UserExt> getUserByRoleAndTradeId(
       @RequestParam(value = "tradeId") Long tradeId,
       @RequestParam(value = "role") String role
   ) {

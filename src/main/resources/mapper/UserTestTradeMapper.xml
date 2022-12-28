@@ -10,7 +10,7 @@
   <delete id="deleteAllPermissionByTestTradeIdAndRole">
     delete a
     from user_test_trade a
-        left join `user` b
+        left join `userExt` b
             on b.id = a.user_id
         left join `role` c
             on c.id = b.role_id

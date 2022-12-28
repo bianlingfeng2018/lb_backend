@@ -1,7 +1,6 @@
 package com.libiao.customer.service.impl;
 
 import static com.libiao.customer.util.SystemConstant.TEST_APPLICATION_CREATED;
-import static com.libiao.customer.util.SystemConstant.TEST_QUOTATION_CREATED;
 import static com.libiao.customer.util.SystemConstant.TEST_REPORT_CONFIRMED;
 import static com.libiao.customer.util.SystemConstant.TEST_REPORT_SECOND_CONFIRMED;
 import static com.libiao.customer.util.SystemConstant.TEST_REPORT_THIRD_CONFIRMED;
@@ -13,7 +12,6 @@ import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_AUDIT_1;
 import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_AUDIT_2;
 import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_AUDIT_3;
 import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_CLIENT;
-import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_CUSTOM_SERVICE;
 import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_SALESMAN;
 import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_TEST;
 import static com.libiao.customer.util.UserRolePermissionUtil.isAdmin;
@@ -770,7 +768,7 @@ public class TestBizServiceImpl implements TestBizService {
     }
 
     @Override
-    public ResponseVO confirmTestReport(Long testTradeId, List<User> userList) {
+    public ResponseVO confirmTestReport(Long testTradeId, List<UserExt> userExtList) {
         try{
             TestTrade testTrade = testRespository.selectTestTradeById(testTradeId);
             if(testTrade == null){
@@ -1260,7 +1258,7 @@ public class TestBizServiceImpl implements TestBizService {
         return ResponseUtil.error(404, "相关申请单没有找到，指派客服人员失败");
       }
       // 更新填过客服的地方
-      User user = userRepository.selectByPrimaryKey(serviceId);
+      UserExt user = userRepository.selectByPrimaryKey(serviceId);
       String nickname = user.getNickname();
       testQuotation.setServiceId(serviceId);
       testQuotation.setAttn(nickname);

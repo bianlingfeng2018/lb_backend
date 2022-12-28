@@ -80,7 +80,12 @@ public class QuotationController {
     }
 
     //报价单详情
-
+    @ApiOperation("详情")
+    @PostMapping("detail")
+    public ResponseEntity<QuotationDetailVO> detail(@RequestBody QuotationDetailReq req){
+        final QuotationDetailVO detail = quotationService.detail(req);
+        return ResponseUtil.getResponseVO(detail);
+    }
 
 
 }

@@ -480,6 +480,7 @@ public class QuotationServiceImpl implements QuotationService {
         }
     }
 
+    @Override
     public QuotationDetailVO detail(QuotationDetailReq req){
         final TestQuotationExample testQuotationExample = new TestQuotationExample();
         testQuotationExample.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());

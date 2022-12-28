@@ -112,7 +112,7 @@
     from test_report a
            left join user_test_trade b
                      on a.test_trade_id = b.test_trade_id
-           left join userExt c
+           left join user c
                      on b.user_id = c.id
     where c.username = #{owner,jdbcType=VARCHAR}
   </select>

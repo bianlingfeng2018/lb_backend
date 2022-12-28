@@ -21,7 +21,7 @@ public enum QuotationEnum {
     CREDIT((byte)4,"已挂账"),
     PART_PAID((byte)5,"已付部分"),
     TOTAL_PAID((byte)6,"已全付"),
-
+    INVALID((byte)7,"已失效"),
     ;
 
     QuotationEnum(byte code, String desc) {

@@ -6,6 +6,7 @@ import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.quotation.*;
 import com.libiao.customer.service.QuotationService;
+import com.libiao.customer.service.UserService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.DateUtils;
 import com.libiao.customer.util.RedisUtil;
@@ -19,6 +20,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class QuotationServiceImpl implements QuotationService {
@@ -37,6 +39,8 @@ public class QuotationServiceImpl implements QuotationService {
     private SystemParameterMapper systemParameterMapper;
     @Autowired
     private MallGoodsMapper mallGoodsMapper;
+    @Autowired
+    private UserService userService;
 
 
 
@@ -169,8 +173,12 @@ public class QuotationServiceImpl implements QuotationService {
                 testQuotationItem.setAmountRmb(amt);
                 testQuotationItemList.add(testQuotationItem);
             }
-
         }
+
+
+
+
+
         //插入报价单
         testQuotationMapper.insert(record);
 

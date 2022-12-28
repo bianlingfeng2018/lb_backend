@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("bill")
@@ -111,5 +113,17 @@ public class BillCtrl {
         return customerBillService.update(req);
     }
 
+    /**
+     * 批量修改
+     **/
+    @ResponseBody
+    @ApiOperation("批量修改个人客户账单信息")
+    @RequestMapping(value = "updatePersonalBillBatch", method = RequestMethod.POST)
+    public ResponseEntity updatePersonalBillBatch(@RequestBody List<CustomerBillReq> req){
+        req.forEach(customerBillReq -> {
+            customerBillService.update(customerBillReq);
+        });
+        return ResponseUtil.getDefaultResp();
+    }
 
 }

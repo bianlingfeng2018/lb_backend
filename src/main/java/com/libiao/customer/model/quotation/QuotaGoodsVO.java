@@ -6,10 +6,20 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CreateQuotaGoodsReqVO {
+public class QuotaGoodsVO {
 
     @ApiModelProperty("商品ID")
     private Long goodsId;
+    @ApiModelProperty("商品名称")
+    private String goodsName;
+    @ApiModelProperty("HSCode")
+    private String hsCode;
+    @ApiModelProperty("材质")
+    private String material;
+    @ApiModelProperty("出口国")
+    private String exportCountry;
+    @ApiModelProperty("检测标准")
+    private String standard;
     @ApiModelProperty("测试周期")
     private Integer testPeriod;
     @ApiModelProperty("测试价格")

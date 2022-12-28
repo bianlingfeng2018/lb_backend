@@ -52,6 +52,9 @@ public class CommissionServiceImpl implements CommissionService {
         if (!StringUtils.isEmpty(req.getClientName())) {
             criteria.andClientNameEqualTo(req.getClientName());
         }
+        if (!StringUtils.isEmpty(req.getStatus())) {
+            criteria.andStatusEqualTo(req.getStatus());
+        }
         List<ClientCommission> list = commissionMapper.selectByExample(clientCommissionExample);
         PageInfo<ClientCommission> pageInfo = new PageInfo<>(list);
         List<CommissionVo> voList = new ArrayList<>();
@@ -67,7 +70,7 @@ public class CommissionServiceImpl implements CommissionService {
 
     @Override
     public boolean addRecord(CommissionChangeRecord req) {
-        req.setStatus(CommissionStatus.IN_APPROVE.getName());
+//        req.setStatus(CommissionStatus.IN_APPROVE.getName());
         req.setOperTime(new Date());
         log.info("修改佣金，添加一条佣金记录：req={}", JSONObject.toJSONString(req, true));
         return recordMapper.insertSelective(req) == 1;
@@ -83,6 +86,8 @@ public class CommissionServiceImpl implements CommissionService {
         if (list.size() >= 1) return ResponseUtil.convert(HttpStatus.MULTIPLE_CHOICES, "记录已存在");
         ClientCommission commission = new ClientCommission();
         commission.setCreateTime(new Date());
+        commission.setStatus(CommissionStatus.IN_APPROVE.getName());
+        commission.setRate(0);
         commission.setInreviewRate(req.getRate());
         commission.setClientId(req.getClientId());
         commission.setClientName(req.getClientName());
@@ -117,9 +122,9 @@ public class CommissionServiceImpl implements CommissionService {
         List<ClientCommission> list = commissionMapper.selectByExample(example);
         if (list.size() != 1) return ResponseUtil.convert(HttpStatus.NOT_FOUND, "记录未找到");
         ClientCommission record = list.get(0);
-        record.setStatus(CommissionStatus.valueOf(req.getStatus()).getName());
+        record.setStatus(CommissionStatus.parse(req.getStatus()).getName());
         record.setReason(req.getReason());
-        record.setRate(req.getRate());
+        record.setRate(record.getInreviewRate());
         record.setApproveUser(String.valueOf(req.getUser().getId()));
         record.setApproveTime(new Date());
         int row = commissionMapper.updateByPrimaryKey(record);

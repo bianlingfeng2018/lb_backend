@@ -18,4 +18,14 @@ public enum CommissionStatus {
         this.name = name;
     }
 
+    public static CommissionStatus parse(String name){
+        if(ACCEPT.getName().equals(name)){
+            return ACCEPT;
+        }
+        if(REJECT.getName().equals(name)){
+            return REJECT;
+        }
+        return IN_APPROVE;
+    }
+
 }

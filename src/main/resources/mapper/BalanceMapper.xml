@@ -7,8 +7,9 @@
     <result column="unsettled_amt" jdbcType="BIGINT" property="unsettledAmt" />
     <result column="balance_amt" jdbcType="BIGINT" property="balanceAmt" />
     <result column="credit_limit" jdbcType="BIGINT" property="creditLimit" />
-    <result column="commission_rate" jdbcType="BIGINT" property="commissionRate" />
     <result column="unsettle_commission" jdbcType="BIGINT" property="unsettleCommission" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="change_time" jdbcType="TIMESTAMP" property="changeTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,7 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, client_id, unsettled_amt, balance_amt, credit_limit, commission_rate, unsettle_commission
+    id, client_id, unsettled_amt, balance_amt, credit_limit, unsettle_commission, create_time, 
+    change_time
   </sql>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.BalanceExample" resultMap="BaseResultMap">
     select
@@ -103,11 +105,11 @@
   </delete>
   <insert id="insert" parameterType="com.libiao.customer.dal.model.Balance">
     insert into balance (id, client_id, unsettled_amt, 
-      balance_amt, credit_limit, commission_rate, 
-      unsettle_commission)
+      balance_amt, credit_limit, unsettle_commission, 
+      create_time, change_time)
     values (#{id,jdbcType=BIGINT}, #{clientId,jdbcType=VARCHAR}, #{unsettledAmt,jdbcType=BIGINT}, 
-      #{balanceAmt,jdbcType=BIGINT}, #{creditLimit,jdbcType=BIGINT}, #{commissionRate,jdbcType=BIGINT}, 
-      #{unsettleCommission,jdbcType=BIGINT})
+      #{balanceAmt,jdbcType=BIGINT}, #{creditLimit,jdbcType=BIGINT}, #{unsettleCommission,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{changeTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.Balance">
     insert into balance
@@ -127,11 +129,14 @@
       <if test="creditLimit != null">
         credit_limit,
       </if>
-      <if test="commissionRate != null">
-        commission_rate,
-      </if>
       <if test="unsettleCommission != null">
         unsettle_commission,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="changeTime != null">
+        change_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -150,11 +155,14 @@
       <if test="creditLimit != null">
         #{creditLimit,jdbcType=BIGINT},
       </if>
-      <if test="commissionRate != null">
-        #{commissionRate,jdbcType=BIGINT},
-      </if>
       <if test="unsettleCommission != null">
         #{unsettleCommission,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="changeTime != null">
+        #{changeTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -182,11 +190,14 @@
       <if test="row.creditLimit != null">
         credit_limit = #{row.creditLimit,jdbcType=BIGINT},
       </if>
-      <if test="row.commissionRate != null">
-        commission_rate = #{row.commissionRate,jdbcType=BIGINT},
-      </if>
       <if test="row.unsettleCommission != null">
         unsettle_commission = #{row.unsettleCommission,jdbcType=BIGINT},
+      </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.changeTime != null">
+        change_time = #{row.changeTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="example != null">
@@ -200,8 +211,9 @@
       unsettled_amt = #{row.unsettledAmt,jdbcType=BIGINT},
       balance_amt = #{row.balanceAmt,jdbcType=BIGINT},
       credit_limit = #{row.creditLimit,jdbcType=BIGINT},
-      commission_rate = #{row.commissionRate,jdbcType=BIGINT},
-      unsettle_commission = #{row.unsettleCommission,jdbcType=BIGINT}
+      unsettle_commission = #{row.unsettleCommission,jdbcType=BIGINT},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      change_time = #{row.changeTime,jdbcType=TIMESTAMP}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -221,11 +233,14 @@
       <if test="creditLimit != null">
         credit_limit = #{creditLimit,jdbcType=BIGINT},
       </if>
-      <if test="commissionRate != null">
-        commission_rate = #{commissionRate,jdbcType=BIGINT},
-      </if>
       <if test="unsettleCommission != null">
         unsettle_commission = #{unsettleCommission,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="changeTime != null">
+        change_time = #{changeTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -236,8 +251,9 @@
       unsettled_amt = #{unsettledAmt,jdbcType=BIGINT},
       balance_amt = #{balanceAmt,jdbcType=BIGINT},
       credit_limit = #{creditLimit,jdbcType=BIGINT},
-      commission_rate = #{commissionRate,jdbcType=BIGINT},
-      unsettle_commission = #{unsettleCommission,jdbcType=BIGINT}
+      unsettle_commission = #{unsettleCommission,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      change_time = #{changeTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

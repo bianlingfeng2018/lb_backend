@@ -14,5 +14,7 @@ public class CommissionListReq extends BasePageReq {
     private String clientId;
     @ApiModelProperty("客户Name")
     private String clientName;
+    @ApiModelProperty("status")
+    private String status;
 
 }

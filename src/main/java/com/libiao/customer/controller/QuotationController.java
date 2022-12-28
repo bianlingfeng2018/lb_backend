@@ -8,6 +8,7 @@ import com.libiao.customer.model.quotation.CreateQuotationReq;
 import com.libiao.customer.model.quotation.QuotationListReq;
 import com.libiao.customer.model.quotation.QuotationListVO;
 import com.libiao.customer.service.QuotationService;
+import com.libiao.customer.util.AccessController;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
 import io.swagger.annotations.Api;
@@ -38,6 +39,14 @@ public class QuotationController {
         List<QuotationListVO> voList = new ArrayList<>();
         list.getList().forEach(db->voList.add(BeanCopyUtil.copy(db,QuotationListVO.class)));
         return ResponseUtil.getListResponseVO(voList,list.getTotal());
+    }
+
+    @AccessController
+    @ApiOperation("获取费率")
+    @PostMapping("getRate")
+    public ResponseEntity<String> getRate(){
+        final String rate = quotationService.getRate();
+        return ResponseUtil.getResponseVO(rate);
     }
 
     //新增报价单

@@ -91,10 +91,10 @@ public class TestRespositoryImpl implements TestRespository {
         return testQuotationItemMapper.insert(testQuotationItem);
     }
 
-    @Override
+    /*@Override
     public int batchInsertQuotationItem(List<TestQuotationItem> testQuotationItemList) {
         return testQuotationItemMapper.batchInsert(testQuotationItemList);
-    }
+    }*/
 
     /*@Override
     public List<TestQuotation> queryTestQuotation(int pageNum, int pageSize){
@@ -111,10 +111,10 @@ public class TestRespositoryImpl implements TestRespository {
         return testQuotationList;
     }*/
 
-    @Override
+    /*@Override
     public List<TestQuotationItem> queryTestQuotationItemByQuotationId(Long testQuotationId) {
         return testQuotationItemMapper.selectByTestQuotationId(testQuotationId);
-    }
+    }*/
 
     @Override
     public int insertTestApplicationForm(TestApplicationForm testApplicationForm) {

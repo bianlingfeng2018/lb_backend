@@ -1,5 +1,6 @@
 package com.libiao.customer.entity;
 
+import com.libiao.customer.dal.model.Role;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,4 +23,7 @@ public class SessionUser implements Serializable {
     private String status;
 
     private String orgNo;
+
+    private Integer discount;//折扣
+
 }

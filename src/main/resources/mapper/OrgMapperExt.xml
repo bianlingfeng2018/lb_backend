@@ -3,7 +3,7 @@
 <mapper namespace="com.libiao.customer.dal.mapper.OrgMapperExt">
 
     <select id="getSubOrgList" resultType="com.libiao.customer.model.org.OrgListVO">
-        SELECT org.org_no, org.org_name, u.username
+        SELECT org.org_no, org.org_name, u.nickname as username
         FROM department_org org
         LEFT JOIN USER u ON u.id = org.person_in_charge
         WHERE org.parent_org_no = #{orgNo}

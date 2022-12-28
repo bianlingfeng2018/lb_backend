@@ -1,30 +1,27 @@
 package com.libiao.customer.model.quotation;
 
-import com.libiao.customer.model.BaseSessionReq;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-public class CreateQuotationReq extends BaseSessionReq {
+public class QuotationDetailVO {
 
-    @NotBlank
+    @ApiModelProperty("报告单号")
+    private String quotationNum;
+
     @ApiModelProperty("客户ID")
     private Integer clientId;
-    @NotBlank
+
     @ApiModelProperty("客户名称")
     private String clientName;
 
-    @NotBlank
     @ApiModelProperty("交易名称")
     private String tradeName;
     @ApiModelProperty("客户描述")
     private String tradeDesc;
 
-    @NotNull
     @ApiModelProperty("支付方式 0挂账 1~99 先付XX后检  100先付后检")
     private Byte payType;
 
@@ -36,7 +33,7 @@ public class CreateQuotationReq extends BaseSessionReq {
     private String faxClient;
     @ApiModelProperty("邮箱")
     private String email;
-    @NotBlank
+
     @ApiModelProperty("邮寄地址")
     private String deliveryAddress;
 

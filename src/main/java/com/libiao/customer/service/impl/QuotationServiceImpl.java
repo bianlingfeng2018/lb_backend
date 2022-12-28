@@ -1,12 +1,10 @@
 package com.libiao.customer.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.libiao.customer.dal.mapper.BasicTestItemMapper;
-import com.libiao.customer.dal.mapper.TestQuotationMapper;
-import com.libiao.customer.dal.model.BasicTestItem;
-import com.libiao.customer.dal.model.BasicTestItemExample;
-import com.libiao.customer.dal.model.TestQuotation;
-import com.libiao.customer.dal.model.TestQuotationExample;
+import com.libiao.customer.constant.QuotationEnum;
+import com.libiao.customer.dal.mapper.*;
+import com.libiao.customer.dal.model.*;
+import com.libiao.customer.model.quotation.CreateQuotaGoodsReqVO;
 import com.libiao.customer.model.quotation.CreateQuotationReq;
 import com.libiao.customer.model.quotation.QuotaGoodsItemVO;
 import com.libiao.customer.model.quotation.QuotationListReq;
@@ -21,6 +19,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class QuotationServiceImpl implements QuotationService {
@@ -31,6 +30,16 @@ public class QuotationServiceImpl implements QuotationService {
     private RedisUtil redisUtil;
     @Autowired
     private BasicTestItemMapper basicTestItemMapper;
+    @Autowired
+    private TestQuotationGoodsMapper testQuotationGoodsMapper;
+    @Autowired
+    private TestQuotationItemMapper testQuotationItemMapper;
+    @Autowired
+    private SystemParameterMapper systemParameterMapper;
+    @Autowired
+    private MallGoodsMapper mallGoodsMapper;
+
+
 
 
     @Override
@@ -67,12 +76,17 @@ public class QuotationServiceImpl implements QuotationService {
     public void create(CreateQuotationReq req){
         //获取所有测试项目
         Map<Integer,Integer> itemMap = new HashMap<>();
-        req.getGoods().forEach(goods->{
-            goods.getItems().forEach(item->{
-                //项目
+        Map<Long,List<Integer>> goodsMap = new HashMap<>();
+        int trans_amount = 0;
+        for (CreateQuotaGoodsReqVO goods : req.getGoods()) {
+            trans_amount += goods.getTestPrice();
+            List<Integer> itemsIds = new ArrayList<>();
+            for (QuotaGoodsItemVO item : goods.getItems()) {
                 itemMap.put(item.getItemId(), item.getQuantity());
-            });
-        });
+                itemsIds.add(item.getItemId());
+            }
+            goodsMap.put(goods.getGoodsId(),itemsIds);
+        }
         //计算折扣前的总金额
         final Set<Integer> itemIds = itemMap.keySet();
         final BasicTestItemExample basicTestItemExample = new BasicTestItemExample();
@@ -82,19 +96,82 @@ public class QuotationServiceImpl implements QuotationService {
         for (BasicTestItem item : basicTestItems) {
             amount += item.getPrice() * itemMap.get(item.getId());
         }
-        //然后再对比实际的金额来计算折扣
-        final BigDecimal discount = new BigDecimal(req.getTotalCost()).multiply(new BigDecimal(100)).divide(new BigDecimal(amount)).setScale(0, RoundingMode.HALF_UP);
-
-
-        //计算金额和折扣
+        //然后再对比实际的金额来计算折扣 报价/基本售价 = 折扣
+        final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100)).divide(new BigDecimal(amount)).setScale(0, RoundingMode.HALF_UP);
+        int dis = discount.intValue();
         TestQuotation record = new TestQuotation();
         BeanCopyUtil.copy(req,record);
-        //生产报价单号
-        redisUtil.getNo(DateUtils.getDate("yyyyMMdd"));
-        //先自动审核，自动审核不过，再走人工审核
+        record.setDiscount(String.valueOf(dis));
+        if (dis < req.getUser().getDiscount()){
+            //状态设置为待审核
+            record.setState(QuotationEnum.STEP_QUOT_CHECK.getCode());
+            record.setStep(QuotationEnum.STEP_QUOT_CHECK.getCode());
+        }else {
+            //状态设置为报价审核通过
+            record.setState(QuotationEnum.STEP_QUOT_CHECKED.getCode());
+            record.setStep(QuotationEnum.STEP_QUOT_CHECKED.getCode());
+        }
 
+        //生产报价单号
+        String quotNo = redisUtil.getNo(DateUtils.getDate("yyyyMMdd"));
+        record.setQuotationNum(quotNo);
+
+        MallGoods mallGoods = mallGoodsMapper.selectByPrimaryKey(1L);
+        TestQuotationGoods testQuotationGoods = new TestQuotationGoods();
+        testQuotationGoods.setGoodsId(mallGoods.getId());
+        testQuotationGoods.setGoodsName(mallGoods.getGoodsName());
+        testQuotationGoods.setHsCode(mallGoods.getHscode());
+        testQuotationGoods.setMaterial(mallGoods.getMaterial());
+        testQuotationGoods.setExportCountry(mallGoods.getExport());
+        testQuotationGoods.setStandard(mallGoods.getStandard());
+        testQuotationGoods.setTestPeriod(req.getGoods().get(0).getTestPeriod());
+        testQuotationGoods.setSampleNum(req.getGoods().get(0).getSampleNum());
+        testQuotationGoods.setService(req.getGoods().get(0).getService());
+        testQuotationGoods.setAmount(req.getGoods().get(0).getTestPrice());
+
+        StringBuilder sb = new StringBuilder();
+        for(Integer str : req.getGoods().get(0).getReportTypes()){
+            sb.append(str).append(",");
+        }
+        String result3 = sb.deleteCharAt(sb.length()-1).toString();
+        testQuotationGoods.setReprotType(result3);
+        testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
+        //TODO 根据勾选的报告类型添加报告费
+        testQuotationGoods.setReportAmt(0);
+        //对应下属测试项目组装
+        //
+        //quotation_idbigint(20) unsigned NOT NULL
+        //goods_idbigint(20) NOT NULL
+        //goods_namevarchar(100) NULL产品名称
+        //hs_codevarchar(100) NULL
+        //materialvarchar(100) NULL材质
+        //export_countryvarchar(100) NULL出口国
+        //standardvarchar(100) NULL检测标准
+        //test_periodint(11) NULL测试周期
+        //sample_numvarchar(100) NULL样品数量
+        //servicetinyint(4) NULL0普通 1加急 2特级
+        //amountint(11) NULL费用
+        //reprot_typevarchar(100) NULL报告类型
+        //org_priceint(11) NULL定价
+        //discountint(11) NULL折扣
+        //report_amtint(11) NULL报告费
+
+        //插入报价单
         testQuotationMapper.insert(record);
+
+
+
+
+        /*//插入报价单下属商品
+        testQuotationGoodsMapper.insert(goods);
+
+        //插入报价单下属测试项
+        testQuotationItemMapper.insert(itmes);*/
 
     }
 
+    @Override
+    public String getRate(){
+        return systemParameterMapper.selectByPrimaryKey("TAX_RATE").getParamValue();
+    }
 }

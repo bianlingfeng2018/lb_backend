@@ -9,7 +9,11 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-public class CreateQuotationReq extends BaseSessionReq {
+public class ModifyQuotationReq extends BaseSessionReq {
+
+    @NotBlank
+    @ApiModelProperty("报告单号")
+    private String quotationNum;
 
     @NotBlank
     @ApiModelProperty("客户ID")

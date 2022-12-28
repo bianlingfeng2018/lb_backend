@@ -10,4 +10,6 @@ import com.libiao.customer.model.quotation.QuotationListReq;
  */
 public interface QuotationService {
     PageInfo<TestQuotation> list(QuotationListReq req);
+
+    String getRate();
 }

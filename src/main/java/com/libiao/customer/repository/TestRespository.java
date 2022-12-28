@@ -59,11 +59,11 @@ public interface TestRespository {
      * 批量插入测试报价单
      * @return
      */
-    public int batchInsertQuotationItem(List<TestQuotationItem> testQuotationItemList);
+    //public int batchInsertQuotationItem(List<TestQuotationItem> testQuotationItemList);
 
     //public List<TestQuotation> queryTestQuotation(int pageNum, int pageSize);
 
-    public List<TestQuotationItem> queryTestQuotationItemByQuotationId(Long testQuotationId);
+    //public List<TestQuotationItem> queryTestQuotationItemByQuotationId(Long testQuotationId);
 
     /********************************************* 测试报价单 *********************************************/
 

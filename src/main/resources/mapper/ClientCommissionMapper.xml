@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.ClientCommissionMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.ClientCommission">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="client_name" jdbcType="VARCHAR" property="clientName" />
+    <result column="rate" jdbcType="INTEGER" property="rate" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="approve_time" jdbcType="TIMESTAMP" property="approveTime" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="inreview_rate" jdbcType="INTEGER" property="inreviewRate" />
+    <result column="approve_user" jdbcType="VARCHAR" property="approveUser" />
+    <result column="change_user" jdbcType="VARCHAR" property="changeUser" />
+    <result column="change_time" jdbcType="TIMESTAMP" property="changeTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, client_id, client_name, rate, status, create_time, approve_time, reason, inreview_rate, 
+    approve_user, change_user, change_time
+  </sql>
+  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.ClientCommissionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from client_commission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from client_commission
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from client_commission
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.ClientCommissionExample">
+    delete from client_commission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.ClientCommission">
+    insert into client_commission (id, client_id, client_name, 
+      rate, status, create_time, 
+      approve_time, reason, inreview_rate, 
+      approve_user, change_user, change_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{clientId,jdbcType=VARCHAR}, #{clientName,jdbcType=VARCHAR}, 
+      #{rate,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{approveTime,jdbcType=TIMESTAMP}, #{reason,jdbcType=VARCHAR}, #{inreviewRate,jdbcType=INTEGER}, 
+      #{approveUser,jdbcType=VARCHAR}, #{changeUser,jdbcType=VARCHAR}, #{changeTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.ClientCommission">
+    insert into client_commission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="clientId != null">
+        client_id,
+      </if>
+      <if test="clientName != null">
+        client_name,
+      </if>
+      <if test="rate != null">
+        rate,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="approveTime != null">
+        approve_time,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="inreviewRate != null">
+        inreview_rate,
+      </if>
+      <if test="approveUser != null">
+        approve_user,
+      </if>
+      <if test="changeUser != null">
+        change_user,
+      </if>
+      <if test="changeTime != null">
+        change_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clientId != null">
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientName != null">
+        #{clientName,jdbcType=VARCHAR},
+      </if>
+      <if test="rate != null">
+        #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveTime != null">
+        #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="inreviewRate != null">
+        #{inreviewRate,jdbcType=INTEGER},
+      </if>
+      <if test="approveUser != null">
+        #{approveUser,jdbcType=VARCHAR},
+      </if>
+      <if test="changeUser != null">
+        #{changeUser,jdbcType=VARCHAR},
+      </if>
+      <if test="changeTime != null">
+        #{changeTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.libiao.customer.dal.model.ClientCommissionExample" resultType="java.lang.Long">
+    select count(*) from client_commission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update client_commission
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.clientId != null">
+        client_id = #{row.clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="row.clientName != null">
+        client_name = #{row.clientName,jdbcType=VARCHAR},
+      </if>
+      <if test="row.rate != null">
+        rate = #{row.rate,jdbcType=INTEGER},
+      </if>
+      <if test="row.status != null">
+        status = #{row.status,jdbcType=VARCHAR},
+      </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.approveTime != null">
+        approve_time = #{row.approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.reason != null">
+        reason = #{row.reason,jdbcType=VARCHAR},
+      </if>
+      <if test="row.inreviewRate != null">
+        inreview_rate = #{row.inreviewRate,jdbcType=INTEGER},
+      </if>
+      <if test="row.approveUser != null">
+        approve_user = #{row.approveUser,jdbcType=VARCHAR},
+      </if>
+      <if test="row.changeUser != null">
+        change_user = #{row.changeUser,jdbcType=VARCHAR},
+      </if>
+      <if test="row.changeTime != null">
+        change_time = #{row.changeTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update client_commission
+    set id = #{row.id,jdbcType=BIGINT},
+      client_id = #{row.clientId,jdbcType=VARCHAR},
+      client_name = #{row.clientName,jdbcType=VARCHAR},
+      rate = #{row.rate,jdbcType=INTEGER},
+      status = #{row.status,jdbcType=VARCHAR},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      approve_time = #{row.approveTime,jdbcType=TIMESTAMP},
+      reason = #{row.reason,jdbcType=VARCHAR},
+      inreview_rate = #{row.inreviewRate,jdbcType=INTEGER},
+      approve_user = #{row.approveUser,jdbcType=VARCHAR},
+      change_user = #{row.changeUser,jdbcType=VARCHAR},
+      change_time = #{row.changeTime,jdbcType=TIMESTAMP}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.ClientCommission">
+    update client_commission
+    <set>
+      <if test="clientId != null">
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientName != null">
+        client_name = #{clientName,jdbcType=VARCHAR},
+      </if>
+      <if test="rate != null">
+        rate = #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveTime != null">
+        approve_time = #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="inreviewRate != null">
+        inreview_rate = #{inreviewRate,jdbcType=INTEGER},
+      </if>
+      <if test="approveUser != null">
+        approve_user = #{approveUser,jdbcType=VARCHAR},
+      </if>
+      <if test="changeUser != null">
+        change_user = #{changeUser,jdbcType=VARCHAR},
+      </if>
+      <if test="changeTime != null">
+        change_time = #{changeTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.ClientCommission">
+    update client_commission
+    set client_id = #{clientId,jdbcType=VARCHAR},
+      client_name = #{clientName,jdbcType=VARCHAR},
+      rate = #{rate,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      approve_time = #{approveTime,jdbcType=TIMESTAMP},
+      reason = #{reason,jdbcType=VARCHAR},
+      inreview_rate = #{inreviewRate,jdbcType=INTEGER},
+      approve_user = #{approveUser,jdbcType=VARCHAR},
+      change_user = #{changeUser,jdbcType=VARCHAR},
+      change_time = #{changeTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

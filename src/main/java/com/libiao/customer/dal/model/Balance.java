@@ -1,5 +1,7 @@
 package com.libiao.customer.dal.model;
 
+import java.util.Date;
+
 public class Balance {
     private Long id;
 
@@ -11,9 +13,11 @@ public class Balance {
 
     private Long creditLimit;
 
-    private Long commissionRate;
-
     private Long unsettleCommission;
+
+    private Date createTime;
+
+    private Date changeTime;
 
     public Long getId() {
         return id;
@@ -55,19 +59,27 @@ public class Balance {
         this.creditLimit = creditLimit;
     }
 
-    public Long getCommissionRate() {
-        return commissionRate;
-    }
-
-    public void setCommissionRate(Long commissionRate) {
-        this.commissionRate = commissionRate;
-    }
-
     public Long getUnsettleCommission() {
         return unsettleCommission;
     }
 
     public void setUnsettleCommission(Long unsettleCommission) {
         this.unsettleCommission = unsettleCommission;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getChangeTime() {
+        return changeTime;
+    }
+
+    public void setChangeTime(Date changeTime) {
+        this.changeTime = changeTime;
     }
 }

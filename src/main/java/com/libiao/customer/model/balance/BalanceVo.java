@@ -18,8 +18,6 @@ public class BalanceVo {
     Long unsettledAmt;
     @ApiModelProperty("授信额度")
     Long creditLimit;
-    @ApiModelProperty("佣金比")
-    Long commissionRate;
     @ApiModelProperty("未结算的佣金")
     Long unsettleCommission;
     @ApiModelProperty("剩余收款金额")

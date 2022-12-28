@@ -1,6 +1,7 @@
 package com.libiao.customer.dal.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BalanceExample {
@@ -414,66 +415,6 @@ public class BalanceExample {
             return (Criteria) this;
         }
 
-        public Criteria andCommissionRateIsNull() {
-            addCriterion("commission_rate is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateIsNotNull() {
-            addCriterion("commission_rate is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateEqualTo(Long value) {
-            addCriterion("commission_rate =", value, "commissionRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateNotEqualTo(Long value) {
-            addCriterion("commission_rate <>", value, "commissionRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateGreaterThan(Long value) {
-            addCriterion("commission_rate >", value, "commissionRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateGreaterThanOrEqualTo(Long value) {
-            addCriterion("commission_rate >=", value, "commissionRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateLessThan(Long value) {
-            addCriterion("commission_rate <", value, "commissionRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateLessThanOrEqualTo(Long value) {
-            addCriterion("commission_rate <=", value, "commissionRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateIn(List<Long> values) {
-            addCriterion("commission_rate in", values, "commissionRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateNotIn(List<Long> values) {
-            addCriterion("commission_rate not in", values, "commissionRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateBetween(Long value1, Long value2) {
-            addCriterion("commission_rate between", value1, value2, "commissionRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommissionRateNotBetween(Long value1, Long value2) {
-            addCriterion("commission_rate not between", value1, value2, "commissionRate");
-            return (Criteria) this;
-        }
-
         public Criteria andUnsettleCommissionIsNull() {
             addCriterion("unsettle_commission is null");
             return (Criteria) this;
@@ -531,6 +472,126 @@ public class BalanceExample {
 
         public Criteria andUnsettleCommissionNotBetween(Long value1, Long value2) {
             addCriterion("unsettle_commission not between", value1, value2, "unsettleCommission");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNull() {
+            addCriterion("create_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNotNull() {
+            addCriterion("create_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeEqualTo(Date value) {
+            addCriterion("create_time =", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotEqualTo(Date value) {
+            addCriterion("create_time <>", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThan(Date value) {
+            addCriterion("create_time >", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("create_time >=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThan(Date value) {
+            addCriterion("create_time <", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            addCriterion("create_time <=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIn(List<Date> values) {
+            addCriterion("create_time in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotIn(List<Date> values) {
+            addCriterion("create_time not in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
+            addCriterion("create_time between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            addCriterion("create_time not between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeIsNull() {
+            addCriterion("change_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeIsNotNull() {
+            addCriterion("change_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeEqualTo(Date value) {
+            addCriterion("change_time =", value, "changeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeNotEqualTo(Date value) {
+            addCriterion("change_time <>", value, "changeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeGreaterThan(Date value) {
+            addCriterion("change_time >", value, "changeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("change_time >=", value, "changeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeLessThan(Date value) {
+            addCriterion("change_time <", value, "changeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeLessThanOrEqualTo(Date value) {
+            addCriterion("change_time <=", value, "changeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeIn(List<Date> values) {
+            addCriterion("change_time in", values, "changeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeNotIn(List<Date> values) {
+            addCriterion("change_time not in", values, "changeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeBetween(Date value1, Date value2) {
+            addCriterion("change_time between", value1, value2, "changeTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andChangeTimeNotBetween(Date value1, Date value2) {
+            addCriterion("change_time not between", value1, value2, "changeTime");
             return (Criteria) this;
         }
     }

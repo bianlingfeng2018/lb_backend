@@ -15,13 +15,15 @@ public class CommissionChangeRecord {
 
     private String status;
 
-    private Integer orgRate;
+    private Long tradeAmt;
 
     private String descp;
 
     private Long amount;
 
     private String tradeId;
+
+    private String clientName;
 
     public Long getId() {
         return id;
@@ -71,12 +73,12 @@ public class CommissionChangeRecord {
         this.status = status;
     }
 
-    public Integer getOrgRate() {
-        return orgRate;
+    public Long getTradeAmt() {
+        return tradeAmt;
     }
 
-    public void setOrgRate(Integer orgRate) {
-        this.orgRate = orgRate;
+    public void setTradeAmt(Long tradeAmt) {
+        this.tradeAmt = tradeAmt;
     }
 
     public String getDescp() {
@@ -101,5 +103,13 @@ public class CommissionChangeRecord {
 
     public void setTradeId(String tradeId) {
         this.tradeId = tradeId;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 }

@@ -88,24 +88,22 @@ public class BalanceController {
         return balanceService.updateRecord(balanceReq);
     }
 
+    @PostMapping("getCommissionList")
+    @ApiOperation("商户佣金列表")
+    public ResponseEntity getCommissionList(@RequestBody CommissionListReq req){
+        return  commissionService.getCommissionList(req);
+    }
+
+    @PostMapping("getCommissionRecordList")
+    @ApiOperation("商户佣金入账列表")
+    public ResponseEntity getCommissionRecordList(@RequestBody CommissionListReq req){
+        return  commissionService.getCommissionRecordList(req);
+    }
+
     @PostMapping("setCommission")
     @ApiOperation("设置商户账户佣金")
     public ResponseEntity setCommission(@RequestBody CommissionReq req){
-        Balance balance = balanceService.getBalance(req.getClientId());
-        if(null == balance){
-            return ResponseUtil.convert(HttpStatus.NOT_FOUND,"商户记录不存在");
-        }
-        CommissionChangeRecord record = new CommissionChangeRecord();
-        if(balance.getCommissionRate() == null){
-            balance.setCommissionRate(0L);
-        }
-        record.setOrgRate(balance.getCommissionRate().intValue());
-        balance.setCommissionRate(req.getRate().longValue());
-
-        record.setOperUser(String.valueOf(req.getUser().getId()));
-        record.setAmount(balance.getBalanceAmt());
-        commissionService.addRecord(record);
-        return ResponseUtil.getDefaultResp();
+        return  commissionService.addRate(req);
     }
 
     @PostMapping("updateCommission")

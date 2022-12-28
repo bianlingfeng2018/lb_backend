@@ -9,10 +9,7 @@ import com.libiao.customer.dal.mapper.CommissionChangeRecordMapper;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.ErrorMessage;
 import com.libiao.customer.model.ListResponseVO;
-import com.libiao.customer.model.balance.BalanceReq;
-import com.libiao.customer.model.balance.CommissionListReq;
-import com.libiao.customer.model.balance.CommissionReq;
-import com.libiao.customer.model.balance.CommissionVo;
+import com.libiao.customer.model.balance.*;
 import com.libiao.customer.model.enums.CommissionStatus;
 import com.libiao.customer.service.BalanceService;
 import com.libiao.customer.service.CommissionService;
@@ -74,6 +71,16 @@ public class CommissionServiceImpl implements CommissionService {
         req.setOperTime(new Date());
         log.info("修改佣金，添加一条佣金记录：req={}", JSONObject.toJSONString(req, true));
         return recordMapper.insertSelective(req) == 1;
+    }
+
+    @Override
+    public ResponseEntity updateRecord(CommissionRecordReq req) {
+        CommissionChangeRecord record = recordMapper.selectByPrimaryKey(req.getId());
+        if(null == record) return ResponseUtil.convert(HttpStatus.NOT_FOUND,"记录不存在");
+        record.setOperUser(String.valueOf(req.getUser().getId()));
+        record.setOperTime(req.getSettleTime());
+        record.setStatus("已结算");
+        return recordMapper.updateByPrimaryKey(record)==1?ResponseUtil.getDefaultResp():ResponseUtil.convert(HttpStatus.INTERNAL_SERVER_ERROR,"系统内部错误");
     }
 
     @Override

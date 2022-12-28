@@ -119,4 +119,19 @@ public class BalanceController {
     }
 
 
+    @PostMapping("settleCommissionRecord")
+    @ApiOperation("记录标记已结算")
+    public ResponseEntity settleCommissionRecord(@RequestBody CommissionRecordReq req){
+        return commissionService.updateRecord(req);
+    }
+
+    @PostMapping("settleCommissionRecordBatch")
+    @ApiOperation("批量记录标记已结算")
+    public ResponseEntity settleCommissionRecordBatch(@RequestBody List<CommissionRecordReq> req){
+        req.forEach(commissionRecordReq -> {
+            commissionService.updateRecord(commissionRecordReq);
+        });
+        return ResponseUtil.getDefaultResp();
+    }
+
 }

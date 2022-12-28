@@ -52,33 +52,33 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.libiao.customer.dal.model.TestApplicationForm">
-    insert into test_application_form (id, report_date, rec_date, 
-      cs_name, report_num, application_name, 
-      application_address, report_title, same_as_applicant, 
-      other_name, other_address, contact, 
-      tel, fax, email, delivered_to, 
-      payer, invoice_title, sample_name, 
-      sample_quantity, sample_model, brand, 
-      lot_no, specification, supplier, 
-      po_num, buyer, manufacturer, 
-      exported_to, origin_country, language, 
-      report_format, report_type, agree_to_subcontract, 
-      service_type, sample_treatment, applicant_sig_cop, 
-      application_date, employee, customer, 
+    insert into test_application_form (id, report_date, rec_date,
+      cs_name, report_num, application_name,
+      application_address, report_title, same_as_applicant,
+      other_name, other_address, contact,
+      tel, fax, email, delivered_to,
+      payer, invoice_title, sample_name,
+      sample_quantity, sample_model, brand,
+      lot_no, specification, supplier,
+      po_num, buyer, manufacturer,
+      exported_to, origin_country, language,
+      report_format, report_type, agree_to_subcontract,
+      service_type, sample_treatment, applicant_sig_cop,
+      application_date, employee, customer,
       test_requirement, test_trade_id, copy_num, flex_obj)
-    values (#{id,jdbcType=BIGINT}, #{reportDate,jdbcType=TIMESTAMP}, #{recDate,jdbcType=TIMESTAMP}, 
-      #{csName,jdbcType=VARCHAR}, #{reportNum,jdbcType=VARCHAR}, #{applicationName,jdbcType=VARCHAR}, 
-      #{applicationAddress,jdbcType=VARCHAR}, #{reportTitle,jdbcType=VARCHAR}, #{sameAsApplicant,jdbcType=VARCHAR}, 
-      #{otherName,jdbcType=VARCHAR}, #{otherAddress,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
-      #{tel,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{deliveredTo,jdbcType=VARCHAR}, 
-      #{payer,jdbcType=VARCHAR}, #{invoiceTitle,jdbcType=VARCHAR}, #{sampleName,jdbcType=VARCHAR}, 
-      #{sampleQuantity,jdbcType=VARCHAR}, #{sampleModel,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, 
-      #{lotNo,jdbcType=VARCHAR}, #{specification,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, 
-      #{poNum,jdbcType=VARCHAR}, #{buyer,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, 
-      #{exportedTo,jdbcType=VARCHAR}, #{originCountry,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR}, 
-      #{reportFormat,jdbcType=VARCHAR}, #{reportType,jdbcType=VARCHAR}, #{agreeToSubcontract,jdbcType=VARCHAR}, 
-      #{serviceType,jdbcType=VARCHAR}, #{sampleTreatment,jdbcType=VARCHAR}, #{applicantSigCop,jdbcType=VARCHAR}, 
-      #{applicationDate,jdbcType=VARCHAR}, #{employee,jdbcType=VARCHAR}, #{customer,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{reportDate,jdbcType=TIMESTAMP}, #{recDate,jdbcType=TIMESTAMP},
+      #{csName,jdbcType=VARCHAR}, #{reportNum,jdbcType=VARCHAR}, #{applicationName,jdbcType=VARCHAR},
+      #{applicationAddress,jdbcType=VARCHAR}, #{reportTitle,jdbcType=VARCHAR}, #{sameAsApplicant,jdbcType=VARCHAR},
+      #{otherName,jdbcType=VARCHAR}, #{otherAddress,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR},
+      #{tel,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{deliveredTo,jdbcType=VARCHAR},
+      #{payer,jdbcType=VARCHAR}, #{invoiceTitle,jdbcType=VARCHAR}, #{sampleName,jdbcType=VARCHAR},
+      #{sampleQuantity,jdbcType=VARCHAR}, #{sampleModel,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR},
+      #{lotNo,jdbcType=VARCHAR}, #{specification,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR},
+      #{poNum,jdbcType=VARCHAR}, #{buyer,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR},
+      #{exportedTo,jdbcType=VARCHAR}, #{originCountry,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR},
+      #{reportFormat,jdbcType=VARCHAR}, #{reportType,jdbcType=VARCHAR}, #{agreeToSubcontract,jdbcType=VARCHAR},
+      #{serviceType,jdbcType=VARCHAR}, #{sampleTreatment,jdbcType=VARCHAR}, #{applicantSigCop,jdbcType=VARCHAR},
+      #{applicationDate,jdbcType=VARCHAR}, #{employee,jdbcType=VARCHAR}, #{customer,jdbcType=VARCHAR},
       #{testRequirement,jdbcType=LONGVARCHAR}, #{testTradeId, jdbcType=BIGINT}, #{copyNum, jdbcType=VARCHAR},
       #{flexObj, jdbcType=LONGVARCHAR})
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -133,22 +133,22 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, report_date, rec_date, cs_name, report_num, application_name, application_address, 
-    report_title, same_as_applicant, other_name, other_address, contact, tel, fax, email, 
-    delivered_to, payer, invoice_title, sample_name, sample_quantity, sample_model, brand, 
-    lot_no, specification, supplier, po_num, buyer, manufacturer, exported_to, origin_country, 
-    language, report_format, report_type, agree_to_subcontract, service_type, sample_treatment, 
+    select id, report_date, rec_date, cs_name, report_num, application_name, application_address,
+    report_title, same_as_applicant, other_name, other_address, contact, tel, fax, email,
+    delivered_to, payer, invoice_title, sample_name, sample_quantity, sample_model, brand,
+    lot_no, specification, supplier, po_num, buyer, manufacturer, exported_to, origin_country,
+    language, report_format, report_type, agree_to_subcontract, service_type, sample_treatment,
     applicant_sig_cop, application_date, employee, customer, test_requirement, test_trade_id, copy_num,
         flex_obj
     from test_application_form
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, report_date, rec_date, cs_name, report_num, application_name, application_address, 
-    report_title, same_as_applicant, other_name, other_address, contact, tel, fax, email, 
-    delivered_to, payer, invoice_title, sample_name, sample_quantity, sample_model, brand, 
-    lot_no, specification, supplier, po_num, buyer, manufacturer, exported_to, origin_country, 
-    language, report_format, report_type, agree_to_subcontract, service_type, sample_treatment, 
+    select id, report_date, rec_date, cs_name, report_num, application_name, application_address,
+    report_title, same_as_applicant, other_name, other_address, contact, tel, fax, email,
+    delivered_to, payer, invoice_title, sample_name, sample_quantity, sample_model, brand,
+    lot_no, specification, supplier, po_num, buyer, manufacturer, exported_to, origin_country,
+    language, report_format, report_type, agree_to_subcontract, service_type, sample_treatment,
     applicant_sig_cop, application_date, employee, customer, test_requirement, test_trade_id, copy_num,
         flex_obj
     from test_application_form

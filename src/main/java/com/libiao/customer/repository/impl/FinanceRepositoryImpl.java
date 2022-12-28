@@ -2,7 +2,6 @@ package com.libiao.customer.repository.impl;
 
 import com.libiao.customer.dal.mapper.FinanceMapper;
 import com.libiao.customer.dal.model.Finance;
-import com.libiao.customer.dal.model.User;
 import com.libiao.customer.repository.FinanceRepository;
 import java.util.List;
 import org.springframework.stereotype.Repository;

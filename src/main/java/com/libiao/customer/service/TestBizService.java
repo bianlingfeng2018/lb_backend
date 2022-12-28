@@ -1,6 +1,5 @@
 package com.libiao.customer.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.util.model.ResponseVO;
 import javax.servlet.http.HttpServletResponse;
@@ -85,7 +84,7 @@ public interface TestBizService {
     /**
      * 确认检测报告
      */
-    ResponseVO confirmTestReport(Long testTradeId, List<User> userList);
+    ResponseVO confirmTestReport(Long testTradeId, List<UserExt> userExtList);
 
 
     ResponseVO exportTestReport(HttpServletResponse response, Long testTradeId);

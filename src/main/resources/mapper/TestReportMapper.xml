@@ -34,20 +34,20 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.libiao.customer.dal.model.TestReport">
-    insert into test_report (id, report_num, sample_name, 
-      client, address, sample_model, 
-      brand, supplier, order_num, 
-      buyer, producers, export_place, 
-      producing_country, test_trade_id, receiving_date, 
-      test_start_date, test_end_date, approver, 
+    insert into test_report (id, report_num, sample_name,
+      client, address, sample_model,
+      brand, supplier, order_num,
+      buyer, producers, export_place,
+      producing_country, test_trade_id, receiving_date,
+      test_start_date, test_end_date, approver,
       reviewer, editor, sample_desc,
       test_experiment, test_remark, remark, test_period, flex_obj)
-    values (#{id,jdbcType=BIGINT}, #{reportNum,jdbcType=VARCHAR}, #{sampleName,jdbcType=VARCHAR}, 
-      #{client,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{sampleModel,jdbcType=VARCHAR}, 
-      #{brand,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR}, 
-      #{buyer,jdbcType=VARCHAR}, #{producers,jdbcType=VARCHAR}, #{exportPlace,jdbcType=VARCHAR}, 
-      #{producingCountry,jdbcType=VARCHAR}, #{testTradeId,jdbcType=VARCHAR}, #{receivingDate,jdbcType=TIMESTAMP}, 
-      #{testStartDate,jdbcType=DATE}, #{testEndDate,jdbcType=DATE}, #{approver,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{reportNum,jdbcType=VARCHAR}, #{sampleName,jdbcType=VARCHAR},
+      #{client,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{sampleModel,jdbcType=VARCHAR},
+      #{brand,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR},
+      #{buyer,jdbcType=VARCHAR}, #{producers,jdbcType=VARCHAR}, #{exportPlace,jdbcType=VARCHAR},
+      #{producingCountry,jdbcType=VARCHAR}, #{testTradeId,jdbcType=VARCHAR}, #{receivingDate,jdbcType=TIMESTAMP},
+      #{testStartDate,jdbcType=DATE}, #{testEndDate,jdbcType=DATE}, #{approver,jdbcType=VARCHAR},
       #{reviewer,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}, #{sampleDesc,jdbcType=LONGVARCHAR},
       #{testExperiment,jdbcType=LONGVARCHAR}, #{testRemark,jdbcType=LONGVARCHAR}, #{remark,jdbcType=LONGVARCHAR},
             #{testPeriod,jdbcType=VARCHAR}, #{flexObj,jdbcType=LONGVARCHAR})
@@ -85,16 +85,16 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, report_num, sample_name, client, address, sample_model, brand, supplier, 
-    order_num, buyer, producers, export_place, producing_country, test_trade_id, receiving_date, 
+    select id, report_num, sample_name, client, address, sample_model, brand, supplier,
+    order_num, buyer, producers, export_place, producing_country, test_trade_id, receiving_date,
     test_start_date, test_end_date, approver, reviewer, editor, sample_desc, test_experiment,
     test_remark, remark, test_period, flex_obj
     from test_report
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, report_num, sample_name, client, address, sample_model, brand, supplier, 
-    order_num, buyer, producers, export_place, producing_country, test_trade_id, receiving_date, 
+    select id, report_num, sample_name, client, address, sample_model, brand, supplier,
+    order_num, buyer, producers, export_place, producing_country, test_trade_id, receiving_date,
     test_start_date, test_end_date, approver, reviewer, editor, sample_desc, test_experiment,
     test_remark, remark, test_period, flex_obj
     from test_report

@@ -2,6 +2,7 @@ package com.libiao.customer.repository.impl;
 
 import com.libiao.customer.dal.mapper.MallGoodsMapper;
 import com.libiao.customer.dal.model.MallGoods;
+import com.libiao.customer.dal.model.MallGoodsExample;
 import com.libiao.customer.repository.GoodsRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class GoodsRepositoryImpl implements GoodsRepository {
 
   @Override
   public List<MallGoods> selectAll() {
-    return goodsMapper.selectAll();
+    return goodsMapper.selectByExample(new MallGoodsExample());
   }
 
   @Override

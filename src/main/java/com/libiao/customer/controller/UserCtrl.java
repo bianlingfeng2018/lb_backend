@@ -1,10 +1,8 @@
 package com.libiao.customer.controller;
 
-import com.libiao.customer.dal.model.Role;
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.service.UserBizService;
 import com.libiao.customer.util.model.ResponseVO;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +32,8 @@ public class UserCtrl {
 
     @ResponseBody
     @RequestMapping(value = "/saveUser", method = RequestMethod.POST)
-    public ResponseVO saveUser(@RequestBody User user){
-        return userBizService.saveUser(user);
+    public ResponseVO saveUser(@RequestBody UserExt userExt){
+        return userBizService.saveUser(userExt);
     }
 
     /**
@@ -60,13 +58,13 @@ public class UserCtrl {
 
     /**
      *
-     * @param user
+     * @param userExt
      * @param roleId
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/addUserToRole", method = RequestMethod.POST)
-    public ResponseVO addUserToRole(@RequestBody User user, @RequestParam("roleId") Long roleId){
-        return addUserToRole(user, roleId);
+    public ResponseVO addUserToRole(@RequestBody UserExt userExt, @RequestParam("roleId") Long roleId){
+        return addUserToRole(userExt, roleId);
     }
 }

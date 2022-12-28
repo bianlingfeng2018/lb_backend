@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.QuotationMapperExt">
+
+    <select id="getServiceId" resultType="long">
+        select tmp.id
+        from (
+                 select u.id, count(tq.state) as cnt
+                 from user u
+                          left join test_quotation tq on tq.service_id = u.id
+                 where u.role_id = 2 and tq.state = 2
+                 group by u.id
+             ) tmp
+        order by tmp.cnt
+        limit 1
+    </select>
+
+</mapper>

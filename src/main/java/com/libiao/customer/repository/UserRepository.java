@@ -1,39 +1,40 @@
 package com.libiao.customer.repository;
 
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.UserExt;
+
 import java.util.List;
 
 public interface UserRepository {
 
   int deleteByPrimaryKey(Long id);
 
-  int insert(User row);
+  int insert(UserExt row);
 
-  User selectByPrimaryKey(Long id);
+  UserExt selectByPrimaryKey(Long id);
 
-  User selectByUsernamePassword(String username, String password);
+  UserExt selectByUsernamePassword(String username, String password);
 
-  List<User> selectAll();
+  List<UserExt> selectAll();
 
-  int updateByPrimaryKey(User row);
+  int updateByPrimaryKey(UserExt row);
 
-  List<User> selectAllWithRole();
+  List<UserExt> selectAllWithRole();
 
-  List<User> selectAllWithRoleByRole(String role);
+  List<UserExt> selectAllWithRoleByRole(String role);
 
-  User selectByUsername(String userName);
+  UserExt selectByUsername(String userName);
 
-  List<User> selectAllWithRoleByRoleAndCreatedBy(String roleName, Long id);
+  List<UserExt> selectAllWithRoleByRoleAndCreatedBy(String roleName, Long id);
 
-  List<User> selectAllWithRoleByRoleInSameTestTrade(String role, String loginUsername);
+  List<UserExt> selectAllWithRoleByRoleInSameTestTrade(String role, String loginUsername);
 
-  User selectByRoleAndTestTrade(String role, Long tradeId);
+  UserExt selectByRoleAndTestTrade(String role, Long tradeId);
 
-  List<User> selectAllWithRoleByNotRole(String role);
+  List<UserExt> selectAllWithRoleByNotRole(String role);
 
-  User selectByPrimaryKeyWithRole(Long id);
+  UserExt selectByPrimaryKeyWithRole(Long id);
 
-  List<User> selectByClientId(Long id);
+  List<UserExt> selectByClientId(Long id);
 
-  List<User> selectByPhoneNum(String phoneNum);
+  List<UserExt> selectByPhoneNum(String phoneNum);
 }

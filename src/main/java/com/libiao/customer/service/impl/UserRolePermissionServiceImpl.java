@@ -1,6 +1,5 @@
 package com.libiao.customer.service.impl;
 
-import static com.libiao.customer.util.SystemConstant.getTestApplicationFormImageDir;
 import static com.libiao.customer.util.SystemConstant.getUserSignatureDir;
 import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_ADMIN;
 import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_CLIENT;
@@ -18,7 +17,7 @@ import com.libiao.customer.controller.PageVO;
 import com.libiao.customer.dal.model.Permission;
 import com.libiao.customer.dal.model.Role;
 import com.libiao.customer.dal.model.RolePermission;
-import com.libiao.customer.dal.model.User;
+import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.repository.PermissionRepository;
 import com.libiao.customer.repository.RolePermissionRepository;
 import com.libiao.customer.repository.RoleRepository;
@@ -39,7 +38,6 @@ import java.util.Objects;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -113,15 +111,15 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   }
 
   @Override
-  public ResponseVO<Void> addUser(User user) {
+  public ResponseVO<Void> addUser(UserExt userExt) {
     try {
       String userName = WebUtil.getAccessToken().getUsername();
-      User loginUser = userRepository.selectByUsername(userName);
-      user.setCreatedBy(loginUser.getId());
-      user.setGmtCreate(new Date());
-      user.setGmtModify(new Date());
-      user.setPermission("");
-      userRepository.insert(user);
+      UserExt loginUserExt = userRepository.selectByUsername(userName);
+      userExt.setCreatedBy(loginUserExt.getId());
+      userExt.setGmtCreate(new Date());
+      userExt.setGmtModify(new Date());
+      userExt.setPermission("");
+      userRepository.insert(userExt);
       JSONObject result = new JSONObject();
       result.put("msg", "新增成功");
       return ResponseUtil.success(result);
@@ -141,14 +139,14 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   }
 
   @Override
-  public ResponseVO<PageVO<User>> getUsersByPage(int pageNo, int pageSize) {
+  public ResponseVO<PageVO<UserExt>> getUsersByPage(int pageNo, int pageSize) {
     try {
       PageHelper.startPage(pageNo, pageSize);
       PageHelper.orderBy("id desc");
-      List<User> users = userRepository.selectAllWithRole();
-      PageInfo<User> page = new PageInfo<>(users);
-      page.setList(users);
-      PageVO<User> pageVO = PageUtil.createPageVO(pageNo, pageSize, page.getPages(),
+      List<UserExt> userExts = userRepository.selectAllWithRole();
+      PageInfo<UserExt> page = new PageInfo<>(userExts);
+      page.setList(userExts);
+      PageVO<UserExt> pageVO = PageUtil.createPageVO(pageNo, pageSize, page.getPages(),
           page.getTotal(), page.getList());
       return ResponseUtil.success(pageVO);
     } catch (Exception e) {
@@ -157,9 +155,9 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   }
 
   @Override
-  public ResponseVO<List<User>> getAllUsers() {
+  public ResponseVO<List<UserExt>> getAllUsers() {
     try {
-      List<User> list = userRepository.selectAll();
+      List<UserExt> list = userRepository.selectAll();
       return ResponseUtil.success(list);
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
@@ -193,14 +191,14 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   }
 
   @Override
-  public ResponseVO<Void> updateUser(User user) {
+  public ResponseVO<Void> updateUser(UserExt userExt) {
     try {
-      User find = userRepository.selectByPrimaryKey(user.getId());
+      UserExt find = userRepository.selectByPrimaryKey(userExt.getId());
       if (Objects.isNull(find)) {
         return ResponseUtil.error(404, "用户不存在，修改失败");
       }
-      user.setGmtModify(new Date());
-      userRepository.updateByPrimaryKey(user);
+      userExt.setGmtModify(new Date());
+      userRepository.updateByPrimaryKey(userExt);
       JSONObject result = new JSONObject();
       result.put("msg", "更新成功");
       return ResponseUtil.success(result);
@@ -268,26 +266,26 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   }
 
   @Override
-  public ResponseVO<List<User>> getAllClientsByOwner(String role) {
+  public ResponseVO<List<UserExt>> getAllClientsByOwner(String role) {
     try {
       String userName = WebUtil.getAccessToken().getUsername();
-      User loginUser = userRepository.selectByUsername(userName);
-      String loginRole = loginUser.getRole().getName();
-      String LoginUsername = loginUser.getUsername();
-      List<User> users = Lists.newArrayList();
+      UserExt loginUserExt = userRepository.selectByUsername(userName);
+      String loginRole = loginUserExt.getRole().getName();
+      String LoginUsername = loginUserExt.getUsername();
+      List<UserExt> userExts = Lists.newArrayList();
       switch (loginRole) {
         case ROLE_SALESMAN:
-          users = userRepository.selectAllWithRoleByRoleAndCreatedBy(role, loginUser.getId());
+          userExts = userRepository.selectAllWithRoleByRoleAndCreatedBy(role, loginUserExt.getId());
           break;
         case ROLE_CUSTOM_SERVICE:
-          users = userRepository.selectAllWithRoleByRoleInSameTestTrade(role, LoginUsername);
+          userExts = userRepository.selectAllWithRoleByRoleInSameTestTrade(role, LoginUsername);
           break;
         case ROLE_ADMIN:
-          users = userRepository.selectAllWithRoleByRole(role);
+          userExts = userRepository.selectAllWithRoleByRole(role);
         default:
           break;
       }
-      return ResponseUtil.success(users);
+      return ResponseUtil.success(userExts);
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
@@ -295,30 +293,30 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   }
 
   @Override
-  public ResponseVO<PageVO<User>> getClientsByPageAndOwner(int pageNo, int pageSize, String role) {
+  public ResponseVO<PageVO<UserExt>> getClientsByPageAndOwner(int pageNo, int pageSize, String role) {
     try {
       String userName = WebUtil.getAccessToken().getUsername();
-      User loginUser = userRepository.selectByUsername(userName);
-      String loginRole = loginUser.getRole().getName();
-      String LoginUsername = loginUser.getUsername();
+      UserExt loginUserExt = userRepository.selectByUsername(userName);
+      String loginRole = loginUserExt.getRole().getName();
+      String LoginUsername = loginUserExt.getUsername();
       PageHelper.startPage(pageNo, pageSize);
       PageHelper.orderBy("id desc");
-      List<User> users = Lists.newArrayList();
+      List<UserExt> userExts = Lists.newArrayList();
       switch (loginRole) {
         case ROLE_SALESMAN:
-          users = userRepository.selectAllWithRoleByRoleAndCreatedBy(role, loginUser.getId());
+          userExts = userRepository.selectAllWithRoleByRoleAndCreatedBy(role, loginUserExt.getId());
           break;
         case ROLE_CUSTOM_SERVICE:
-          users = userRepository.selectAllWithRoleByRoleInSameTestTrade(role, LoginUsername);
+          userExts = userRepository.selectAllWithRoleByRoleInSameTestTrade(role, LoginUsername);
           break;
         case ROLE_ADMIN:
-          users = userRepository.selectAllWithRoleByRole(role);
+          userExts = userRepository.selectAllWithRoleByRole(role);
           break;
         default:
           break;
       }
-      PageInfo<User> page = new PageInfo<>(users);
-      PageVO<User> pageVO = PageUtil.createPageVO(pageNo, pageSize, page.getPages(),
+      PageInfo<UserExt> page = new PageInfo<>(userExts);
+      PageVO<UserExt> pageVO = PageUtil.createPageVO(pageNo, pageSize, page.getPages(),
           page.getTotal(), page.getList());
       return ResponseUtil.success(pageVO);
     } catch (Exception e) {
@@ -328,20 +326,20 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   }
 
   @Override
-  public ResponseVO<List<User>> getAllUsersByRole(String role) {
+  public ResponseVO<List<UserExt>> getAllUsersByRole(String role) {
     try {
-      List<User> users = userRepository.selectAllWithRoleByRole(role);
-      return ResponseUtil.success(users);
+      List<UserExt> userExts = userRepository.selectAllWithRoleByRole(role);
+      return ResponseUtil.success(userExts);
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
     }
   }
 
   @Override
-  public ResponseVO<User> getUserByUsername(String username) {
+  public ResponseVO<UserExt> getUserByUsername(String username) {
     try {
-      User user = userRepository.selectByUsername(username);
-      return ResponseUtil.success(user);
+      UserExt userExt = userRepository.selectByUsername(username);
+      return ResponseUtil.success(userExt);
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
     }
@@ -350,13 +348,13 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   @Override
   public ResponseVO<?> updateUserPassword(String username, String oldPassword, String newPassword) {
     try {
-      User user = userRepository.selectByUsername(username);
-      String password = user.getPassword();
+      UserExt userExt = userRepository.selectByUsername(username);
+      String password = userExt.getPassword();
       if (!Objects.equals(oldPassword, password)) {
         return ResponseUtil.error(400, "密码错误");
       }
-      user.setPassword(newPassword);
-      userRepository.updateByPrimaryKey(user);
+      userExt.setPassword(newPassword);
+      userRepository.updateByPrimaryKey(userExt);
       return ResponseUtil.success();
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
@@ -366,9 +364,9 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   @Override
   public ResponseVO<?> getUserById(Long id) {
     try {
-      User user = userRepository.selectByPrimaryKeyWithRole(id);
-      JSONObject jsonObject = (JSONObject) JSONObject.toJSON(user);
-      jsonObject.put("flexObj", JSONObject.parse(user.getFlexObj()));
+      UserExt userExt = userRepository.selectByPrimaryKeyWithRole(id);
+      JSONObject jsonObject = (JSONObject) JSONObject.toJSON(userExt);
+      jsonObject.put("flexObj", JSONObject.parse(userExt.getFlexObj()));
       return ResponseUtil.success(jsonObject);
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
@@ -376,13 +374,13 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   }
 
   @Override
-  public ResponseVO<User> getUserByRoleAndTradeId(String role, Long tradeId) {
+  public ResponseVO<UserExt> getUserByRoleAndTradeId(String role, Long tradeId) {
     try {
-      User user = userRepository.selectByRoleAndTestTrade(role, tradeId);
-      if (Objects.isNull(user)) {
+      UserExt userExt = userRepository.selectByRoleAndTestTrade(role, tradeId);
+      if (Objects.isNull(userExt)) {
         return ResponseUtil.error(404, "未找到用户信息");
       }
-      return ResponseUtil.success(user);
+      return ResponseUtil.success(userExt);
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
     }
@@ -391,10 +389,10 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   @Override
   public ResponseVO<?> uploadSignature(MultipartFile[] imgList, String username) {
     try {
-      User user = userRepository.selectByUsername(username);
+      UserExt userExt = userRepository.selectByUsername(username);
       //上传附件
       if (!ArrayUtils.isEmpty(imgList)) {
-        String dir1 = getUserSignatureDir(String.valueOf(user.getId()));
+        String dir1 = getUserSignatureDir(String.valueOf(userExt.getId()));
         recurseDelFile(dir1);
         uploadToFileDir(dir1, imgList);
       }
@@ -410,8 +408,8 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   @Override
   public ResponseVO<?> getUserSignatures(String username) {
     try {
-      User user = userRepository.selectByUsername(username);
-      String path = getUserSignatureDir(String.valueOf(user.getId()));
+      UserExt userExt = userRepository.selectByUsername(username);
+      String path = getUserSignatureDir(String.valueOf(userExt.getId()));
       File file = new File(path);
       File[] files = file.listFiles();
       if (files == null || files.length == 0) {
@@ -437,14 +435,14 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   }
 
   @Override
-  public ResponseVO<PageVO<User>> getEmployeePage(int pageNo, int pageSize) {
+  public ResponseVO<PageVO<UserExt>> getEmployeePage(int pageNo, int pageSize) {
     try {
       PageHelper.startPage(pageNo, pageSize);
       PageHelper.orderBy("id desc");
-      List<User> users = userRepository.selectAllWithRoleByNotRole(ROLE_CLIENT);
-      PageInfo<User> page = new PageInfo<>(users);
-      page.setList(users);
-      PageVO<User> pageVO = PageUtil.createPageVO(pageNo, pageSize, page.getPages(),
+      List<UserExt> userExts = userRepository.selectAllWithRoleByNotRole(ROLE_CLIENT);
+      PageInfo<UserExt> page = new PageInfo<>(userExts);
+      page.setList(userExts);
+      PageVO<UserExt> pageVO = PageUtil.createPageVO(pageNo, pageSize, page.getPages(),
           page.getTotal(), page.getList());
       return ResponseUtil.success(pageVO);
     } catch (Exception e) {

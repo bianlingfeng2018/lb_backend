@@ -11,5 +11,5 @@ public class ClientVO extends Client {
   /**
    * 客户联系人列表
    */
-  private List<User> contactList;
+  private List<UserExt> contactList;
 }

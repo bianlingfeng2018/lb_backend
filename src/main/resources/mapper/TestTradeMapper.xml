@@ -20,13 +20,13 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.libiao.customer.dal.model.TestTrade">
-    insert into test_trade (id, gmt_create, gmt_modify, 
-      test_name, test_desc, client, 
-      contact, client_account, owner, 
+    insert into test_trade (id, gmt_create, gmt_modify,
+      test_name, test_desc, client,
+      contact, client_account, owner,
       status, client_id, owner_id)
-    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModify,jdbcType=TIMESTAMP}, 
-      #{testName,jdbcType=VARCHAR}, #{testDesc,jdbcType=VARCHAR}, #{client,jdbcType=VARCHAR}, 
-      #{contact,jdbcType=VARCHAR}, #{clientAccount,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModify,jdbcType=TIMESTAMP},
+      #{testName,jdbcType=VARCHAR}, #{testDesc,jdbcType=VARCHAR}, #{client,jdbcType=VARCHAR},
+      #{contact,jdbcType=VARCHAR}, #{clientAccount,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR},
       #{status,jdbcType=VARCHAR}, #{clientId,jdbcType=BIGINT}, #{ownerId,jdbcType=BIGINT})
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       select LAST_INSERT_ID()
@@ -48,13 +48,13 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, gmt_create, gmt_modify, test_name, test_desc, client, contact, client_account, 
+    select id, gmt_create, gmt_modify, test_name, test_desc, client, contact, client_account,
     owner, status, client_id, owner_id
     from test_trade
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, gmt_create, gmt_modify, test_name, test_desc, client, contact, client_account, 
+    select id, gmt_create, gmt_modify, test_name, test_desc, client, contact, client_account,
     owner, status, client_id, owner_id
     from test_trade
   </select>

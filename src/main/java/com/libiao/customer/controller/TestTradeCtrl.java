@@ -409,8 +409,8 @@ public class TestTradeCtrl {
         Long testTradeId = message.getLong("testTradeId");
         JSONArray userJSONArray = message.getJSONArray("checkers"); // 获取数组
         String userListStr = JSONObject.toJSONString(userJSONArray, SerializerFeature.WriteClassName); // 转为字符串
-        List<User> userList = JSONObject.parseArray(userListStr, User.class);
-        return testBizService.confirmTestReport(testTradeId, userList);
+        List<UserExt> userExtList = JSONObject.parseArray(userListStr, UserExt.class);
+        return testBizService.confirmTestReport(testTradeId, userExtList);
     }
 
     @ResponseBody

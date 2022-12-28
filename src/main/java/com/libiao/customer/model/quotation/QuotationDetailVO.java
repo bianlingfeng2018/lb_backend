@@ -45,7 +45,7 @@ public class QuotationDetailVO {
     private Integer reportFee;
 
     @ApiModelProperty("商品")
-    private List<CreateQuotaGoodsReqVO> goods;
+    private List<QuotaGoodsVO> goods;
 
     @ApiModelProperty("报价单类型 1普通报价单 2加测报价单 3复测报价单")
     private Byte type;

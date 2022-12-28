@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.ProductMapperExt">
+
+    <resultMap id="goodsResultMap" type="com.libiao.customer.model.product.GoodsVO">
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="hscode" jdbcType="VARCHAR" property="hsCode"/>
+        <result column="material" jdbcType="VARCHAR" property="material"/>
+        <result column="export" jdbcType="VARCHAR" property="export"/>
+        <result column="standard" jdbcType="VARCHAR" property="standard"/>
+        <result column="goods_id" jdbcType="INTEGER" property="goodsId"/>
+        <collection property="items">
+            <result column="id" jdbcType="INTEGER" property="id"/>
+            <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="price" jdbcType="INTEGER" property="price"/>
+        </collection>
+    </resultMap>
+
+    <select id="getGoodsList" resultMap="goodsResultMap">
+        SELECT mg.goods_name, mg.hscode,mg.material,mg.export,mg.standard,
+               gi.goods_id,bti.name,bti.price,bti.id
+        FROM mall_goods mg
+                 LEFT JOIN goods_item gi ON gi.goods_id = mg.id
+                 LEFT JOIN basic_test_item bti ON bti.id = gi.item_id
+        order by mg.id, bti.id desc
+    </select>
+
+</mapper>
+

@@ -24,5 +24,6 @@ public class AddGoodsReq extends BaseSessionReq {
     private String standard;
     @ApiModelProperty("检测项列表")
     List<BasicItemVO> items;
-
+    @ApiModelProperty("类型 1检测 2检验 3认证")
+    private Byte busType;
 }

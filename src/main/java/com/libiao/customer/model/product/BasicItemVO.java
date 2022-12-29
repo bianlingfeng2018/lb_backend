@@ -16,5 +16,6 @@ public class BasicItemVO {
     private Integer price;
     @ApiModelProperty("测试周期")
     private String period;
-
+    @ApiModelProperty("样品数量")
+    private Integer quantity;
 }

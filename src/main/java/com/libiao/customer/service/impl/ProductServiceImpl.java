@@ -4,10 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.BasePageReq;
-import com.libiao.customer.model.product.AddGoodsReq;
-import com.libiao.customer.model.product.BasicItemVO;
-import com.libiao.customer.model.product.GoodsListReq;
-import com.libiao.customer.model.product.GoodsVO;
+import com.libiao.customer.model.product.*;
 import com.libiao.customer.service.ProductService;
 import com.libiao.customer.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,8 @@ public class ProductServiceImpl implements ProductService {
     private GoodsItemMapper goodsItemMapper;
     @Autowired
     private BasicCountryMapper basicCountryMapper;
+    @Autowired
+    private BasicStandardMapper basicStandardMapper;
 
     @Override
     public List<BasicTestItem> getBasicTestItemList(){
@@ -74,6 +73,20 @@ public class ProductServiceImpl implements ProductService {
         page.setPageNum(req.getPage());
         final List<BasicCountry> basicCountries = basicCountryMapper.selectByExample(new BasicCountryExample());
         page = new PageInfo<>(basicCountries);
+        return page;
+    }
+
+    @Override
+    public PageInfo<BasicStandard> standardList(StandardListReq req){
+        PageInfo<BasicStandard> page = new PageInfo<>();
+        page.setPageSize(req.getPageSize());
+        page.setPageNum(req.getPage());
+        final BasicStandardExample basicStandardExample = new BasicStandardExample();
+        if (StringUtils.hasLength(req.getName())){
+            basicStandardExample.createCriteria().andNameLike("%"+req.getName()+"%");
+        }
+        final List<BasicStandard> basicStandards = basicStandardMapper.selectByExample(basicStandardExample);
+        page = new PageInfo<>(basicStandards);
         return page;
     }
 }

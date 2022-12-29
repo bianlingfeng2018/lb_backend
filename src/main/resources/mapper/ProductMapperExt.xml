@@ -10,30 +10,31 @@
         <result column="export" jdbcType="VARCHAR" property="export"/>
         <result column="standard" jdbcType="VARCHAR" property="standard"/>
         <result column="goods_id" jdbcType="INTEGER" property="goodsId"/>
-        <collection property="items">
+        <collection property="items" javaType="java.util.List" ofType="com.libiao.customer.model.product.BasicItemVO">
             <result column="id" jdbcType="INTEGER" property="id"/>
             <result column="name" jdbcType="VARCHAR" property="name"/>
             <result column="price" jdbcType="INTEGER" property="price"/>
+            <result column="quantity" javaType="INTEGER" property="quantity"/>
         </collection>
     </resultMap>
 
     <select id="getGoodsList" parameterType="com.libiao.customer.model.product.GoodsListReq" resultMap="goodsResultMap">
         SELECT mg.goods_name, mg.hscode,mg.material,mg.export,mg.standard,
-               gi.goods_id,bti.name,bti.price,bti.id
+               gi.goods_id,bti.name,bti.price,bti.id, bti.quantity
         FROM mall_goods mg
                  LEFT JOIN goods_item gi ON gi.goods_id = mg.id
                  LEFT JOIN basic_test_item bti ON bti.id = gi.item_id
         where 1=1
-        <if test="goodsName != null">
+        <if test="goodsName != null and goodsName!= ''">
             and mg.goods_name like #{goodsName}
         </if>
-        <if test="hsCode != null">
+        <if test="hsCode != null and hsCode != ''">
             and mg.hscode like #{hsCode}
         </if>
-        <if test="export != null">
+        <if test="export != null and export != ''">
             and mg.export = #{export}
         </if>
-        <if test="standard != null">
+        <if test="standard != null and standard != ''">
             and mg.standard like #{standard}
         </if>
         order by mg.id, bti.id desc

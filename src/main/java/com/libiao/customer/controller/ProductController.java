@@ -2,6 +2,7 @@ package com.libiao.customer.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.BasicCountry;
+import com.libiao.customer.dal.model.BasicStandard;
 import com.libiao.customer.dal.model.BasicTestItem;
 import com.libiao.customer.model.BasePageReq;
 import com.libiao.customer.model.BaseResponseVO;
@@ -67,6 +68,19 @@ public class ProductController {
         List<CountryVO> voList = new ArrayList<>(basicCountryPageInfo.getList().size());
         for (BasicCountry basicCountry : basicCountryPageInfo.getList()) {
             voList.add(BeanCopyUtil.copy(basicCountry,CountryVO.class));
+        }
+        return ResponseUtil.getListResponseVO(voList,basicCountryPageInfo.getTotal());
+    }
+
+    @AccessController
+    @ApiOperation("获取标准列表")
+    @PostMapping("standard/list")
+    public ResponseEntity<ListResponseVO<StandardVO>> standardList(@RequestBody StandardListReq req){
+
+        final PageInfo<BasicStandard> basicCountryPageInfo = productService.standardList(req);
+        List<StandardVO> voList = new ArrayList<>(basicCountryPageInfo.getList().size());
+        for (BasicStandard basicCountry : basicCountryPageInfo.getList()) {
+            voList.add(BeanCopyUtil.copy(basicCountry,StandardVO.class));
         }
         return ResponseUtil.getListResponseVO(voList,basicCountryPageInfo.getTotal());
     }

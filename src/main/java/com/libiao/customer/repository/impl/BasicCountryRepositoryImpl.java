@@ -3,6 +3,7 @@ package com.libiao.customer.repository.impl;
 import com.libiao.customer.dal.mapper.BasicCountryMapper;
 import com.libiao.customer.dal.mapper.BasicTestItemMapper;
 import com.libiao.customer.dal.model.BasicCountry;
+import com.libiao.customer.dal.model.BasicCountryExample;
 import com.libiao.customer.repository.BasicCountryRepository;
 import com.libiao.customer.repository.BasicTestItemRepository;
 import java.util.List;
@@ -23,7 +24,7 @@ public class BasicCountryRepositoryImpl implements BasicCountryRepository {
 
   @Override
   public List<BasicCountry> selectAll() {
-    return basicCountryMapper.selectAll();
+    return basicCountryMapper.selectByExample(new BasicCountryExample());
   }
 
   @Override

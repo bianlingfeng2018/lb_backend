@@ -16,7 +16,7 @@ public class RedisUtil {
      * @param date
      * @return
      */
-    public String getNo(String date){
+    public String getNo(String city,String date){
         String key = "TODAY_QUOTA_NO"+":"+date;
         Long increment = redisTemplate.opsForValue().increment(key, 1);
         if (increment > 26000){
@@ -28,6 +28,6 @@ public class RedisUtil {
         //获取前一位字母
         long alpha = (increment / 1000) + 65;
         char aChar = (char) alpha;
-        return "LIT" + date + aChar + noStr;
+        return "LIT" + city + "T" + date + aChar + noStr;
     }
 }

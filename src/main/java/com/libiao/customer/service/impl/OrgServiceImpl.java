@@ -34,18 +34,24 @@ public class OrgServiceImpl implements OrgService {
         example.createCriteria().andParentOrgNoEqualTo(req.getParentOrgNo());
         example.setOrderByClause("org_no desc limit 1");
         final List<DepartmentOrg> departmentOrgs = departmentOrgMapper.selectByExample(example);
+        String city;
         if (!CollectionUtils.isEmpty(departmentOrgs)){
             final String orgNo = departmentOrgs.get(0).getOrgNo();
             long newOrgNo = Long.parseLong(orgNo) + 1;
             orgNoStr = String.valueOf(newOrgNo);
+            city = departmentOrgs.get(0).getCity();
         }else {
             orgNoStr = req.getParentOrgNo() + "001";
+            final DepartmentOrg departmentOrg = departmentOrgMapper.selectByPrimaryKey(req.getParentOrgNo());
+            city = departmentOrg.getCity();
         }
+        //获取上级
         DepartmentOrg record = new DepartmentOrg();
         record.setOrgNo(orgNoStr);
         record.setCreateBy(req.getUser().getId());
         record.setParentOrgNo(req.getParentOrgNo());
         record.setOrgName(req.getOrgName());
+        record.setCity(city);
         departmentOrgMapper.insertSelective(record);
     }
 

@@ -49,6 +49,8 @@ public class UserExt {
     private String phone;
     private String decideRole;
     private String depart;
+    private String orgNo;
+    private String city;
     private String pos;
     private String workState;
     private String birthday;

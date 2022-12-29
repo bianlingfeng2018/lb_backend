@@ -17,12 +17,25 @@
         </collection>
     </resultMap>
 
-    <select id="getGoodsList" resultMap="goodsResultMap">
+    <select id="getGoodsList" parameterType="com.libiao.customer.model.product.GoodsListReq" resultMap="goodsResultMap">
         SELECT mg.goods_name, mg.hscode,mg.material,mg.export,mg.standard,
                gi.goods_id,bti.name,bti.price,bti.id
         FROM mall_goods mg
                  LEFT JOIN goods_item gi ON gi.goods_id = mg.id
                  LEFT JOIN basic_test_item bti ON bti.id = gi.item_id
+        where 1=1
+        <if test="goodsName != null">
+            and mg.goods_name like #{goodsName}
+        </if>
+        <if test="hsCode != null">
+            and mg.hscode like #{hsCode}
+        </if>
+        <if test="export != null">
+            and mg.export = #{export}
+        </if>
+        <if test="standard != null">
+            and mg.standard like #{standard}
+        </if>
         order by mg.id, bti.id desc
     </select>
 

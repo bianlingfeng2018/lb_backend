@@ -45,6 +45,8 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="decide_role" jdbcType="VARCHAR" property="decideRole" />
     <result column="depart" jdbcType="VARCHAR" property="depart" />
+      <result column="city" jdbcType="VARCHAR" property="city" />
+      <result column="org_no" jdbcType="VARCHAR" property="orgNo" />
     <result column="pos" jdbcType="VARCHAR" property="pos" />
     <result column="work_state" jdbcType="VARCHAR" property="workState" />
     <result column="birthday" jdbcType="VARCHAR" property="birthday" />
@@ -155,6 +157,7 @@
            b.`desc`,
            d.id   did,
            d.name dname,
+           e.city,
            d.path
     from user a
            left join role b
@@ -163,6 +166,8 @@
                      on b.id = c.role_id
            left join permission d
                      on c.permission_id = d.id
+           left join department_org e
+                     on e.org_no = a.org_no
     where username = #{username,jdbcType=VARCHAR}
       and password = #{password,jdbcType=VARCHAR}
   </select>

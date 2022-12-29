@@ -22,8 +22,10 @@ public class SessionUser implements Serializable {
 
     private String status;
 
-    private String orgNo;
+    private String orgNo;//机构号
 
     private Integer discount;//折扣
+
+    private String city;//城市
 
 }

@@ -36,7 +36,8 @@ public class CommissionServiceImpl implements CommissionService {
 
     @Autowired
     BalanceService balanceService;
-
+//    @Autowired
+//    TestTrade balanceService;
 
     @Override
     public ResponseEntity<ListResponseVO<CommissionVo>> getCommissionList(CommissionListReq req) {
@@ -79,7 +80,7 @@ public class CommissionServiceImpl implements CommissionService {
         if(null == record) return ResponseUtil.convert(HttpStatus.NOT_FOUND,"记录不存在");
         record.setOperUser(String.valueOf(req.getUser().getId()));
         record.setOperTime(req.getSettleTime());
-        record.setStatus("已结算");
+        record.setStatus("2");
         return recordMapper.updateByPrimaryKey(record)==1?ResponseUtil.getDefaultResp():ResponseUtil.convert(HttpStatus.INTERNAL_SERVER_ERROR,"系统内部错误");
     }
 
@@ -140,8 +141,9 @@ public class CommissionServiceImpl implements CommissionService {
     }
 
     @Override
-    public ResponseEntity<ListResponseVO<CommissionChangeRecord>> getCommissionRecordList(CommissionListReq req) {
+    public ResponseEntity<ListResponseVO<CommissionRecordVo>> getCommissionRecordList(CommissionListReq req) {
 
+        PageHelper.startPage(req.getPage(),req.getPageSize());
         CommissionChangeRecordExample clientCommissionExample = new CommissionChangeRecordExample();
         CommissionChangeRecordExample.Criteria criteria = clientCommissionExample.createCriteria();
         if (!StringUtils.isEmpty(req.getClientId())) {
@@ -150,8 +152,19 @@ public class CommissionServiceImpl implements CommissionService {
         if (!StringUtils.isEmpty(req.getClientName())) {
             criteria.andClientNameEqualTo(req.getClientName());
         }
+        if (!StringUtils.isEmpty(req.getStatus())) {
+            criteria.andStatusEqualTo(req.getStatus());
+        }
         List<CommissionChangeRecord> list = recordMapper.selectByExample(clientCommissionExample);
+        List<CommissionRecordVo>  recordVos = new ArrayList<>();
+        list.forEach(record->{
+            CommissionRecordVo commissionRecordVo = BeanCopyUtil.copy(record, CommissionRecordVo.class);
+//            traderService.getTradeById(record.getTradeId());
+            commissionRecordVo.setTradeName("tradeName");
+            recordVos.add(commissionRecordVo);
+        });
+
         PageInfo<CommissionChangeRecord> pageInfo = new PageInfo<>(list);
-        return ResponseUtil.getListResponseVO(pageInfo.getList(),pageInfo.getTotal());
+        return ResponseUtil.getListResponseVO(recordVos,pageInfo.getTotal());
     }
 }

@@ -116,26 +116,26 @@ public class TestRespositoryImpl implements TestRespository {
         return testQuotationItemMapper.selectByTestQuotationId(testQuotationId);
     }*/
 
-    @Override
+    /*@Override
     public int insertTestApplicationForm(TestApplicationForm testApplicationForm) {
         testApplicationFormMapper.insert(testApplicationForm);
         for(TestApplicationItem item : testApplicationForm.getTestApplicationItemList()){
             item.setTestApplicationFormId(testApplicationForm.getId());
         }
         return testApplicationItemMapper.batchInsert(testApplicationForm.getTestApplicationItemList());
-    }
+    }*/
 
     @Override
     public int insertTestApplicationItem(TestApplicationItem testApplicationItem) {
         return testApplicationItemMapper.insert(testApplicationItem);
     }
 
-    @Override
+    /*@Override
     public int batchInsertTestApplicationItem(List<TestApplicationItem> testApplicationItemList) {
         return testApplicationItemMapper.batchInsert(testApplicationItemList);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public List<TestApplicationForm> queryTestApplicationForm(int pageNum, int pageSize) {
         String userName = WebUtil.getAccessToken().getUsername();
         String permission = WebUtil.getAccessToken().getPermission();
@@ -148,12 +148,12 @@ public class TestRespositoryImpl implements TestRespository {
             testApplicationForms = testApplicationFormMapper.selectAllByOwner(userName); // 根据用户来
         }
         return testApplicationForms;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public List<TestApplicationItem> queryTestApplicationItemByApplicationFormId(Long testApplicationFormId) {
         return testApplicationItemMapper.selectByTestApplicationFormId(testApplicationFormId);
-    }
+    }*/
 
     @Override
     public int insertTestWorkOrder(TestWorkOrder testWorkOrder) {
@@ -220,7 +220,7 @@ public class TestRespositoryImpl implements TestRespository {
         return null;
     }*/
 
-    @Override
+    /*@Override
     public TestApplicationForm queryTestApplicationFormByTestTradeId(Long testTradeId) {
         List<TestApplicationForm> testApplicationFormList = testApplicationFormMapper.queryTestApplicationFormByTestTradeId(testTradeId);
         if(testApplicationFormList != null && testApplicationFormList.size() != 0){
@@ -229,7 +229,7 @@ public class TestRespositoryImpl implements TestRespository {
             return testApplicationForm;
         }
         return null;
-    }
+    }*/
 
     @Override
     public TestWorkOrder queryTestWorkOrderByTestTradeId(Long testTradeId) {

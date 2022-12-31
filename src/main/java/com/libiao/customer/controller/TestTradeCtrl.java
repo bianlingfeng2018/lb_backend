@@ -175,31 +175,31 @@ public class TestTradeCtrl {
     /**
      * 保存申请表
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/saveTestApplicationForm", method = RequestMethod.POST)
     public ResponseVO saveTestApplicationForm(@RequestBody TestApplicationForm testApplicationForm){
         return testBizService.saveTestApplicationForm(testApplicationForm);
-    }
+    }*/
 
 
     /**
      * 查询申请表
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/queryTestApplicationFormList", method = RequestMethod.GET)
     public ResponseVO queryTestApplicationFormList(@RequestParam(name="pageNum", required = false, defaultValue = "1") int pageNum,
                                                @RequestParam(name="pageSize", required = false, defaultValue = "10") int pageSize){
         return testBizService.queryTestApplicationFormList(pageNum, pageSize);
-    }
+    }*/
 
   /**
    * 更新申请单
    */
-  @ResponseBody
+  /*@ResponseBody
   @RequestMapping(value = "/updateTestApply", method = RequestMethod.POST)
   public ResponseVO updateTestApply(@RequestBody TestApplicationForm testApply){
     return testBizService.updateTestApply(testApply);
-  }
+  }*/
 
   /**
    * 删除申请单
@@ -213,23 +213,23 @@ public class TestTradeCtrl {
     /**
      * 申请表生成pdf
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/downloadTestApplicationForm", method = RequestMethod.GET)
     public ResponseVO downloadTestApplicationForm( HttpServletResponse response,
             @RequestParam(name = "testTradeId", required = true) Long testTradeId){
         return testBizService.exportTestApplicationForm(response, testTradeId);
-    }
+    }*/
 
   /**
    * 预览检测申请单
    * @param testTradeId
    * @return
    */
-  @ResponseBody
+  /*@ResponseBody
   @RequestMapping(value = "/previewTestApply", method = RequestMethod.GET)
   public ResponseEntity<?> previewTestApply(@RequestParam("testTradeId") Long testTradeId){
     return testBizService.previewTestApplyByTestTradeId(testTradeId);
-  }
+  }*/
 
     /**
      * 保存工作单

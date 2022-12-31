@@ -67,15 +67,15 @@ public interface TestRespository {
 
     /********************************************* 测试报价单 *********************************************/
 
-    public int insertTestApplicationForm(TestApplicationForm testApplicationForm);
+    //public int insertTestApplicationForm(TestApplicationForm testApplicationForm);
 
     public int insertTestApplicationItem(TestApplicationItem testApplicationItem);
 
-    public int batchInsertTestApplicationItem(List<TestApplicationItem> testApplicationItemList);
+    //public int batchInsertTestApplicationItem(List<TestApplicationItem> testApplicationItemList);
 
-    public List<TestApplicationForm> queryTestApplicationForm(int pageNum, int pageSize);
+    //public List<TestApplicationForm> queryTestApplicationForm(int pageNum, int pageSize);
 
-    public List<TestApplicationItem> queryTestApplicationItemByApplicationFormId(Long testApplicationFormId);
+    //public List<TestApplicationItem> queryTestApplicationItemByApplicationFormId(Long testApplicationFormId);
 
     /********************************************* 测试申请表 *********************************************/
 
@@ -94,7 +94,7 @@ public interface TestRespository {
 
     //public TestQuotation queryTestQuotationByTestTradeId(Long testTradeId);
 
-    public TestApplicationForm queryTestApplicationFormByTestTradeId(Long testTradeId);
+    //public TestApplicationForm queryTestApplicationFormByTestTradeId(Long testTradeId);
 
     public TestWorkOrder queryTestWorkOrderByTestTradeId(Long testTradeId);
 

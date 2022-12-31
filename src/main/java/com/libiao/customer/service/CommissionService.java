@@ -2,10 +2,7 @@ package com.libiao.customer.service;
 
 import com.libiao.customer.dal.model.CommissionChangeRecord;
 import com.libiao.customer.model.ListResponseVO;
-import com.libiao.customer.model.balance.CommissionListReq;
-import com.libiao.customer.model.balance.CommissionRecordReq;
-import com.libiao.customer.model.balance.CommissionReq;
-import com.libiao.customer.model.balance.CommissionVo;
+import com.libiao.customer.model.balance.*;
 import org.springframework.http.ResponseEntity;
 
 
@@ -18,7 +15,7 @@ public interface CommissionService {
     ResponseEntity changeRate(CommissionReq req);
     ResponseEntity approve(CommissionReq req);
 
-    ResponseEntity<ListResponseVO<CommissionChangeRecord>> getCommissionRecordList(CommissionListReq req);
+    ResponseEntity<ListResponseVO<CommissionRecordVo>> getCommissionRecordList(CommissionListReq req);
 
 
 }

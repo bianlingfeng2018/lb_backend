@@ -4,23 +4,17 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.TestApplicationFormMapper;
 import com.libiao.customer.dal.mapper.TestApplicationItemMapper;
 import com.libiao.customer.dal.mapper.TestApplicationSampleMapper;
-import com.libiao.customer.dal.model.TestApplicationForm;
-import com.libiao.customer.dal.model.TestApplicationFormExample;
-import com.libiao.customer.dal.model.TestApplicationItem;
-import com.libiao.customer.dal.model.TestApplicationSample;
-import com.libiao.customer.model.application.AddApplicationReq;
-import com.libiao.customer.model.application.ApplicationListReq;
-import com.libiao.customer.model.application.SampleItemReq;
-import com.libiao.customer.model.application.SampleTestReq;
+import com.libiao.customer.dal.model.*;
+import com.libiao.customer.model.application.*;
 import com.libiao.customer.service.ApplicationService;
-import com.libiao.customer.util.BeanCopyUtil;
-import com.libiao.customer.util.DateUtils;
-import com.libiao.customer.util.RedisUtil;
+import com.libiao.customer.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -104,4 +98,51 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
     }
+
+    @Override
+    public ApplicationDetailVO detail(ApplicationDetailReq req){
+        TestApplicationFormExample example = new TestApplicationFormExample();
+        example.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
+        List<TestApplicationForm> testApplicationForms = testApplicationFormMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(testApplicationForms)){
+            throw new ServiceException(HttpStatus.NOT_FOUND,"申请单不存在");
+        }
+        TestApplicationForm testApplicationForm = testApplicationForms.get(0);
+        ApplicationDetailVO vo = new ApplicationDetailVO();
+        BeanCopyUtil.copy(testApplicationForm,vo);
+        //转换资质
+        Integer credential = testApplicationForm.getCredential();
+        List<Integer> serviceString = CredentialByteUtil.getServiceString(credential);
+        vo.setCredentials(serviceString);
+        //查询其他样品信息
+        TestApplicationSampleExample sampleExample = new TestApplicationSampleExample();
+        sampleExample.createCriteria().andApplicationFormIdEqualTo(testApplicationForm.getId());
+        List<TestApplicationSample> testApplicationSamples = testApplicationSampleMapper.selectByExample(sampleExample);
+        if (CollectionUtils.isEmpty(testApplicationSamples)){
+            return vo;
+        }
+        List<SampleTestReq> sampleTestList = new ArrayList<>();
+        for (TestApplicationSample testApplicationSample : testApplicationSamples) {
+            SampleTestReq row = new SampleTestReq();
+            BeanCopyUtil.copy(testApplicationSample,row);
+            //查询样品下面的项目
+            TestApplicationItemExample itemExample = new TestApplicationItemExample();
+            itemExample.createCriteria().andAppSampleIdEqualTo(testApplicationSample.getId());
+            List<TestApplicationItem> testApplicationItems = testApplicationItemMapper.selectByExample(itemExample);
+            if (!CollectionUtils.isEmpty(testApplicationSamples)){
+                List<SampleItemReq> list = new ArrayList<>();
+                for (TestApplicationItem testApplicationItem : testApplicationItems) {
+                    SampleItemReq item = new SampleItemReq();
+                    BeanCopyUtil.copy(testApplicationItem,item);
+                    list.add(item);
+                }
+                row.setItemList(list);
+            }
+            sampleTestList.add(row);
+        }
+        vo.setSampleList(sampleTestList);
+        return vo;
+    }
+
+
 }

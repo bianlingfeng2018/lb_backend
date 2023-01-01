@@ -4,9 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.TestApplicationForm;
 import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
-import com.libiao.customer.model.application.AddApplicationReq;
-import com.libiao.customer.model.application.ApplicationListReq;
-import com.libiao.customer.model.application.ApplicationListVO;
+import com.libiao.customer.model.application.*;
 import com.libiao.customer.service.ApplicationService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
@@ -44,5 +42,13 @@ public class ApplicationController {
         applicationService.createApplication(req);
         return ResponseUtil.getDefaultResp();
     }
-    
+
+    @ApiOperation("申请单详情")
+    @PostMapping("detail")
+    public ResponseEntity<ApplicationDetailVO> detail(@RequestBody ApplicationDetailReq req){
+        ApplicationDetailVO detail = applicationService.detail(req);
+        return ResponseUtil.getResponseVO(detail);
+    }
+
+
 }

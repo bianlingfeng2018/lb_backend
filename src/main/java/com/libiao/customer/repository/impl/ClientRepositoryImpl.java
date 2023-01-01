@@ -1,11 +1,12 @@
 package com.libiao.customer.repository.impl;
 
-import com.libiao.customer.dal.mapper.ClientMapper;
+import com.libiao.customer.dal.mapper.ClientMapperExt;
 import com.libiao.customer.dal.model.Client;
 import com.libiao.customer.dal.model.ClientParamVO;
 import com.libiao.customer.repository.ClientRepository;
-import java.util.List;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author Lingfeng
@@ -14,9 +15,9 @@ import org.springframework.stereotype.Repository;
 public class ClientRepositoryImpl implements ClientRepository {
 
   final
-  ClientMapper clientMapper;
+  ClientMapperExt clientMapper;
 
-  public ClientRepositoryImpl(ClientMapper clientMapper) {
+  public ClientRepositoryImpl(ClientMapperExt clientMapper) {
     this.clientMapper = clientMapper;
   }
 

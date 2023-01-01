@@ -7,10 +7,13 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AddApplicationReq extends BaseSessionReq {
+public class ApplicationDetailVO extends BaseSessionReq {
 
-    @ApiModelProperty("报价单编号")
-    private String quotationNum;
+    @ApiModelProperty("id")
+    private Long id;
+    @ApiModelProperty("申请单编号")
+    private String applicationNum;
+
     @ApiModelProperty("申请单位地址")
     private String comAddrCn;
     @ApiModelProperty("申请单位地址")

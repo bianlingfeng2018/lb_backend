@@ -28,5 +28,7 @@ public class ApplicationListVO {
     private String reviewName;
     @ApiModelProperty("跟进人")
     private String serviceName;
+    @ApiModelProperty("合同状态 0待审核 1评审通过 2评审不通过 3已下单")
+    private Byte contractStatus;
 
 }

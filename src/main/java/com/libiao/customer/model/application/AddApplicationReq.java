@@ -25,7 +25,7 @@ public class AddApplicationReq extends BaseSessionReq {
     private String reportAddressEn;
     @ApiModelProperty("发票抬头")
     private String invoiceTitle;
-    @ApiModelProperty("需要资质")
+    @ApiModelProperty("需要资质，1CNAS,2CMA")
     private List<Integer> credentials;
     @ApiModelProperty("样品名称")
     private String sampleNameCn;

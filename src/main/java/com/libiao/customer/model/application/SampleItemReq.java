@@ -7,7 +7,9 @@ import lombok.Data;
 public class SampleItemReq {
 
     @ApiModelProperty("测试项目DI")
-    private Integer itemId;
+    private Integer testItemId;
+    @ApiModelProperty("测试名称")
+    private String itemName;
     @ApiModelProperty("测试方法")
     private String testMethod;
     @ApiModelProperty("测试条件")

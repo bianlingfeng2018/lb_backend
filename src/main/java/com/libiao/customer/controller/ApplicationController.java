@@ -2,7 +2,9 @@ package com.libiao.customer.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.TestApplicationForm;
+import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
+import com.libiao.customer.model.application.AddApplicationReq;
 import com.libiao.customer.model.application.ApplicationListReq;
 import com.libiao.customer.model.application.ApplicationListVO;
 import com.libiao.customer.service.ApplicationService;
@@ -36,5 +38,11 @@ public class ApplicationController {
         return ResponseUtil.getListResponseVO(voList,list.getTotal());
     }
 
+    @ApiOperation("新增申请单")
+    @PostMapping("create")
+    public ResponseEntity<BaseResponseVO> create(@RequestBody AddApplicationReq req){
+        applicationService.createApplication(req);
+        return ResponseUtil.getDefaultResp();
+    }
     
 }

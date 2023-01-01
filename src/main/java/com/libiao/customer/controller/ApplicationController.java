@@ -50,5 +50,11 @@ public class ApplicationController {
         return ResponseUtil.getResponseVO(detail);
     }
 
+    @ApiOperation("修改申请单")
+    @PostMapping("modify")
+    public ResponseEntity<BaseResponseVO> modify(@RequestBody ModifyApplicationReq req){
+        applicationService.modify(req);
+        return ResponseUtil.getDefaultResp();
+    }
 
 }

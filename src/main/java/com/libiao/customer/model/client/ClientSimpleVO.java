@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class ClientSimpleVO {
 
+    @ApiModelProperty("客户ID")
+    private Long id;
     @ApiModelProperty("公司名称")
     private String name;
     @ApiModelProperty("联系人姓名")

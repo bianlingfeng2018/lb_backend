@@ -1,5 +1,6 @@
 package com.libiao.customer.service.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.ClientBillOutMapper;
@@ -11,6 +12,7 @@ import com.libiao.customer.model.balance.BalanceReq;
 import com.libiao.customer.model.bill.BillIncomeAddReq;
 import com.libiao.customer.model.bill.BillOutAddReq;
 import com.libiao.customer.model.bill.BillOutReq;
+import com.libiao.customer.model.enums.BillStatus;
 import com.libiao.customer.model.quotation.QuotationListVO;
 import com.libiao.customer.service.BalanceService;
 import com.libiao.customer.service.BillIncomeService;
@@ -47,10 +49,10 @@ public class BillOutServiceImpl implements BillOutService {
         PageHelper.startPage(req.getPage(), req.getPageSize());
         ClientBillOutExample example = new ClientBillOutExample();
         ClientBillOutExample.Criteria criteria = example.createCriteria();
-        if (null != req.getClientId()) {
+        if (!StringUtils.isEmpty( req.getClientId())) {
             criteria.andClientIdEqualTo(req.getClientId());
         }
-        if (null != req.getStatus()) {
+        if (!StringUtils.isEmpty( req.getStatus())) {
             criteria.andStatusEqualTo(req.getStatus());
         }
         if (null != req.getEndTime() && null != req.getStartTime()) {
@@ -59,6 +61,7 @@ public class BillOutServiceImpl implements BillOutService {
         if (null != req.getLastStartTime() && null != req.getLastEndTime()) {
             criteria.andLastTimeBetween(req.getLastStartTime(), req.getLastEndTime());
         }
+        example.setOrderByClause("last_time DESC");
         List list = outMapper.selectByExample(example);
         PageInfo<ClientBillOut> pageInfo = new PageInfo<ClientBillOut>(list);
         return ResponseUtil.getListResponseVO(pageInfo.getList(),pageInfo.getTotal());
@@ -72,32 +75,35 @@ public class BillOutServiceImpl implements BillOutService {
         example.createCriteria().andIdEqualTo(req.getId()).andClientIdEqualTo(req.getClientId());
         List<ClientBillOut> list =outMapper.selectByExample(example);
         if( list.size() == 0) return ResponseUtil.error(ErrorCodeEnum.NOT_FOUND);
+
+        log.info("开始核销 = {}", req);
+        ClientBillOut billOut = list.get(0);
         Balance balance = balanceService.getBalance(req.getClientId());
         long amount = balance.getBalanceAmt();
-        if(req.getOperAmount()>amount){
+        if(billOut.getUnAmt()>amount){
             return ResponseUtil.error(301,"账户资金不足");
         }
-
         log.info("先修改余额");
-        balance.setBalanceAmt(amount-req.getOperAmount());
+        balance.setBalanceAmt(amount-billOut.getUnAmt());
         BalanceReq balanceReq = BeanCopyUtil.copy(balance,BalanceReq.class);
         //TODO 还有其他金额？
         balanceService.updateRecord(balanceReq);
 
-        log.info("开始核销 = {}", req);
-        ClientBillOut billOut = list.get(0);
-        billOut.setStatus("已核销");
+        billOut.setStatus(BillStatus.STATUS_SETTLED.getValue());
         billOut.setOperTime(new Date());
-        billOut.setUnAmt(0L);
         billOut.setOperUser(String.valueOf(req.getUser().getId()));
         log.info("核销结束 billOut= {},插入一条入账信息", billOut);
 
         BillIncomeAddReq addReq = new BillIncomeAddReq();
-        addReq.setOperType("核销");
-        addReq.setClientId(null);
-        addReq.setOperAmount(req.getOperAmount());
+        addReq.setOperType(BillStatus.BILL_OUT.getValue());
+        addReq.setClientId(billOut.getClientId());
+        addReq.setOperAmount(billOut.getUnAmt());
         addReq.setDescp("核销");
+        addReq.setUser(req.getUser());
         incomeService.addOneIncomeBill(addReq);
+
+        billOut.setUnAmt(0L);
+        outMapper.updateByPrimaryKeySelective(billOut);
 
         //todo 保存佣金记录、修改客户状态为成交客户，修改最后放出日期：当前日期+30天（数字做成可配置参数）
         return ResponseUtil.success();

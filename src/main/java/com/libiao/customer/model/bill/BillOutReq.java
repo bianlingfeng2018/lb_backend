@@ -4,13 +4,14 @@ import com.libiao.customer.model.BasePageReq;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.util.Date;
 
 @Data
 @ApiModel("消费账查询入参")
 public class BillOutReq extends BasePageReq {
-    @ApiModelProperty("客户ID")
+    @ApiModelProperty(value = "客户ID",required = true)
     String clientId;
     @ApiModelProperty("发生开始时间")
     Date startTime;

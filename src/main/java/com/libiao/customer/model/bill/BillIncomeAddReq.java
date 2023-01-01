@@ -16,5 +16,8 @@ public class BillIncomeAddReq extends BaseSessionReq {
     String descp;
     @ApiModelProperty(value = "操作类型")
     String operType;
+    @ApiModelProperty(value = "收款公司")
+    String incomeComp;
+
 
 }

@@ -1,5 +1,6 @@
 package com.libiao.customer.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.libiao.customer.dal.model.ClientBillIncome;
 import com.libiao.customer.dal.model.ClientBillOut;
 import com.libiao.customer.dal.model.CustomerBill;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -45,6 +47,7 @@ public class BillCtrl {
     @ApiOperation("获取单个商户的入账列表")
     @RequestMapping(value = "getAllIncomeBill", method = RequestMethod.POST)
     public ResponseEntity<ListResponseVO<ClientBillIncome>> getAllIncomeBill(@RequestBody BillIncomeReq req){
+        if(StringUtils.isEmpty(req.getClientId())) return ResponseUtil.getListResponseVO(new ArrayList<>(),0);
         return incomeService.getAllIncomeBill(req);
     }
     /**
@@ -55,6 +58,7 @@ public class BillCtrl {
     @ApiOperation("获取单个商户的出账列表")
     @RequestMapping(value = "getAllOutBill", method = RequestMethod.POST)
     public ResponseEntity<ListResponseVO<ClientBillOut>> getAllOutBill(@RequestBody BillOutReq req){
+        if(StringUtils.isEmpty(req.getClientId())) return ResponseUtil.getListResponseVO(new ArrayList<>(),0);
         return outService.getAllOutBill(req);
     }
 
@@ -65,7 +69,6 @@ public class BillCtrl {
     @ApiOperation("添加入账信息")
     @RequestMapping(value = "addOneIncomeBill", method = RequestMethod.POST)
     public ResponseVO addOneIncomeBill(@RequestBody BillIncomeAddReq req){
-        req.setOperType("入账");
         return incomeService.addOneIncomeBill(req);
     }
 
@@ -77,6 +80,26 @@ public class BillCtrl {
     @RequestMapping(value = "addOneOutBill", method = RequestMethod.POST)
     public ResponseVO addOneOutBill(@RequestBody BillOutAddReq req){
         return outService.addOneOutBill(req);
+    }
+
+    /**
+     * 核销
+     **/
+    @ResponseBody
+    @ApiOperation("批量核销")
+    @RequestMapping(value = "addOutBillBatch", method = RequestMethod.POST)
+    public ResponseEntity addOutBillBatch(@RequestBody BillOutBatchReq req){
+
+        req.getIds().forEach(id->{
+            BillOutAddReq addReq = new BillOutAddReq();
+            addReq.setUser(req.getUser());
+            addReq.setId(id);
+            addReq.setClientId(req.getClientId());
+            addReq.setRequestId(req.getRequestId());
+            outService.addOneOutBill(addReq);
+        });
+
+        return ResponseUtil.getDefaultResp();
     }
 
 

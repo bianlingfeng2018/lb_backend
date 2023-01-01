@@ -1,5 +1,6 @@
 package com.libiao.customer.service.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.ClientBillIncomeMapper;
@@ -36,7 +37,7 @@ public class BillIncomeServiceImpl implements BillIncomeService {
         PageHelper.startPage(req.getPage(), req.getPageSize());
         ClientBillIncomeExample example = new ClientBillIncomeExample();
         ClientBillIncomeExample.Criteria criteria = example.createCriteria();
-        if (null != req.getClientId()) {
+        if (!StringUtils.isEmpty( req.getClientId())) {
             criteria.andClientIdEqualTo(req.getClientId());
         }
         if (null != req.getOperType()) {
@@ -45,6 +46,7 @@ public class BillIncomeServiceImpl implements BillIncomeService {
         if (null != req.getEndTime() && null != req.getStartTime()) {
             criteria.andOperationTimeBetween(req.getStartTime(), req.getEndTime());
         }
+        example.setOrderByClause("operation_time DESC");
         List list = incomeMapper.selectByExample(example);
         PageInfo<ClientBillIncome> pageInfo = new PageInfo<ClientBillIncome>(list);
         return ResponseUtil.getListResponseVO(pageInfo.getList(),pageInfo.getTotal());
@@ -59,6 +61,7 @@ public class BillIncomeServiceImpl implements BillIncomeService {
         billIncome.setOperUser(String.valueOf(req.getUser().getId()));
         billIncome.setOprationType(req.getOperType());
         billIncome.setDescp(req.getDescp());
+        billIncome.setIncomeComp(req.getIncomeComp());
         Balance balance = balanceService.getBalance(req.getClientId());
         long amount = balance.getBalanceAmt();
         billIncome.setOriginAmount(amount);

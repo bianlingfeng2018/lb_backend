@@ -1,6 +1,7 @@
 package com.libiao.customer.model.application;
 
 import com.libiao.customer.model.BaseSessionReq;
+import com.libiao.customer.model.quotation.QuotaDetailItemVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -78,4 +79,6 @@ public class ApplicationDetailVO extends BaseSessionReq {
     private Byte sampleDeal;
     @ApiModelProperty("多样品材料清单")
     private List<SampleTestReq> sampleList;
+    @ApiModelProperty("测试项目")
+    private List<QuotaDetailItemVO> items;
 }

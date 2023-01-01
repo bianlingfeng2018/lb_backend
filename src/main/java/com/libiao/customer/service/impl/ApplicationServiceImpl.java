@@ -4,8 +4,10 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.TestApplicationFormMapper;
 import com.libiao.customer.dal.mapper.TestApplicationItemMapper;
 import com.libiao.customer.dal.mapper.TestApplicationSampleMapper;
+import com.libiao.customer.dal.mapper.TestQuotationItemMapper;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.application.*;
+import com.libiao.customer.model.quotation.QuotaDetailItemVO;
 import com.libiao.customer.service.ApplicationService;
 import com.libiao.customer.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     private TestApplicationSampleMapper testApplicationSampleMapper;
     @Autowired
     private TestApplicationItemMapper testApplicationItemMapper;
+    @Autowired
+    private TestQuotationItemMapper testQuotationItemMapper;
 
     @Override
     public PageInfo<TestApplicationForm> list(ApplicationListReq req){
@@ -142,6 +146,17 @@ public class ApplicationServiceImpl implements ApplicationService {
             sampleTestList.add(row);
         }
         vo.setSampleList(sampleTestList);
+
+        TestQuotationItemExample quotItemExample = new TestQuotationItemExample();
+        quotItemExample.createCriteria().andTestQuotationNumEqualTo(testApplicationForm.getQuotationNum());
+        final List<TestQuotationItem> testQuotationItemList = testQuotationItemMapper.selectByExample(quotItemExample);
+        List<QuotaDetailItemVO> itemVOList = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(testQuotationItemList)){
+            for (TestQuotationItem testQuotationItem : testQuotationItemList) {
+                itemVOList.add(BeanCopyUtil.copy(testQuotationItem,QuotaDetailItemVO.class));
+            }
+        }
+        vo.setItems(itemVOList);
         return vo;
     }
 

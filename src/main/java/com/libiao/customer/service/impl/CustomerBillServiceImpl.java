@@ -1,5 +1,6 @@
 package com.libiao.customer.service.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.CustomerBillMapper;
@@ -13,6 +14,7 @@ import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +35,10 @@ public class CustomerBillServiceImpl implements CustomerBillService {
         PageHelper.startPage(req.getPage(), req.getPageSize());
         CustomerBillExample example = new CustomerBillExample();
         CustomerBillExample.Criteria criteria = example.createCriteria();
-        if (null != req.getClientId()) {
+        if (!StringUtils.isEmpty(req.getClientId())) {
             criteria.andClientIdEqualTo(req.getClientId());
         }
-        if (null != req.getStatus()) {
+        if (!StringUtils.isEmpty(req.getStatus())) {
             criteria.andStatusEqualTo(req.getStatus());
         }
         if (null != req.getEndTime() && null != req.getStartTime()) {

@@ -119,8 +119,10 @@ public class BillCtrl {
     @ResponseBody
     @ApiOperation("批量修改个人客户账单信息")
     @RequestMapping(value = "updatePersonalBillBatch", method = RequestMethod.POST)
-    public ResponseEntity updatePersonalBillBatch(@RequestBody List<CustomerBillReq> req){
-        req.forEach(customerBillReq -> {
+    public ResponseEntity updatePersonalBillBatch(@RequestBody CustomerBillBatchReq req){
+        req.getList().forEach(customerBillReq -> {
+            customerBillReq.setUser(req.getUser());
+            customerBillReq.setRequestId(req.getRequestId());
             customerBillService.update(customerBillReq);
         });
         return ResponseUtil.getDefaultResp();

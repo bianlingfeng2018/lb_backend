@@ -94,6 +94,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 TestApplicationItem item = new TestApplicationItem();
                 BeanCopyUtil.copy(sampleItemReq,item);
                 item.setAppSampleId(row.getId());
+                item.setApplicationNum(applicationNum);
                 testApplicationItemMapper.insertSelective(item);
             }
         }
@@ -144,5 +145,58 @@ public class ApplicationServiceImpl implements ApplicationService {
         return vo;
     }
 
+    public void modify(ModifyApplicationReq req){
+        TestApplicationFormExample example = new TestApplicationFormExample();
+        example.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
 
+        TestApplicationForm record = new TestApplicationForm();
+        BeanCopyUtil.copy(req,record);
+        List<Integer> credentials = req.getCredentials();
+        int credential = 0;
+        if (!CollectionUtils.isEmpty(credentials)){
+            for (Integer integer : credentials) {
+                credential = credential | integer;
+            }
+        }
+        //进行位运算
+        record.setCredential(credential);
+
+
+        testApplicationFormMapper.updateByExampleSelective(record,example);
+
+        List<SampleTestReq> sampleList = req.getSampleList();
+        //删除下属的sample
+        TestApplicationSampleExample sampleExample = new TestApplicationSampleExample();
+        sampleExample.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
+        testApplicationSampleMapper.deleteByExample(sampleExample);
+        //删除item
+        TestApplicationItemExample itemExample = new TestApplicationItemExample();
+        itemExample.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
+        testApplicationItemMapper.deleteByExample(itemExample);
+
+        //application_id
+        if (CollectionUtils.isEmpty(sampleList)){
+            return;
+        }
+        //添加多种样品
+        for (SampleTestReq sampleTestReq : sampleList) {
+            TestApplicationSample row = new TestApplicationSample();
+            BeanCopyUtil.copy(sampleTestReq,row);
+            row.setApplicationFormId(record.getId());
+            row.setApplicationNum(req.getApplicationNum());
+            testApplicationSampleMapper.insertSelective(row);
+            //添加样品下的测试项目
+            List<SampleItemReq> itemList = sampleTestReq.getItemList();
+            if (CollectionUtils.isEmpty(itemList)){
+                continue;
+            }
+            for (SampleItemReq sampleItemReq : itemList) {
+                TestApplicationItem item = new TestApplicationItem();
+                BeanCopyUtil.copy(sampleItemReq,item);
+                item.setAppSampleId(row.getId());
+                testApplicationItemMapper.insertSelective(item);
+            }
+        }
+
+    }
 }

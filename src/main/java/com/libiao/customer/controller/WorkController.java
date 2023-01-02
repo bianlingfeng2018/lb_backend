@@ -3,8 +3,10 @@ package com.libiao.customer.controller;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.TestWorkOrder;
 import com.libiao.customer.model.ListResponseVO;
+import com.libiao.customer.model.work.WorkOrderDetailReq;
 import com.libiao.customer.model.work.WorkOrderListReq;
 import com.libiao.customer.model.work.WorkOrderListVO;
+import com.libiao.customer.model.work.WorkOrderVO;
 import com.libiao.customer.service.WorkService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
@@ -43,5 +45,11 @@ public class WorkController {
         return ResponseUtil.getListResponseVO(voList,list.getTotal());
     }
 
+    @ApiOperation("工作单详情")
+    @PostMapping("detail")
+    public ResponseEntity<WorkOrderVO> detail(@RequestBody WorkOrderDetailReq req){
+        WorkOrderVO detail = workService.detail(req);
+        return ResponseUtil.getResponseVO(detail);
+    }
 
 }

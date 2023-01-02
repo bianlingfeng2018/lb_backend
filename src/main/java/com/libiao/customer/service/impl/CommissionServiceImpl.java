@@ -6,13 +6,17 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.ClientCommissionMapper;
 import com.libiao.customer.dal.mapper.CommissionChangeRecordMapper;
+import com.libiao.customer.dal.mapper.TestQuotationMapper;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.ErrorMessage;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.balance.*;
 import com.libiao.customer.model.enums.CommissionStatus;
+import com.libiao.customer.model.quotation.QuotationDetailReq;
+import com.libiao.customer.model.quotation.QuotationDetailVO;
 import com.libiao.customer.service.BalanceService;
 import com.libiao.customer.service.CommissionService;
+import com.libiao.customer.service.QuotationService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +40,9 @@ public class CommissionServiceImpl implements CommissionService {
 
     @Autowired
     BalanceService balanceService;
-//    @Autowired
-//    TestTrade balanceService;
+
+    @Autowired
+    TestQuotationMapper quotationMapper;
 
     @Override
     public ResponseEntity<ListResponseVO<CommissionVo>> getCommissionList(CommissionListReq req) {
@@ -159,8 +164,12 @@ public class CommissionServiceImpl implements CommissionService {
         List<CommissionRecordVo>  recordVos = new ArrayList<>();
         list.forEach(record->{
             CommissionRecordVo commissionRecordVo = BeanCopyUtil.copy(record, CommissionRecordVo.class);
-//            traderService.getTradeById(record.getTradeId());
-            commissionRecordVo.setTradeName("tradeName");
+            TestQuotationExample example = new TestQuotationExample();
+            example.createCriteria().andQuotationNumEqualTo(record.getTradeId());
+            List<TestQuotation> quotations = quotationMapper.selectByExample(example);
+            if(quotations.size()!=0){
+                commissionRecordVo.setTradeName(quotations.get(0).getTradeName());
+            }
             recordVos.add(commissionRecordVo);
         });
 

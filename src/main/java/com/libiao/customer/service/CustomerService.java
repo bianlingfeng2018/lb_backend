@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CustomerService {
     List<Client> getClientByName(ClientSimpleReq req);
+    Client getClientByClientId(String clientId);
 }

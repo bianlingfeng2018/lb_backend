@@ -3,13 +3,17 @@ package com.libiao.customer.service.impl;
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.libiao.customer.dal.mapper.ClientMapper;
 import com.libiao.customer.dal.mapper.CustomerBillMapper;
-import com.libiao.customer.dal.model.CustomerBill;
-import com.libiao.customer.dal.model.CustomerBillExample;
+import com.libiao.customer.dal.mapper.TestQuotationMapper;
+import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.bill.CustomerBillListReq;
 import com.libiao.customer.model.bill.CustomerBillReq;
+import com.libiao.customer.model.bill.CustomerBillVo;
+import com.libiao.customer.service.ClientService;
 import com.libiao.customer.service.CustomerBillService;
+import com.libiao.customer.service.CustomerService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,9 +32,13 @@ public class CustomerBillServiceImpl implements CustomerBillService {
 
     @Autowired
     CustomerBillMapper billMapper;
+    @Autowired
+    CustomerService customerService;
+    @Autowired
+    TestQuotationMapper quotationMapper;
 
     @Override
-    public ResponseEntity<ListResponseVO<CustomerBill>> list(CustomerBillListReq req) {
+    public ResponseEntity<ListResponseVO<CustomerBillVo>> list(CustomerBillListReq req) {
         PageHelper.startPage(req.getPage(), req.getPageSize());
         CustomerBillExample example = new CustomerBillExample();
         CustomerBillExample.Criteria criteria = example.createCriteria();
@@ -47,14 +56,41 @@ public class CustomerBillServiceImpl implements CustomerBillService {
         }
         List<CustomerBill> list = billMapper.selectByExample(example);
         PageInfo<CustomerBill> pageInfo = new PageInfo<>(list);
-        return ResponseUtil.getListResponseVO(pageInfo.getList(), pageInfo.getTotal());
+        List<CustomerBillVo> billVos = new ArrayList<>();
+        pageInfo.getList().forEach(bill->{
+            CustomerBillVo vo = BeanCopyUtil.copy(bill,CustomerBillVo.class);
+            Client client = customerService.getClientByClientId(bill.getClientId());
+            if(null!=client){
+                vo.setClientName(client.getName());
+            }
+            TestQuotationExample quotationExample = new TestQuotationExample();
+            quotationExample.createCriteria().andQuotationNumEqualTo(bill.getTradeId());
+            List<TestQuotation> quotations = quotationMapper.selectByExample(quotationExample);
+            if(quotations.size()!=0){
+                vo.setTradeName(quotations.get(0).getTradeName());
+            }
+            billVos.add(vo);
+        });
+
+        return ResponseUtil.getListResponseVO(billVos, pageInfo.getTotal());
     }
 
     @Override
     public ResponseEntity getOne(Long id) {
         CustomerBill bill = billMapper.selectByPrimaryKey(id);
         if(null == bill) return ResponseUtil.convert(HttpStatus.NOT_FOUND,"记录不存在");
-        return ResponseUtil.getResponseVO(bill);
+        CustomerBillVo vo = BeanCopyUtil.copy(bill,CustomerBillVo.class);
+        Client client = customerService.getClientByClientId(bill.getClientId());
+        if(null!=client){
+            vo.setClientName(client.getName());
+        }
+        TestQuotationExample quotationExample = new TestQuotationExample();
+        quotationExample.createCriteria().andQuotationNumEqualTo(bill.getTradeId());
+        List<TestQuotation> quotations = quotationMapper.selectByExample(quotationExample);
+        if(quotations.size()!=0){
+            vo.setTradeName(quotations.get(0).getTradeName());
+        }
+        return ResponseUtil.getResponseVO(vo);
     }
 
     @Override

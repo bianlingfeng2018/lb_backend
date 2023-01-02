@@ -4,16 +4,15 @@ import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.ClientBillOutMapper;
-import com.libiao.customer.dal.model.Balance;
-import com.libiao.customer.dal.model.ClientBillOut;
-import com.libiao.customer.dal.model.ClientBillOutExample;
+import com.libiao.customer.dal.mapper.TestQuotationMapper;
+import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.balance.BalanceReq;
 import com.libiao.customer.model.bill.BillIncomeAddReq;
 import com.libiao.customer.model.bill.BillOutAddReq;
 import com.libiao.customer.model.bill.BillOutReq;
+import com.libiao.customer.model.bill.ClientBillOutVo;
 import com.libiao.customer.model.enums.BillStatus;
-import com.libiao.customer.model.quotation.QuotationListVO;
 import com.libiao.customer.service.BalanceService;
 import com.libiao.customer.service.BillIncomeService;
 import com.libiao.customer.service.BillOutService;
@@ -27,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,9 +43,12 @@ public class BillOutServiceImpl implements BillOutService {
     @Autowired
     BalanceService balanceService;
 
+    @Autowired
+    TestQuotationMapper quotationMapper;
+
 
     @Override
-    public ResponseEntity<ListResponseVO<ClientBillOut>> getAllOutBill(BillOutReq req) {
+    public ResponseEntity<ListResponseVO<ClientBillOutVo>> getAllOutBill(BillOutReq req) {
         PageHelper.startPage(req.getPage(), req.getPageSize());
         ClientBillOutExample example = new ClientBillOutExample();
         ClientBillOutExample.Criteria criteria = example.createCriteria();
@@ -62,9 +65,20 @@ public class BillOutServiceImpl implements BillOutService {
             criteria.andLastTimeBetween(req.getLastStartTime(), req.getLastEndTime());
         }
         example.setOrderByClause("last_time DESC");
-        List list = outMapper.selectByExample(example);
+        List<ClientBillOut> list = outMapper.selectByExample(example);
         PageInfo<ClientBillOut> pageInfo = new PageInfo<ClientBillOut>(list);
-        return ResponseUtil.getListResponseVO(pageInfo.getList(),pageInfo.getTotal());
+        List<ClientBillOutVo> billVos = new ArrayList<>();
+        pageInfo.getList().forEach(bill->{
+            ClientBillOutVo vo = BeanCopyUtil.copy(bill,ClientBillOutVo.class);
+            TestQuotationExample quotationExample = new TestQuotationExample();
+            quotationExample.createCriteria().andQuotationNumEqualTo(bill.getTradeId());
+            List<TestQuotation> quotations = quotationMapper.selectByExample(quotationExample);
+            if(quotations.size()!=0){
+                vo.setTradeName(quotations.get(0).getTradeName());
+            }
+            billVos.add(vo);
+        });
+        return ResponseUtil.getListResponseVO(billVos,pageInfo.getTotal());
     }
 
     @Override

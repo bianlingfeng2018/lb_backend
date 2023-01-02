@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.TestInfoMapperExt">
+
+    <resultMap id="testResultMap" type="com.libiao.customer.model.test.TestInfoVO">
+        <result column="test_Method" jdbcType="VARCHAR" property="testMethod"/>
+
+        <collection property="caseList" javaType="java.util.List" ofType="com.libiao.customer.model.test.TestCaseVO">
+            <result column="testCase" jdbcType="VARCHAR" property="testCase"/>
+        </collection>
+    </resultMap>
+
+    <select id="getTestInfo" resultMap="testResultMap">
+        SELECT bi.test_method,bi.test_case
+        FROM test_item_method_rel mr
+                 LEFT JOIN basic_test_info bi ON bi.test_method = mr.test_method
+        WHERE mr.test_item_id = #{itemId}
+    </select>
+
+</mapper>
+

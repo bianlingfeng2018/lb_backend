@@ -1,17 +1,29 @@
 package com.libiao.customer.dal.model;
 
-public class TestWorkOrderItem {
+import java.io.Serializable;
+
+public class TestWorkOrderItem implements Serializable {
     private Long id;
 
     private Long testWorkOrderId;
 
-    private String sampleDesc;
-
     private String sampleLocation;
 
-    private String testItemsMethod;
+    private String sampleModel;
+
+    private String sampleMaterial;
+
+    private String sampleDesc;
+
+    private String testItem;
+
+    private String testItemMethod;
+
+    private String testItemCase;
 
     private String remark;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -29,14 +41,6 @@ public class TestWorkOrderItem {
         this.testWorkOrderId = testWorkOrderId;
     }
 
-    public String getSampleDesc() {
-        return sampleDesc;
-    }
-
-    public void setSampleDesc(String sampleDesc) {
-        this.sampleDesc = sampleDesc;
-    }
-
     public String getSampleLocation() {
         return sampleLocation;
     }
@@ -45,12 +49,52 @@ public class TestWorkOrderItem {
         this.sampleLocation = sampleLocation;
     }
 
-    public String getTestItemsMethod() {
-        return testItemsMethod;
+    public String getSampleModel() {
+        return sampleModel;
     }
 
-    public void setTestItemsMethod(String testItemsMethod) {
-        this.testItemsMethod = testItemsMethod;
+    public void setSampleModel(String sampleModel) {
+        this.sampleModel = sampleModel;
+    }
+
+    public String getSampleMaterial() {
+        return sampleMaterial;
+    }
+
+    public void setSampleMaterial(String sampleMaterial) {
+        this.sampleMaterial = sampleMaterial;
+    }
+
+    public String getSampleDesc() {
+        return sampleDesc;
+    }
+
+    public void setSampleDesc(String sampleDesc) {
+        this.sampleDesc = sampleDesc;
+    }
+
+    public String getTestItem() {
+        return testItem;
+    }
+
+    public void setTestItem(String testItem) {
+        this.testItem = testItem;
+    }
+
+    public String getTestItemMethod() {
+        return testItemMethod;
+    }
+
+    public void setTestItemMethod(String testItemMethod) {
+        this.testItemMethod = testItemMethod;
+    }
+
+    public String getTestItemCase() {
+        return testItemCase;
+    }
+
+    public void setTestItemCase(String testItemCase) {
+        this.testItemCase = testItemCase;
     }
 
     public String getRemark() {
@@ -59,5 +103,26 @@ public class TestWorkOrderItem {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", testWorkOrderId=").append(testWorkOrderId);
+        sb.append(", sampleLocation=").append(sampleLocation);
+        sb.append(", sampleModel=").append(sampleModel);
+        sb.append(", sampleMaterial=").append(sampleMaterial);
+        sb.append(", sampleDesc=").append(sampleDesc);
+        sb.append(", testItem=").append(testItem);
+        sb.append(", testItemMethod=").append(testItemMethod);
+        sb.append(", testItemCase=").append(testItemCase);
+        sb.append(", remark=").append(remark);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 }

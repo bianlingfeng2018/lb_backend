@@ -1,48 +1,42 @@
 package com.libiao.customer.dal.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class TestWorkOrder {
+public class TestWorkOrder implements Serializable {
     private Long id;
 
     private String workOrderNum;
 
-    private String issuer;
+    private String quotationNum;
 
-    private String busyStatus;
+    private String applicationNum;
 
-    private Long testTradeId;
+    private Date createTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date gmtCreate;
+    private Date orderDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date gmtOutput;
+    private Date outputDate;
 
-    private String withdraw;
+    private Date planDate;
 
-    private String employee;
+    private Byte service;
 
-    private String customer;
+    private Integer testComId;
 
-    /**
-     * 指定的测试人员Id
-     */
-    private Long testId;
+    private String comName;
 
-    private List<TestWorkOrderItem> testWorkOrderItemList;
-    private Long reviewerId;
-    private Long approverId;
-    private Long editorId;
+    private Byte subContract;
 
-    private String flexObj;
+    private Byte status;
+
+    private String clientName;
+
+    private String createName;
+
+    private Byte sampleStatus;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -60,100 +54,142 @@ public class TestWorkOrder {
         this.workOrderNum = workOrderNum;
     }
 
-    public String getIssuer() {
-        return issuer;
+    public String getQuotationNum() {
+        return quotationNum;
     }
 
-    public void setIssuer(String issuer) {
-        this.issuer = issuer;
+    public void setQuotationNum(String quotationNum) {
+        this.quotationNum = quotationNum;
     }
 
-    public String getBusyStatus() {
-        return busyStatus;
+    public String getApplicationNum() {
+        return applicationNum;
     }
 
-    public void setBusyStatus(String busyStatus) {
-        this.busyStatus = busyStatus;
+    public void setApplicationNum(String applicationNum) {
+        this.applicationNum = applicationNum;
     }
 
-    public Date getGmtCreate() {
-        return gmtCreate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setGmtCreate(Date gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public Date getGmtOutput() {
-        return gmtOutput;
+    public Date getOrderDate() {
+        return orderDate;
     }
 
-    public void setGmtOutput(Date gmtOutput) {
-        this.gmtOutput = gmtOutput;
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
 
-    public String getWithdraw() {
-        return withdraw;
+    public Date getOutputDate() {
+        return outputDate;
     }
 
-    public void setWithdraw(String withdraw) {
-        this.withdraw = withdraw;
+    public void setOutputDate(Date outputDate) {
+        this.outputDate = outputDate;
     }
 
-    public String getEmployee() {
-        return employee;
+    public Date getPlanDate() {
+        return planDate;
     }
 
-    public void setEmployee(String employee) {
-        this.employee = employee;
+    public void setPlanDate(Date planDate) {
+        this.planDate = planDate;
     }
 
-    public String getCustomer() {
-        return customer;
+    public Byte getService() {
+        return service;
     }
 
-    public void setCustomer(String customer) {
-        this.customer = customer;
+    public void setService(Byte service) {
+        this.service = service;
     }
 
-
-    public List<TestWorkOrderItem> getTestWorkOrderItemList() {
-        return testWorkOrderItemList;
+    public Integer getTestComId() {
+        return testComId;
     }
 
-    public void setTestWorkOrderItemList(List<TestWorkOrderItem> testWorkOrderItemList) {
-        this.testWorkOrderItemList = testWorkOrderItemList;
+    public void setTestComId(Integer testComId) {
+        this.testComId = testComId;
     }
 
-    public Long getTestTradeId(){
-        return testTradeId;
+    public String getComName() {
+        return comName;
     }
 
-    public void setTestTradeId(Long testTradeId){
-        this.testTradeId = testTradeId;
+    public void setComName(String comName) {
+        this.comName = comName;
     }
 
-  public Long getReviewerId() {
-    return reviewerId;
-  }
-
-  public void setReviewerId(Long reviewerId) {
-    this.reviewerId = reviewerId;
-  }
-
-    public Long getApproverId() {
-        return approverId;
+    public Byte getSubContract() {
+        return subContract;
     }
 
-    public void setApproverId(Long approverId) {
-        this.approverId = approverId;
+    public void setSubContract(Byte subContract) {
+        this.subContract = subContract;
     }
 
-  public Long getEditorId() {
-    return editorId;
-  }
+    public Byte getStatus() {
+        return status;
+    }
 
-  public void setEditorId(Long editorId) {
-    this.editorId = editorId;
-  }
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getCreateName() {
+        return createName;
+    }
+
+    public void setCreateName(String createName) {
+        this.createName = createName;
+    }
+
+    public Byte getSampleStatus() {
+        return sampleStatus;
+    }
+
+    public void setSampleStatus(Byte sampleStatus) {
+        this.sampleStatus = sampleStatus;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", workOrderNum=").append(workOrderNum);
+        sb.append(", quotationNum=").append(quotationNum);
+        sb.append(", applicationNum=").append(applicationNum);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", orderDate=").append(orderDate);
+        sb.append(", outputDate=").append(outputDate);
+        sb.append(", planDate=").append(planDate);
+        sb.append(", service=").append(service);
+        sb.append(", testComId=").append(testComId);
+        sb.append(", comName=").append(comName);
+        sb.append(", subContract=").append(subContract);
+        sb.append(", status=").append(status);
+        sb.append(", clientName=").append(clientName);
+        sb.append(", createName=").append(createName);
+        sb.append(", sampleStatus=").append(sampleStatus);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
 }

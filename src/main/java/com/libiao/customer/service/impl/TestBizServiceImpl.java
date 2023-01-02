@@ -453,7 +453,7 @@ public class TestBizServiceImpl implements TestBizService {
      * @param testWorkOrder
      * @return
      */
-    @Override
+    /*@Override
     public ResponseVO saveTestWorkOrder(TestWorkOrder testWorkOrder) {
         try{
             TestTrade testTrade = testRespository.selectTestTradeById(testWorkOrder.getTestTradeId());
@@ -477,7 +477,7 @@ public class TestBizServiceImpl implements TestBizService {
         }catch (Exception e){
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
   /**
    * 查询工作单
@@ -485,7 +485,7 @@ public class TestBizServiceImpl implements TestBizService {
    * @param pageSize
    * @return
    */
-  @Override
+  /*@Override
   public ResponseVO queryTestWorkOrderList(int pageNum, int pageSize) {
     try {
       List<TestWorkOrder> testWorkOrderList = testRespository.queryTestWorkOrder(pageNum, pageSize);
@@ -513,14 +513,14 @@ public class TestBizServiceImpl implements TestBizService {
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
     }
-  }
+  }*/
 
     /**
      * 导出工作单
      * @param testTradeId
      * @return
      */
-    @Override
+    /*@Override
     public ResponseVO exportTestWorkOrder(HttpServletResponse response, Long testTradeId) {
         try{
             TestTrade testTrade = testRespository.selectTestTradeById(testTradeId); // 查找检测交易单
@@ -551,7 +551,7 @@ public class TestBizServiceImpl implements TestBizService {
             e.printStackTrace();
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
     @Override
     public ResponseVO queryTestQuotationByTestTradeId(Long testTradeId) {
@@ -952,7 +952,7 @@ public class TestBizServiceImpl implements TestBizService {
         }
     }*/
 
-    @Override
+    /*@Override
     public ResponseEntity<?> previewTestWorkOrderByTestTradeId(Long testTradeId) {
         try {
             TestTrade testTrade = testRespository.selectTestTradeById(testTradeId);
@@ -979,7 +979,7 @@ public class TestBizServiceImpl implements TestBizService {
             return new ResponseEntity(new LibiaoException(ErrorCodeEnum.UNKNOWN_ERROR),
                 HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     @Override
     public ResponseEntity<?> previewTestReportByTestTradeId(Long testTradeId) {
@@ -1076,7 +1076,7 @@ public class TestBizServiceImpl implements TestBizService {
         }
     }
 
-    @Override
+    /*@Override
     public ResponseVO updateTestWorkOrder(TestWorkOrder testWorkOrder) {
         try {
             if (testWorkOrder.getId() == null) {
@@ -1126,7 +1126,7 @@ public class TestBizServiceImpl implements TestBizService {
             e.printStackTrace();
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
     @Override
     public ResponseVO deleteTestWorkOrder(Long testWorkOrderId) {

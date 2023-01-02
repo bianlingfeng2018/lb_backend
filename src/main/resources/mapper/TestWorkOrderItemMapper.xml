@@ -4,62 +4,288 @@
   <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestWorkOrderItem">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="test_work_order_id" jdbcType="BIGINT" property="testWorkOrderId" />
-    <result column="sample_desc" jdbcType="VARCHAR" property="sampleDesc" />
     <result column="sample_location" jdbcType="VARCHAR" property="sampleLocation" />
-    <result column="test_items_method" jdbcType="VARCHAR" property="testItemsMethod" />
+    <result column="sample_model" jdbcType="VARCHAR" property="sampleModel" />
+    <result column="sample_material" jdbcType="VARCHAR" property="sampleMaterial" />
+    <result column="sample_desc" jdbcType="VARCHAR" property="sampleDesc" />
+    <result column="test_item" jdbcType="VARCHAR" property="testItem" />
+    <result column="test_item_method" jdbcType="VARCHAR" property="testItemMethod" />
+    <result column="test_item_case" jdbcType="VARCHAR" property="testItemCase" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, test_work_order_id, sample_location, sample_model, sample_material, sample_desc, 
+    test_item, test_item_method, test_item_case, remark
+  </sql>
+  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestWorkOrderItemExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from test_work_order_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from test_work_order_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from test_work_order_item
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.TestWorkOrderItemExample">
+    delete from test_work_order_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
   <insert id="insert" parameterType="com.libiao.customer.dal.model.TestWorkOrderItem">
-    insert into test_work_order_item (id, test_work_order_id, sample_desc, 
-      sample_location, test_items_method, remark
-      )
-    values (#{id,jdbcType=BIGINT}, #{testWorkOrderId,jdbcType=BIGINT}, #{sampleDesc,jdbcType=VARCHAR}, 
-      #{sampleLocation,jdbcType=VARCHAR}, #{testItemsMethod,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
-      )
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      select LAST_INSERT_ID()
-    </selectKey>
+    insert into test_work_order_item (id, test_work_order_id, sample_location, 
+      sample_model, sample_material, sample_desc, 
+      test_item, test_item_method, test_item_case, 
+      remark)
+    values (#{id,jdbcType=BIGINT}, #{testWorkOrderId,jdbcType=BIGINT}, #{sampleLocation,jdbcType=VARCHAR}, 
+      #{sampleModel,jdbcType=VARCHAR}, #{sampleMaterial,jdbcType=VARCHAR}, #{sampleDesc,jdbcType=VARCHAR}, 
+      #{testItem,jdbcType=VARCHAR}, #{testItemMethod,jdbcType=VARCHAR}, #{testItemCase,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
   </insert>
-
-  <insert id="batchInsert" parameterType="com.libiao.customer.dal.model.TestWorkOrderItem">
-        insert into test_work_order_item (id, test_work_order_id, sample_desc,
-                                          sample_location, test_items_method, remark
-        ) values
-  <foreach collection="testWorkOrderItemList" item="item" index="index" separator=",">
-    (#{item.id,jdbcType=BIGINT}, #{item.testWorkOrderId,jdbcType=BIGINT}, #{item.sampleDesc,jdbcType=VARCHAR},
-    #{item.sampleLocation,jdbcType=VARCHAR}, #{item.testItemsMethod,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}
-    )
-  </foreach>
+  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestWorkOrderItem">
+    insert into test_work_order_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="testWorkOrderId != null">
+        test_work_order_id,
+      </if>
+      <if test="sampleLocation != null">
+        sample_location,
+      </if>
+      <if test="sampleModel != null">
+        sample_model,
+      </if>
+      <if test="sampleMaterial != null">
+        sample_material,
+      </if>
+      <if test="sampleDesc != null">
+        sample_desc,
+      </if>
+      <if test="testItem != null">
+        test_item,
+      </if>
+      <if test="testItemMethod != null">
+        test_item_method,
+      </if>
+      <if test="testItemCase != null">
+        test_item_case,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="testWorkOrderId != null">
+        #{testWorkOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="sampleLocation != null">
+        #{sampleLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleModel != null">
+        #{sampleModel,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleMaterial != null">
+        #{sampleMaterial,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleDesc != null">
+        #{sampleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="testItem != null">
+        #{testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="testItemMethod != null">
+        #{testItemMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="testItemCase != null">
+        #{testItemCase,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
   </insert>
-
+  <select id="countByExample" parameterType="com.libiao.customer.dal.model.TestWorkOrderItemExample" resultType="java.lang.Long">
+    select count(*) from test_work_order_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update test_work_order_item
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.testWorkOrderId != null">
+        test_work_order_id = #{row.testWorkOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="row.sampleLocation != null">
+        sample_location = #{row.sampleLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="row.sampleModel != null">
+        sample_model = #{row.sampleModel,jdbcType=VARCHAR},
+      </if>
+      <if test="row.sampleMaterial != null">
+        sample_material = #{row.sampleMaterial,jdbcType=VARCHAR},
+      </if>
+      <if test="row.sampleDesc != null">
+        sample_desc = #{row.sampleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testItem != null">
+        test_item = #{row.testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testItemMethod != null">
+        test_item_method = #{row.testItemMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testItemCase != null">
+        test_item_case = #{row.testItemCase,jdbcType=VARCHAR},
+      </if>
+      <if test="row.remark != null">
+        remark = #{row.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update test_work_order_item
+    set id = #{row.id,jdbcType=BIGINT},
+      test_work_order_id = #{row.testWorkOrderId,jdbcType=BIGINT},
+      sample_location = #{row.sampleLocation,jdbcType=VARCHAR},
+      sample_model = #{row.sampleModel,jdbcType=VARCHAR},
+      sample_material = #{row.sampleMaterial,jdbcType=VARCHAR},
+      sample_desc = #{row.sampleDesc,jdbcType=VARCHAR},
+      test_item = #{row.testItem,jdbcType=VARCHAR},
+      test_item_method = #{row.testItemMethod,jdbcType=VARCHAR},
+      test_item_case = #{row.testItemCase,jdbcType=VARCHAR},
+      remark = #{row.remark,jdbcType=VARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.TestWorkOrderItem">
+    update test_work_order_item
+    <set>
+      <if test="testWorkOrderId != null">
+        test_work_order_id = #{testWorkOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="sampleLocation != null">
+        sample_location = #{sampleLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleModel != null">
+        sample_model = #{sampleModel,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleMaterial != null">
+        sample_material = #{sampleMaterial,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleDesc != null">
+        sample_desc = #{sampleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="testItem != null">
+        test_item = #{testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="testItemMethod != null">
+        test_item_method = #{testItemMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="testItemCase != null">
+        test_item_case = #{testItemCase,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
   <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestWorkOrderItem">
     update test_work_order_item
     set test_work_order_id = #{testWorkOrderId,jdbcType=BIGINT},
-      sample_desc = #{sampleDesc,jdbcType=VARCHAR},
       sample_location = #{sampleLocation,jdbcType=VARCHAR},
-      test_items_method = #{testItemsMethod,jdbcType=VARCHAR},
+      sample_model = #{sampleModel,jdbcType=VARCHAR},
+      sample_material = #{sampleMaterial,jdbcType=VARCHAR},
+      sample_desc = #{sampleDesc,jdbcType=VARCHAR},
+      test_item = #{testItem,jdbcType=VARCHAR},
+      test_item_method = #{testItemMethod,jdbcType=VARCHAR},
+      test_item_case = #{testItemCase,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, test_work_order_id, sample_desc, sample_location, test_items_method, remark
-    from test_work_order_item
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, test_work_order_id, sample_desc, sample_location, test_items_method, remark
-    from test_work_order_item
-  </select>
-
-  <select id="selectByTestWorkOrderId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, test_work_order_id, sample_desc, sample_location, test_items_method, remark
-    from test_work_order_item
-    where test_work_order_id = #{testWorkOrderId,jdbcType=BIGINT}
-  </select>
 </mapper>

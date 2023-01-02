@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.model.client.contract.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface ContractService {
     PageInfo<ClientContractListVO> list(ClientContractListReq req);
 
@@ -13,4 +15,8 @@ public interface ContractService {
     ClientContractDetailVO detail(ContractDetailReq req);
 
     void modify(ModifyContractReq req, MultipartFile file);
+
+    void review(ReviewContractReq req);
+
+    void download(String fileName, HttpServletResponse response);
 }

@@ -29,5 +29,6 @@ public class ClientContractDetailVO {
     private Byte type;
     @ApiModelProperty("合同文件名")
     private String contractPath;
-
+    @ApiModelProperty("审核拒绝原因")
+    private String reviewReason;
 }

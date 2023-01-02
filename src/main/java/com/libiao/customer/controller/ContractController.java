@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Api(tags = "客户合同相关接口")
 @RestController
 @RequestMapping("contract")
@@ -52,6 +54,20 @@ public class ContractController {
         ModifyContractReq req = JSONObject.parseObject(json,ModifyContractReq.class);
         contractService.modify(req,file);
         return ResponseUtil.getDefaultResp();
+    }
+
+    @ApiOperation("审核合同")
+    @PostMapping("review")
+    public ResponseEntity<BaseResponseVO> review(@RequestBody ReviewContractReq req){
+        contractService.review(req);
+        return ResponseUtil.getDefaultResp();
+    }
+
+    //下载合同
+    @ApiOperation(value = "下载")
+    @GetMapping(value = "/download")
+    public void download(@RequestParam("fileName") String fileName, HttpServletResponse response){
+        contractService.download(fileName,response);
     }
 
 }

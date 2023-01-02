@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -63,6 +65,24 @@ public class ContractServiceImpl implements ContractService {
             String fileName = fileUtil.saveContract(file, req.getClientId());
             record.setContractPath(fileName);
         }
+        record.setUpdateTime(new Date());
         clientContractMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public void review(ReviewContractReq req){
+        ClientContract record = new ClientContract();
+        record.setClientId(req.getClientId());
+        record.setContractStatus(req.getReviewStatus());
+        record.setReviewTime(new Date());
+        record.setReviewId(req.getUser().getId());
+        record.setReviewName(req.getUser().getNickname());
+        record.setReviewReason(req.getReviewReason());
+        clientContractMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public void download(String fileName,HttpServletResponse response){
+        fileUtil.downloadContract(fileName, response);
     }
 }

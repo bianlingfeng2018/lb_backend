@@ -12,9 +12,7 @@ import com.libiao.customer.model.bill.CustomerBillReq;
 import com.libiao.customer.service.CustomerBillService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +36,7 @@ public class CustomerBillServiceImpl implements CustomerBillService {
         if (!StringUtils.isEmpty(req.getClientId())) {
             criteria.andClientIdEqualTo(req.getClientId());
         }
-        if (!StringUtils.isEmpty(req.getStatus())) {
+        if (req.getStatus() != null) {
             criteria.andStatusEqualTo(req.getStatus());
         }
         if (null != req.getEndTime() && null != req.getStartTime()) {
@@ -47,8 +45,8 @@ public class CustomerBillServiceImpl implements CustomerBillService {
         if (null != req.getUploadStartTime() && null != req.getUploadEndTime()) {
             criteria.andUploadTimeBetween(req.getUploadStartTime(), req.getUploadEndTime());
         }
-        List list = billMapper.selectByExample(example);
-        PageInfo<CustomerBill> pageInfo = new PageInfo<CustomerBill>(list);
+        List<CustomerBill> list = billMapper.selectByExample(example);
+        PageInfo<CustomerBill> pageInfo = new PageInfo<>(list);
         return ResponseUtil.getListResponseVO(pageInfo.getList(), pageInfo.getTotal());
     }
 

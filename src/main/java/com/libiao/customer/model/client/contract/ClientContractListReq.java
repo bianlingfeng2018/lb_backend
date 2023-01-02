@@ -13,5 +13,7 @@ public class ClientContractListReq extends BasePageReq {
     private String contractStartDate;
     @ApiModelProperty("合同结束日期-结束")
     private String contractEndDate;
+    @ApiModelProperty("合同状态")
+    private Byte contractStatus;
 
 }

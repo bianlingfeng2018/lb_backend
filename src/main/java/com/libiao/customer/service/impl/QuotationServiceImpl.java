@@ -6,16 +6,14 @@ import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.quotation.*;
 import com.libiao.customer.service.QuotationService;
-import com.libiao.customer.util.BeanCopyUtil;
-import com.libiao.customer.util.DateUtils;
-import com.libiao.customer.util.RedisUtil;
-import com.libiao.customer.util.ServiceException;
+import com.libiao.customer.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -40,8 +38,10 @@ public class QuotationServiceImpl implements QuotationService {
     private MallGoodsMapper mallGoodsMapper;
     @Autowired
     private QuotationMapperExt quotationMapperExt;
-
-
+    @Autowired
+    private CustomerBillMapper customerBillMapper;
+    @Autowired
+    private FileUtil fileUtil;
 
 
     @Override
@@ -552,6 +552,33 @@ public class QuotationServiceImpl implements QuotationService {
         vo.setAList(aList);
         vo.setRList(rList);
         return vo;
+    }
+
+    //上传水单
+    @Override
+    public void upload(AddQuotationBillReq req, MultipartFile file){
+
+        TestQuotationExample example = new TestQuotationExample();
+        example.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());
+        List<TestQuotation> testQuotations = testQuotationMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(testQuotations)) {
+            throw new ServiceException(HttpStatus.NOT_FOUND,"报价单不存在");
+        }
+        TestQuotation testQuotation = testQuotations.get(0);
+
+        CustomerBill record = new CustomerBill();
+
+        String fileName = fileUtil.saveBill(file, testQuotation.getClientNum());
+        record.setTradeId(req.getQuotationNum());
+        record.setClientId(testQuotation.getClientNum());
+        record.setOrderAmt(testQuotation.getTotalTestAmt());
+        record.setIncomeAmt(req.getIncomeAmt());
+        record.setBillPath(fileName);
+        record.setUploadTime(new Date());
+        record.setStatus((byte) 0);
+        record.setSettleAmt(0);
+
+        customerBillMapper.insertSelective(record);
     }
 
     public QuotationDetailVO convert(TestQuotation testQuotation){

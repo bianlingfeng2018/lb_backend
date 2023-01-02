@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.Quotation;
 import com.libiao.customer.dal.model.TestQuotation;
 import com.libiao.customer.model.quotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 报价单相关
@@ -21,6 +22,9 @@ public interface QuotationService {
     void addQuot(AddQuotationReq req);
 
     QuotationDetailVO detail(QuotationDetailReq req);
+
+    //上传水单
+    void upload(AddQuotationBillReq req, MultipartFile file);
 
     String getRate();
 }

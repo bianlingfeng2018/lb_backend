@@ -1,5 +1,6 @@
 package com.libiao.customer.controller;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.TestQuotation;
 import com.libiao.customer.model.BaseResponseVO;
@@ -13,10 +14,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,5 +86,12 @@ public class QuotationController {
         return ResponseUtil.getResponseVO(detail);
     }
 
-
+    @ApiOperation("上传水单")
+    @PostMapping("upload")
+    public ResponseEntity<BaseResponseVO> upload(@RequestParam("file") MultipartFile file,
+                                                 @RequestParam("form") String json){
+        AddQuotationBillReq req = JSONObject.parseObject(json,AddQuotationBillReq.class);
+        quotationService.upload(req,file);
+        return ResponseUtil.getDefaultResp();
+    }
 }

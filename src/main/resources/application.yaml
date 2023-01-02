@@ -30,7 +30,8 @@ mybatis:
 swagger:
   show: true
 
-CONTRACT_PATH: ${user.home}/contract
+CONTRACT_PATH: ${user.home}/contract/
+BILL_PATH: ${user.home}/bill/
 
 pagehelper:
   helperDialect: mysql
@@ -39,3 +40,4 @@ pagehelper:
   params: count=countSql
 logging:
   config: classpath:logback-test.xml
+

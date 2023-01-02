@@ -17,7 +17,7 @@ public class CustomerBillListReq extends BasePageReq {
     @ApiModelProperty("客户ID")
     private String clientId;
     @ApiModelProperty("状态")
-    private String status;
+    private Byte status;
 
     @ApiModelProperty("水单上传时间")
     private Date uploadStartTime;

@@ -13,6 +13,9 @@
         <if test="contractStartDate != null and contractStartDate != '' and contractEndDate !='' and contractEndDate != null">
             and cc.contract_end_date between #{contractStartDate} and #{contractEndDate}
         </if>
+        <if test="contractStatus != null">
+            and cc.contract_status = #{contractStatus}
+        </if>
     </select>
 
 </mapper>

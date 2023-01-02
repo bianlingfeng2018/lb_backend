@@ -20,16 +20,37 @@ public class FileUtil {
 
     @Value("CONTRACT_PATH")
     public String CONTRACT_PATH;
+    @Value("BILL_PATH")
+    public String BILL_PATH;
+
+    /**
+     * 保存水单
+     * @param multpartfile
+     * @param clientId
+     * @return
+     */
+    public String saveBill(MultipartFile multpartfile, String clientId){
+        return saveFile(multpartfile,clientId,BILL_PATH);
+    }
+
+    /**
+     * 下载水单
+     * @param fileName
+     * @param response
+     */
+    public void downloadBill(String fileName, HttpServletResponse response){
+        downloadFile(BILL_PATH,fileName,response);
+    }
 
     public String saveContract(MultipartFile multpartfile, Long clientId){
-        return saveFile(multpartfile,clientId,CONTRACT_PATH);
+        return saveFile(multpartfile,String.valueOf(clientId),CONTRACT_PATH);
     }
 
     public void downloadContract(String fileName, HttpServletResponse response){
         downloadFile(CONTRACT_PATH,fileName,response);
     }
 
-    private String saveFile(MultipartFile multpartfile, Long clientId, String path) {
+    private String saveFile(MultipartFile multpartfile, String clientId, String path) {
         // 检查路径是否存在，不存在则创建
         String filePath = path + clientId;//将原图片存放在pics目录下
         File file = new File(filePath);

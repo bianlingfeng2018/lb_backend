@@ -34,6 +34,6 @@ public class CustomerBillReq extends BaseSessionReq {
     private Date incomeTime;
 
     @ApiModelProperty("状态")
-    private String status;
+    private Byte status;
 
 }

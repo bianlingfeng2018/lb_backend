@@ -57,7 +57,7 @@ public class BillCtrl {
     @AccessController
     @ApiOperation("获取单个商户的出账列表")
     @RequestMapping(value = "getAllOutBill", method = RequestMethod.POST)
-    public ResponseEntity<ListResponseVO<ClientBillOut>> getAllOutBill(@RequestBody BillOutReq req){
+    public ResponseEntity<ListResponseVO<ClientBillOutVo>> getAllOutBill(@RequestBody BillOutReq req){
         if(StringUtils.isEmpty(req.getClientId())) return ResponseUtil.getListResponseVO(new ArrayList<>(),0);
         return outService.getAllOutBill(req);
     }

@@ -18,10 +18,26 @@ import java.util.Objects;
 @Component
 public class FileUtil {
 
-    @Value("CONTRACT_PATH")
+    @Value("${CONTRACT_PATH}")
     public String CONTRACT_PATH;
-    @Value("BILL_PATH")
+    @Value("${BILL_PATH}")
     public String BILL_PATH;
+
+    public String getCONTRACT_PATH() {
+        return CONTRACT_PATH;
+    }
+
+    public void setCONTRACT_PATH(String CONTRACT_PATH) {
+        this.CONTRACT_PATH = CONTRACT_PATH;
+    }
+
+    public String getBILL_PATH() {
+        return BILL_PATH;
+    }
+
+    public void setBILL_PATH(String BILL_PATH) {
+        this.BILL_PATH = BILL_PATH;
+    }
 
     /**
      * 保存水单
@@ -42,17 +58,17 @@ public class FileUtil {
         downloadFile(BILL_PATH,fileName,response);
     }
 
-    public String saveContract(MultipartFile multpartfile, Long clientId){
-        return saveFile(multpartfile,String.valueOf(clientId),CONTRACT_PATH);
+    public String saveContract(MultipartFile multpartfile, String date){
+        return saveFile(multpartfile,date,CONTRACT_PATH);
     }
 
     public void downloadContract(String fileName, HttpServletResponse response){
         downloadFile(CONTRACT_PATH,fileName,response);
     }
 
-    private String saveFile(MultipartFile multpartfile, String clientId, String path) {
+    private String saveFile(MultipartFile multpartfile, String route, String path) {
         // 检查路径是否存在，不存在则创建
-        String filePath = path + clientId;//将原图片存放在pics目录下
+        String filePath = path + route;//将原图片存放在pics目录下
         File file = new File(filePath);
         if (!file.exists() && !file.isDirectory()) {
             file.mkdirs();

@@ -19,5 +19,6 @@ public class ModifyContractReq extends BaseRequest {
     private Integer settlePeriod;
     @ApiModelProperty("是否挂账 0否 1是")
     private Byte type;
-
+    @ApiModelProperty("上传接口返回的文件名称")
+    private String contractPath;
 }

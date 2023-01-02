@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 public interface ContractService {
     PageInfo<ClientContractListVO> list(ClientContractListReq req);
 
-    void addContract(AddContractReq req, MultipartFile file);
+    void addContract(AddContractReq req);
 
 
     ClientContractDetailVO detail(ContractDetailReq req);
 
-    void modify(ModifyContractReq req, MultipartFile file);
+    void modify(ModifyContractReq req);
 
     void review(ReviewContractReq req);
 

@@ -40,11 +40,8 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public void addContract(AddContractReq req, MultipartFile file){
+    public void addContract(AddContractReq req){
         ClientContract record = BeanCopyUtil.copy(req,ClientContract.class);
-        //保存文件
-        String fileName = fileUtil.saveContract(file, req.getClientId());
-        record.setContractPath(fileName);
         clientContractMapper.insertSelective(record);
     }
 
@@ -58,13 +55,8 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public void modify(ModifyContractReq req, MultipartFile file){
+    public void modify(ModifyContractReq req){
         ClientContract record = BeanCopyUtil.copy(req,ClientContract.class);
-        if (file != null){
-            //保存文件
-            String fileName = fileUtil.saveContract(file, req.getClientId());
-            record.setContractPath(fileName);
-        }
         record.setUpdateTime(new Date());
         clientContractMapper.updateByPrimaryKey(record);
     }

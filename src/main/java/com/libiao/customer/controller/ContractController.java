@@ -1,11 +1,12 @@
 package com.libiao.customer.controller;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.client.contract.*;
 import com.libiao.customer.service.ContractService;
+import com.libiao.customer.util.DateUtils;
+import com.libiao.customer.util.FileUtil;
 import com.libiao.customer.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +24,8 @@ public class ContractController {
 
     @Autowired
     private ContractService contractService;
+    @Autowired
+    private FileUtil fileUtil;
 
     @ApiOperation("合同列表")
     @PostMapping("list")
@@ -33,10 +36,8 @@ public class ContractController {
 
     @ApiOperation("新增合同")
     @PostMapping("add")
-    public ResponseEntity<BaseResponseVO> create(@RequestParam("file") MultipartFile file,
-                                                 @RequestParam("form") String json){
-        AddContractReq req = JSONObject.parseObject(json,AddContractReq.class);
-        contractService.addContract(req,file);
+    public ResponseEntity<BaseResponseVO> create(@RequestBody AddContractReq req){
+        contractService.addContract(req);
         return ResponseUtil.getDefaultResp();
     }
 
@@ -49,10 +50,8 @@ public class ContractController {
 
     @ApiOperation("编辑合同")
     @PostMapping("modify")
-    public ResponseEntity<BaseResponseVO> modify(@RequestParam("file") MultipartFile file,
-                                                 @RequestParam("form") String json){
-        ModifyContractReq req = JSONObject.parseObject(json,ModifyContractReq.class);
-        contractService.modify(req,file);
+    public ResponseEntity<BaseResponseVO> modify(@RequestBody ModifyContractReq req){
+        contractService.modify(req);
         return ResponseUtil.getDefaultResp();
     }
 
@@ -65,9 +64,15 @@ public class ContractController {
 
     //下载合同
     @ApiOperation(value = "下载")
-    @GetMapping(value = "/download")
+    @GetMapping(value = "download")
     public void download(@RequestParam("fileName") String fileName, HttpServletResponse response){
         contractService.download(fileName,response);
     }
 
+    @ApiOperation(value = "上传文件")
+    @PostMapping("upload")
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file){
+        String fileName = fileUtil.saveContract(file, DateUtils.getDate("yyyyHHmm"));
+        return ResponseUtil.getResponseVO(fileName);
+    }
 }

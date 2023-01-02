@@ -26,4 +26,18 @@ public class CustomerServiceImpl implements CustomerService {
         List<Client> clients = clientMapper.selectByExample(clientExample);
         return clients;
     }
+
+    @Override
+    public Client getClientByClientId(String clientId) {
+        if (!StringUtils.isEmpty(clientId)){
+            ClientExample clientExample = new ClientExample();
+            clientExample.createCriteria().andClientNumEqualTo(clientId);
+            List<Client> clients = clientMapper.selectByExample(clientExample);
+            if(clients.size() == 1){
+                return clients.get(0);
+            }
+            return null;
+        }
+        return null;
+    }
 }

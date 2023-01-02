@@ -110,7 +110,7 @@ public class BillCtrl {
     @AccessController
     @ApiOperation("获取个人账单信息列表")
     @RequestMapping(value = "getPersonalBillList", method = RequestMethod.POST)
-    public ResponseEntity<ListResponseVO<CustomerBill>> getPersonalBillList(@RequestBody CustomerBillListReq req){
+    public ResponseEntity<ListResponseVO<CustomerBillVo>> getPersonalBillList(@RequestBody CustomerBillListReq req){
         return customerBillService.list(req);
     }
 

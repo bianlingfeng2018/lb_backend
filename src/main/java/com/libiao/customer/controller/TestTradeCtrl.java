@@ -235,60 +235,60 @@ public class TestTradeCtrl {
      * 保存工作单
      */
 
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/saveTestWorkOrder", method = RequestMethod.POST)
     public ResponseVO saveTestWorkOrder(@RequestBody TestWorkOrder testWorkOrder){
         return testBizService.saveTestWorkOrder(testWorkOrder);
-    }
+    }*/
 
     /**
      * 查询工作单
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/queryTestWordOrderList", method = RequestMethod.GET)
     public ResponseVO queryTestWorkOrderList(@RequestParam(name = "pageNum", required = false, defaultValue = "1") int pageNum,
                                          @RequestParam(name = "pageSize", required = false, defaultValue = "2") int pageSize){
         return testBizService.queryTestWorkOrderList(pageNum, pageSize);
-    }
+    }*/
 
   /**
    * 更新工作单
    */
-  @ResponseBody
+  /*@ResponseBody
   @RequestMapping(value = "/updateTestWorkOrder", method = RequestMethod.POST)
   public ResponseVO updateTestWorkOrder(@RequestBody TestWorkOrder testWorkOrder){
     return testBizService.updateTestWorkOrder(testWorkOrder);
-  }
+  }*/
 
   /**
    * 删除工作单
    */
-  @ResponseBody
+  /*@ResponseBody
   @RequestMapping(value = "/deleteTestWorkOrder", method = RequestMethod.DELETE)
   public ResponseVO deleteTestWorkOrder(@RequestParam("testWorkOrderId") Long testWorkOrderId){
     return testBizService.deleteTestWorkOrder(testWorkOrderId);
-  }
+  }*/
 
     /**
      * 工作单生成pdf
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/downloadTestWorkOrder", method = RequestMethod.GET)
     public ResponseVO downloadTestWorkOrder(HttpServletResponse response,
                                           @RequestParam(name = "testTradeId", required = true) Long testTradeId){
         return testBizService.exportTestWorkOrder(response, testTradeId);
-    }
+    }*/
 
   /**
    * 预览检测工作单
    * @param testTradeId
    * @return
    */
-  @ResponseBody
+  /*@ResponseBody
   @RequestMapping(value = "/previewTestWorkOrder", method = RequestMethod.GET)
   public ResponseEntity<?> previewTestWorkOrder(@RequestParam("testTradeId") Long testTradeId){
     return testBizService.previewTestWorkOrderByTestTradeId(testTradeId);
-  }
+  }*/
 
     /**
      * 根据检测交易单id，返回对应的检测交易单，报价单，申请单，以及工作单

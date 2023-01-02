@@ -70,7 +70,7 @@ public class ContractServiceImpl implements ContractService {
         record.setReviewId(req.getUser().getId());
         record.setReviewName(req.getUser().getNickname());
         record.setReviewReason(req.getReviewReason());
-        clientContractMapper.updateByPrimaryKey(record);
+        clientContractMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override

@@ -79,24 +79,24 @@ public interface TestRespository {
 
     /********************************************* 测试申请表 *********************************************/
 
-    public int insertTestWorkOrder(TestWorkOrder testWorkOrder);
+    //public int insertTestWorkOrder(TestWorkOrder testWorkOrder);
 
-    public int insertTestWorkOrderItem(TestWorkOrderItem testWorkOrderItem);
+    //public int insertTestWorkOrderItem(TestWorkOrderItem testWorkOrderItem);
 
-    public int batchInsertTestWorkOrderItem(List<TestWorkOrderItem> testWorkOrderItemList);
+    //public int batchInsertTestWorkOrderItem(List<TestWorkOrderItem> testWorkOrderItemList);
 
-    public List<TestWorkOrder> queryTestWorkOrder(int pageNum, int pageSize);
+    //public List<TestWorkOrder> queryTestWorkOrder(int pageNum, int pageSize);
 
     List<TestReport> queryTestReport(int pageNum, int pageSize);
 
-    public List<TestWorkOrderItem> queryTestWorkOrderItemByWorkOrderId(Long testWorkOrderId);
+    //public List<TestWorkOrderItem> queryTestWorkOrderItemByWorkOrderId(Long testWorkOrderId);
     /********************************************* 测试工作单 *********************************************/
 
     //public TestQuotation queryTestQuotationByTestTradeId(Long testTradeId);
 
     //public TestApplicationForm queryTestApplicationFormByTestTradeId(Long testTradeId);
 
-    public TestWorkOrder queryTestWorkOrderByTestTradeId(Long testTradeId);
+    //public TestWorkOrder queryTestWorkOrderByTestTradeId(Long testTradeId);
 
     /********************************************* 测试报告 *********************************************/
 

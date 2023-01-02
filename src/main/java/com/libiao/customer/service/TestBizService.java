@@ -38,11 +38,11 @@ public interface TestBizService {
 
     //ResponseVO exportTestApplicationForm(HttpServletResponse response, Long testTradeId); // 导出申请单pdf
 
-    ResponseVO saveTestWorkOrder(TestWorkOrder testWorkOrder);
+    //ResponseVO saveTestWorkOrder(TestWorkOrder testWorkOrder);
 
-    ResponseVO queryTestWorkOrderList(int pageNum, int pageSize);
+    //ResponseVO queryTestWorkOrderList(int pageNum, int pageSize);
 
-    ResponseVO exportTestWorkOrder(HttpServletResponse response, Long testTradeId); // 导出工作单pdf
+    //ResponseVO exportTestWorkOrder(HttpServletResponse response, Long testTradeId); // 导出工作单pdf
 
     ResponseVO queryTestQuotationByTestTradeId(Long testTradeId);
 
@@ -97,7 +97,7 @@ public interface TestBizService {
 
     //ResponseEntity<?> previewTestApplyByTestTradeId(Long testTradeId);
 
-    ResponseEntity<?> previewTestWorkOrderByTestTradeId(Long testTradeId);
+    //ResponseEntity<?> previewTestWorkOrderByTestTradeId(Long testTradeId);
 
     ResponseEntity<?> previewTestReportByTestTradeId(Long testTradeId);
 
@@ -107,7 +107,7 @@ public interface TestBizService {
 
     ResponseVO deleteTestApply(Long testApplyId);
 
-    ResponseVO updateTestWorkOrder(TestWorkOrder testWorkOrder);
+    //ResponseVO updateTestWorkOrder(TestWorkOrder testWorkOrder);
 
     ResponseVO deleteTestWorkOrder(Long testWorkOrderId);
 

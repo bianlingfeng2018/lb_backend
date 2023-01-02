@@ -155,26 +155,26 @@ public class TestRespositoryImpl implements TestRespository {
         return testApplicationItemMapper.selectByTestApplicationFormId(testApplicationFormId);
     }*/
 
-    @Override
+    /*@Override
     public int insertTestWorkOrder(TestWorkOrder testWorkOrder) {
         testWorkOrderMapper.insert(testWorkOrder);
         for(TestWorkOrderItem item: testWorkOrder.getTestWorkOrderItemList()){
             item.setTestWorkOrderId(testWorkOrder.getId());
         }
         return testWorkOrderItemMapper.batchInsert(testWorkOrder.getTestWorkOrderItemList());
-    }
+    }*/
 
-    @Override
+    /*@Override
     public int insertTestWorkOrderItem(TestWorkOrderItem testWorkOrderItem) {
         return testWorkOrderItemMapper.insert(testWorkOrderItem);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public int batchInsertTestWorkOrderItem(List<TestWorkOrderItem> testWorkOrderItemList) {
         return testWorkOrderItemMapper.batchInsert(testWorkOrderItemList);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public List<TestWorkOrder> queryTestWorkOrder(int pageNum, int pageSize) {
         String userName = WebUtil.getAccessToken().getUsername();
         String permission = WebUtil.getAccessToken().getPermission();
@@ -187,7 +187,7 @@ public class TestRespositoryImpl implements TestRespository {
             testWorkOrderList = testWorkOrderMapper.selectAllByOwner(userName);
         }
         return testWorkOrderList;
-    }
+    }*/
 
     @Override
     public List<TestReport> queryTestReport(int pageNum, int pageSize) {
@@ -204,10 +204,10 @@ public class TestRespositoryImpl implements TestRespository {
         return testReportList;
     }
 
-    @Override
+    /*@Override
     public List<TestWorkOrderItem> queryTestWorkOrderItemByWorkOrderId(Long testWorkOrderId) {
         return testWorkOrderItemMapper.selectByTestWorkOrderId(testWorkOrderId);
-    }
+    }*/
 
     /*@Override
     public TestQuotation queryTestQuotationByTestTradeId(Long testTradeId) {
@@ -231,7 +231,7 @@ public class TestRespositoryImpl implements TestRespository {
         return null;
     }*/
 
-    @Override
+    /*@Override
     public TestWorkOrder queryTestWorkOrderByTestTradeId(Long testTradeId) {
         List<TestWorkOrder> testWorkOrderList = testWorkOrderMapper.queryTestWorkOrderByTestTradeId(testTradeId);
         if(testWorkOrderList != null && testWorkOrderList.size() != 0){
@@ -240,7 +240,7 @@ public class TestRespositoryImpl implements TestRespository {
             return testWorkOrder;
         }
         return null;
-    }
+    }*/
 
     @Override
     public int insertTestReport(TestReport testReport) {

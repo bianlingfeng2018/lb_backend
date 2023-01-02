@@ -39,6 +39,7 @@ public class ApplicationController {
 
     @ApiOperation("新增申请单")
     @PostMapping("create")
+    //TODO 同步报告抬头
     public ResponseEntity<BaseResponseVO> create(@RequestBody AddApplicationReq req){
         applicationService.createApplication(req);
         return ResponseUtil.getDefaultResp();
@@ -55,6 +56,13 @@ public class ApplicationController {
     @PostMapping("modify")
     public ResponseEntity<BaseResponseVO> modify(@RequestBody ModifyApplicationReq req){
         applicationService.modify(req);
+        return ResponseUtil.getDefaultResp();
+    }
+
+    @ApiOperation("审核申请单")
+    @PostMapping("review")
+    public ResponseEntity<BaseResponseVO> review(@RequestBody ReviewApplicationReq req){
+        applicationService.review(req);
         return ResponseUtil.getDefaultResp();
     }
 

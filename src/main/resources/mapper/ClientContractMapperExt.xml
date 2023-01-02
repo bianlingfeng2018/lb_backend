@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.ClientContractMapperExt">
+    
+    <select id="getClientContractList" resultType="com.libiao.customer.model.client.contract.ClientContractListVO">
+        SELECT cc.*,b.`balance_amt`,b.`unsettled_amt`
+        FROM client_contract cc
+        LEFT JOIN balance b ON b.`client_id` = cc.`client_id`
+        where 1=1
+        <if test="clientName != null and clientName != ''">
+            and cc.client_name like #{clientName}
+        </if>
+        <if test="contractStartDate != null and contractStartDate != '' and contractEndDate !='' and contractEndDate != null">
+            and cc.contract_end_date between #{contractStartDate} and #{contractEndDate}
+        </if>
+    </select>
+
+</mapper>

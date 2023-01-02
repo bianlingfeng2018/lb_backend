@@ -8,8 +8,10 @@ public class ClientSimpleVO {
 
     @ApiModelProperty("客户ID")
     private Long id;
-    @ApiModelProperty("公司名称")
+    @ApiModelProperty("客户名称")
     private String name;
+    @ApiModelProperty("客户编号")
+    private String clientNum;
     @ApiModelProperty("联系人姓名")
     private String contactName;
     @ApiModelProperty("联系人电话")

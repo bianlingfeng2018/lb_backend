@@ -3,12 +3,16 @@ package com.libiao.customer.config;
 import com.libiao.customer.interceptor.SessionInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.servlet.MultipartConfigElement;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,4 +72,20 @@ public class MvcConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
     }
+
+    /**
+     * 文件上传临时路径
+     */
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        String location = System.getProperty("user.dir") + "/data/tmp";
+        File tmpFile = new File(location);
+        if (!tmpFile.exists()) {
+            tmpFile.mkdirs();
+        }
+        factory.setLocation(location);
+        return factory.createMultipartConfig();
+    }
+
 }

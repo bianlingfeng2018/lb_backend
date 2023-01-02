@@ -23,6 +23,8 @@ public class AddApplicationReq extends BaseSessionReq {
     private String reportAddressCn;
     @ApiModelProperty("报告抬头地址")
     private String reportAddressEn;
+    @ApiModelProperty("报告邮寄地址")
+    private String reportAddr;
     @ApiModelProperty("发票抬头")
     private String invoiceTitle;
     @ApiModelProperty("需要资质，1CNAS,2CMA")

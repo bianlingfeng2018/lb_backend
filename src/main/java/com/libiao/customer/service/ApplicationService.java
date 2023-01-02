@@ -13,4 +13,6 @@ public interface ApplicationService {
     ApplicationDetailVO detail(ApplicationDetailReq req);
 
     void modify(ModifyApplicationReq req);
+
+    void review(ReviewApplicationReq req);
 }

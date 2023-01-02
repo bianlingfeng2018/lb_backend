@@ -17,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -214,5 +215,16 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
 
+    }
+
+    @Override
+    public void review(ReviewApplicationReq req){
+        TestApplicationForm record = new TestApplicationForm();
+        record.setReviewRemark(req.getReason());
+        record.setReviewTime(new Date());
+        record.setContractStatus(req.getReviewResult());
+        TestApplicationFormExample example = new TestApplicationFormExample();
+        example.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
+        testApplicationFormMapper.updateByExampleSelective(record,example);
     }
 }

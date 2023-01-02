@@ -18,6 +18,7 @@
     <result column="client_name" jdbcType="VARCHAR" property="clientName" />
     <result column="create_name" jdbcType="VARCHAR" property="createName" />
     <result column="sample_status" jdbcType="TINYINT" property="sampleStatus" />
+    <result column="confirm_id" jdbcType="BIGINT" property="confirmId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -80,7 +81,7 @@
   <sql id="Base_Column_List">
     id, work_order_num, quotation_num, application_num, create_time, order_date, output_date, 
     plan_date, service, test_com_id, com_name, sub_contract, status, client_name, create_name, 
-    sample_status
+    sample_status, confirm_id
   </sql>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestWorkOrderExample" resultMap="BaseResultMap">
     select
@@ -120,14 +121,14 @@
       create_time, order_date, output_date, 
       plan_date, service, test_com_id, 
       com_name, sub_contract, status, 
-      client_name, create_name, sample_status
-      )
+      client_name, create_name, sample_status, 
+      confirm_id)
     values (#{workOrderNum,jdbcType=VARCHAR}, #{quotationNum,jdbcType=VARCHAR}, #{applicationNum,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{orderDate,jdbcType=TIMESTAMP}, #{outputDate,jdbcType=TIMESTAMP}, 
       #{planDate,jdbcType=DATE}, #{service,jdbcType=TINYINT}, #{testComId,jdbcType=INTEGER}, 
       #{comName,jdbcType=VARCHAR}, #{subContract,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, 
-      #{clientName,jdbcType=VARCHAR}, #{createName,jdbcType=VARCHAR}, #{sampleStatus,jdbcType=TINYINT}
-      )
+      #{clientName,jdbcType=VARCHAR}, #{createName,jdbcType=VARCHAR}, #{sampleStatus,jdbcType=TINYINT}, 
+      #{confirmId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestWorkOrder">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -180,6 +181,9 @@
       <if test="sampleStatus != null">
         sample_status,
       </if>
+      <if test="confirmId != null">
+        confirm_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="workOrderNum != null">
@@ -226,6 +230,9 @@
       </if>
       <if test="sampleStatus != null">
         #{sampleStatus,jdbcType=TINYINT},
+      </if>
+      <if test="confirmId != null">
+        #{confirmId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -286,6 +293,9 @@
       <if test="row.sampleStatus != null">
         sample_status = #{row.sampleStatus,jdbcType=TINYINT},
       </if>
+      <if test="row.confirmId != null">
+        confirm_id = #{row.confirmId,jdbcType=BIGINT},
+      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -308,7 +318,8 @@
       status = #{row.status,jdbcType=TINYINT},
       client_name = #{row.clientName,jdbcType=VARCHAR},
       create_name = #{row.createName,jdbcType=VARCHAR},
-      sample_status = #{row.sampleStatus,jdbcType=TINYINT}
+      sample_status = #{row.sampleStatus,jdbcType=TINYINT},
+      confirm_id = #{row.confirmId,jdbcType=BIGINT}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -361,6 +372,9 @@
       <if test="sampleStatus != null">
         sample_status = #{sampleStatus,jdbcType=TINYINT},
       </if>
+      <if test="confirmId != null">
+        confirm_id = #{confirmId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -380,7 +394,8 @@
       status = #{status,jdbcType=TINYINT},
       client_name = #{clientName,jdbcType=VARCHAR},
       create_name = #{createName,jdbcType=VARCHAR},
-      sample_status = #{sampleStatus,jdbcType=TINYINT}
+      sample_status = #{sampleStatus,jdbcType=TINYINT},
+      confirm_id = #{confirmId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

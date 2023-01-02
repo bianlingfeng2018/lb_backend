@@ -1151,6 +1151,66 @@ public class TestWorkOrderExample {
             addCriterion("sample_status not between", value1, value2, "sampleStatus");
             return (Criteria) this;
         }
+
+        public Criteria andConfirmIdIsNull() {
+            addCriterion("confirm_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdIsNotNull() {
+            addCriterion("confirm_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdEqualTo(Long value) {
+            addCriterion("confirm_id =", value, "confirmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdNotEqualTo(Long value) {
+            addCriterion("confirm_id <>", value, "confirmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdGreaterThan(Long value) {
+            addCriterion("confirm_id >", value, "confirmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("confirm_id >=", value, "confirmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdLessThan(Long value) {
+            addCriterion("confirm_id <", value, "confirmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdLessThanOrEqualTo(Long value) {
+            addCriterion("confirm_id <=", value, "confirmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdIn(List<Long> values) {
+            addCriterion("confirm_id in", values, "confirmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdNotIn(List<Long> values) {
+            addCriterion("confirm_id not in", values, "confirmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdBetween(Long value1, Long value2) {
+            addCriterion("confirm_id between", value1, value2, "confirmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConfirmIdNotBetween(Long value1, Long value2) {
+            addCriterion("confirm_id not between", value1, value2, "confirmId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

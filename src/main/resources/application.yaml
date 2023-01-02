@@ -32,6 +32,7 @@ swagger:
 
 CONTRACT_PATH: ${user.home}/contract/
 BILL_PATH: ${user.home}/bill/
+SAMPLE_PATH: ${user.home}/sample/
 
 pagehelper:
   helperDialect: mysql

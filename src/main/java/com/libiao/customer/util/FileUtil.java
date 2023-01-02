@@ -22,21 +22,21 @@ public class FileUtil {
     public String CONTRACT_PATH;
     @Value("${BILL_PATH}")
     public String BILL_PATH;
+    @Value("${SAMPLE_PATH}")
+    public String SAMPLE_PATH;
 
-    public String getCONTRACT_PATH() {
-        return CONTRACT_PATH;
+    /**
+     * 保存样品图片
+     * @param multpartfile
+     * @param date
+     * @return
+     */
+    public String saveSample(MultipartFile multpartfile, String date){
+        return saveFile(multpartfile,date,SAMPLE_PATH);
     }
 
-    public void setCONTRACT_PATH(String CONTRACT_PATH) {
-        this.CONTRACT_PATH = CONTRACT_PATH;
-    }
-
-    public String getBILL_PATH() {
-        return BILL_PATH;
-    }
-
-    public void setBILL_PATH(String BILL_PATH) {
-        this.BILL_PATH = BILL_PATH;
+    public void downloadSample(String fileName, HttpServletResponse response){
+        downloadFile(SAMPLE_PATH,fileName,response);
     }
 
     /**

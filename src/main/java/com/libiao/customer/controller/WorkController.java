@@ -2,23 +2,22 @@ package com.libiao.customer.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.TestWorkOrder;
+import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
-import com.libiao.customer.model.work.WorkOrderDetailReq;
-import com.libiao.customer.model.work.WorkOrderListReq;
-import com.libiao.customer.model.work.WorkOrderListVO;
-import com.libiao.customer.model.work.WorkOrderVO;
+import com.libiao.customer.model.work.*;
 import com.libiao.customer.service.WorkService;
 import com.libiao.customer.util.BeanCopyUtil;
+import com.libiao.customer.util.DateUtils;
+import com.libiao.customer.util.FileUtil;
 import com.libiao.customer.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +34,8 @@ public class WorkController {
 
     @Autowired
     private WorkService workService;
+    @Autowired
+    private FileUtil fileUtil;
 
     @ApiOperation("工作单列表接口")
     @PostMapping("list")
@@ -51,5 +52,34 @@ public class WorkController {
         WorkOrderVO detail = workService.detail(req);
         return ResponseUtil.getResponseVO(detail);
     }
+
+    @ApiOperation("确认工作单")
+    @PostMapping("confirm")
+    public ResponseEntity<BaseResponseVO> confirm(@RequestBody ConfirmWorkOrderReq req){
+        workService.confirm(req);
+        return ResponseUtil.getDefaultResp();
+    }
+
+    @ApiOperation("删除工作单")
+    @PostMapping("delete")
+    public ResponseEntity<BaseResponseVO> delete(@RequestBody WorkOrderDetailReq req){
+        workService.delete(req);
+        return ResponseUtil.getDefaultResp();
+    }
+
+    @ApiOperation(value = "上传样品图片")
+    @PostMapping("upload")
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file){
+        String fileName = fileUtil.saveSample(file, DateUtils.getDate("yyyyHHmm"));
+        return ResponseUtil.getResponseVO(fileName);
+    }
+
+    @ApiOperation(value = "下载样品图片")
+    @GetMapping(value = "download")
+    public void download(@RequestParam("fileName") String fileName, HttpServletResponse response){
+        fileUtil.downloadSample(fileName, response);
+    }
+
+
 
 }

@@ -36,6 +36,8 @@ public class TestWorkOrder implements Serializable {
 
     private Byte sampleStatus;
 
+    private Long confirmId;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -166,6 +168,14 @@ public class TestWorkOrder implements Serializable {
         this.sampleStatus = sampleStatus;
     }
 
+    public Long getConfirmId() {
+        return confirmId;
+    }
+
+    public void setConfirmId(Long confirmId) {
+        this.confirmId = confirmId;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -188,6 +198,7 @@ public class TestWorkOrder implements Serializable {
         sb.append(", clientName=").append(clientName);
         sb.append(", createName=").append(createName);
         sb.append(", sampleStatus=").append(sampleStatus);
+        sb.append(", confirmId=").append(confirmId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

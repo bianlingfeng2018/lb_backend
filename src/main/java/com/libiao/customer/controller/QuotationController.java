@@ -7,9 +7,7 @@ import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.quotation.*;
 import com.libiao.customer.service.QuotationService;
-import com.libiao.customer.util.AccessController;
-import com.libiao.customer.util.BeanCopyUtil;
-import com.libiao.customer.util.ResponseUtil;
+import com.libiao.customer.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,8 @@ public class QuotationController {
 
     @Autowired
     private QuotationService quotationService;
+    @Autowired
+    private FileUtil fileUtil;
 
     @PostMapping("list")
     @ApiOperation("报价单列表")
@@ -86,12 +86,20 @@ public class QuotationController {
         return ResponseUtil.getResponseVO(detail);
     }
 
-    @ApiOperation("上传水单")
+    @ApiOperation(value = "上传水单文件")
     @PostMapping("upload")
-    public ResponseEntity<BaseResponseVO> upload(@RequestParam("file") MultipartFile file,
-                                                 @RequestParam("form") String json){
-        AddQuotationBillReq req = JSONObject.parseObject(json,AddQuotationBillReq.class);
-        quotationService.upload(req,file);
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file){
+        String fileName = fileUtil.saveBill(file, DateUtils.getDate("yyyyHHmm"));
+        return ResponseUtil.getResponseVO(fileName);
+    }
+
+
+    @ApiOperation("确认上传水单")
+    @PostMapping("confirm")
+    public ResponseEntity<BaseResponseVO> confirm(@RequestBody AddQuotationBillReq req){
+        quotationService.upload(req);
         return ResponseUtil.getDefaultResp();
     }
+
+
 }

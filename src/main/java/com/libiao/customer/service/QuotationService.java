@@ -24,7 +24,7 @@ public interface QuotationService {
     QuotationDetailVO detail(QuotationDetailReq req);
 
     //上传水单
-    void upload(AddQuotationBillReq req, MultipartFile file);
+    void upload(AddQuotationBillReq req);
 
     String getRate();
 }

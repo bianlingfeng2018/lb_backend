@@ -11,5 +11,7 @@ public class AddQuotationBillReq extends BaseRequest {
     private String quotationNum;
     @ApiModelProperty("回款金额")
     private Integer incomeAmt;
+    @ApiModelProperty("文件名")
+    private String billPath;
 
 }

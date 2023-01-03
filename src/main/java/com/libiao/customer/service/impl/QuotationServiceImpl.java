@@ -556,7 +556,7 @@ public class QuotationServiceImpl implements QuotationService {
 
     //上传水单
     @Override
-    public void upload(AddQuotationBillReq req, MultipartFile file){
+    public void upload(AddQuotationBillReq req){
 
         TestQuotationExample example = new TestQuotationExample();
         example.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());
@@ -568,12 +568,11 @@ public class QuotationServiceImpl implements QuotationService {
 
         CustomerBill record = new CustomerBill();
 
-        String fileName = fileUtil.saveBill(file, testQuotation.getClientNum());
         record.setTradeId(req.getQuotationNum());
         record.setClientId(testQuotation.getClientNum());
         record.setOrderAmt(testQuotation.getTotalTestAmt());
         record.setIncomeAmt(req.getIncomeAmt());
-        record.setBillPath(fileName);
+        record.setBillPath(req.getBillPath());
         record.setUploadTime(new Date());
         record.setStatus((byte) 0);
         record.setSettleAmt(0);

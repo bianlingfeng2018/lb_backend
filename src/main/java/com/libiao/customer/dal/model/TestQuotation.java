@@ -6,7 +6,7 @@ import java.util.Date;
 public class TestQuotation implements Serializable {
     private Long id;
 
-    private Integer clientId;
+    private Long clientId;
 
     private String clientNum;
 
@@ -106,11 +106,11 @@ public class TestQuotation implements Serializable {
         this.id = id;
     }
 
-    public Integer getClientId() {
+    public Long getClientId() {
         return clientId;
     }
 
-    public void setClientId(Integer clientId) {
+    public void setClientId(Long clientId) {
         this.clientId = clientId;
     }
 

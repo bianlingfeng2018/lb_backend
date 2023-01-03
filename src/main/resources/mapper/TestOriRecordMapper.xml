@@ -14,7 +14,7 @@
     <result column="test_lab" jdbcType="VARCHAR" property="testLab" />
     <result column="test_device_no" jdbcType="VARCHAR" property="testDeviceNo" />
     <result column="test_device_name" jdbcType="VARCHAR" property="testDeviceName" />
-    <result column="test_person_id" jdbcType="INTEGER" property="testPersonId" />
+    <result column="test_person_id" jdbcType="BIGINT" property="testPersonId" />
     <result column="test_person" jdbcType="VARCHAR" property="testPerson" />
     <result column="test_method" jdbcType="VARCHAR" property="testMethod" />
     <result column="test_case" jdbcType="VARCHAR" property="testCase" />
@@ -22,7 +22,7 @@
     <result column="plan_date" jdbcType="TIMESTAMP" property="planDate" />
     <result column="report_date" jdbcType="TIMESTAMP" property="reportDate" />
     <result column="report_person" jdbcType="VARCHAR" property="reportPerson" />
-    <result column="report_person_id" jdbcType="INTEGER" property="reportPersonId" />
+    <result column="report_person_id" jdbcType="BIGINT" property="reportPersonId" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="test_result" jdbcType="VARCHAR" property="testResult" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -144,10 +144,10 @@
     values (#{recordNum,jdbcType=VARCHAR}, #{workOrderNum,jdbcType=VARCHAR}, #{quotationNum,jdbcType=VARCHAR}, 
       #{reportNum,jdbcType=VARCHAR}, #{testCom,jdbcType=VARCHAR}, #{testComId,jdbcType=INTEGER}, 
       #{testItem,jdbcType=VARCHAR}, #{testLabId,jdbcType=INTEGER}, #{testLab,jdbcType=VARCHAR}, 
-      #{testDeviceNo,jdbcType=VARCHAR}, #{testDeviceName,jdbcType=VARCHAR}, #{testPersonId,jdbcType=INTEGER}, 
+      #{testDeviceNo,jdbcType=VARCHAR}, #{testDeviceName,jdbcType=VARCHAR}, #{testPersonId,jdbcType=BIGINT}, 
       #{testPerson,jdbcType=VARCHAR}, #{testMethod,jdbcType=VARCHAR}, #{testCase,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{planDate,jdbcType=TIMESTAMP}, #{reportDate,jdbcType=TIMESTAMP}, 
-      #{reportPerson,jdbcType=VARCHAR}, #{reportPersonId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{reportPerson,jdbcType=VARCHAR}, #{reportPersonId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
       #{testResult,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{sampleDate,jdbcType=TIMESTAMP}, 
       #{reviewId,jdbcType=BIGINT}, #{reviewName,jdbcType=VARCHAR}, #{reviewReason,jdbcType=VARCHAR}, 
       #{reviewTime,jdbcType=TIMESTAMP})
@@ -278,7 +278,7 @@
         #{testDeviceName,jdbcType=VARCHAR},
       </if>
       <if test="testPersonId != null">
-        #{testPersonId,jdbcType=INTEGER},
+        #{testPersonId,jdbcType=BIGINT},
       </if>
       <if test="testPerson != null">
         #{testPerson,jdbcType=VARCHAR},
@@ -302,7 +302,7 @@
         #{reportPerson,jdbcType=VARCHAR},
       </if>
       <if test="reportPersonId != null">
-        #{reportPersonId,jdbcType=INTEGER},
+        #{reportPersonId,jdbcType=BIGINT},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
@@ -376,7 +376,7 @@
         test_device_name = #{row.testDeviceName,jdbcType=VARCHAR},
       </if>
       <if test="row.testPersonId != null">
-        test_person_id = #{row.testPersonId,jdbcType=INTEGER},
+        test_person_id = #{row.testPersonId,jdbcType=BIGINT},
       </if>
       <if test="row.testPerson != null">
         test_person = #{row.testPerson,jdbcType=VARCHAR},
@@ -400,7 +400,7 @@
         report_person = #{row.reportPerson,jdbcType=VARCHAR},
       </if>
       <if test="row.reportPersonId != null">
-        report_person_id = #{row.reportPersonId,jdbcType=INTEGER},
+        report_person_id = #{row.reportPersonId,jdbcType=BIGINT},
       </if>
       <if test="row.status != null">
         status = #{row.status,jdbcType=TINYINT},
@@ -445,7 +445,7 @@
       test_lab = #{row.testLab,jdbcType=VARCHAR},
       test_device_no = #{row.testDeviceNo,jdbcType=VARCHAR},
       test_device_name = #{row.testDeviceName,jdbcType=VARCHAR},
-      test_person_id = #{row.testPersonId,jdbcType=INTEGER},
+      test_person_id = #{row.testPersonId,jdbcType=BIGINT},
       test_person = #{row.testPerson,jdbcType=VARCHAR},
       test_method = #{row.testMethod,jdbcType=VARCHAR},
       test_case = #{row.testCase,jdbcType=VARCHAR},
@@ -453,7 +453,7 @@
       plan_date = #{row.planDate,jdbcType=TIMESTAMP},
       report_date = #{row.reportDate,jdbcType=TIMESTAMP},
       report_person = #{row.reportPerson,jdbcType=VARCHAR},
-      report_person_id = #{row.reportPersonId,jdbcType=INTEGER},
+      report_person_id = #{row.reportPersonId,jdbcType=BIGINT},
       status = #{row.status,jdbcType=TINYINT},
       test_result = #{row.testResult,jdbcType=VARCHAR},
       remark = #{row.remark,jdbcType=VARCHAR},
@@ -503,7 +503,7 @@
         test_device_name = #{testDeviceName,jdbcType=VARCHAR},
       </if>
       <if test="testPersonId != null">
-        test_person_id = #{testPersonId,jdbcType=INTEGER},
+        test_person_id = #{testPersonId,jdbcType=BIGINT},
       </if>
       <if test="testPerson != null">
         test_person = #{testPerson,jdbcType=VARCHAR},
@@ -527,7 +527,7 @@
         report_person = #{reportPerson,jdbcType=VARCHAR},
       </if>
       <if test="reportPersonId != null">
-        report_person_id = #{reportPersonId,jdbcType=INTEGER},
+        report_person_id = #{reportPersonId,jdbcType=BIGINT},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
@@ -569,7 +569,7 @@
       test_lab = #{testLab,jdbcType=VARCHAR},
       test_device_no = #{testDeviceNo,jdbcType=VARCHAR},
       test_device_name = #{testDeviceName,jdbcType=VARCHAR},
-      test_person_id = #{testPersonId,jdbcType=INTEGER},
+      test_person_id = #{testPersonId,jdbcType=BIGINT},
       test_person = #{testPerson,jdbcType=VARCHAR},
       test_method = #{testMethod,jdbcType=VARCHAR},
       test_case = #{testCase,jdbcType=VARCHAR},
@@ -577,7 +577,7 @@
       plan_date = #{planDate,jdbcType=TIMESTAMP},
       report_date = #{reportDate,jdbcType=TIMESTAMP},
       report_person = #{reportPerson,jdbcType=VARCHAR},
-      report_person_id = #{reportPersonId,jdbcType=INTEGER},
+      report_person_id = #{reportPersonId,jdbcType=BIGINT},
       status = #{status,jdbcType=TINYINT},
       test_result = #{testResult,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},

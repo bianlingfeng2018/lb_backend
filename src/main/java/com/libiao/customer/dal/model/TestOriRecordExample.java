@@ -925,52 +925,52 @@ public class TestOriRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdEqualTo(Integer value) {
+        public Criteria andTestPersonIdEqualTo(Long value) {
             addCriterion("test_person_id =", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdNotEqualTo(Integer value) {
+        public Criteria andTestPersonIdNotEqualTo(Long value) {
             addCriterion("test_person_id <>", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdGreaterThan(Integer value) {
+        public Criteria andTestPersonIdGreaterThan(Long value) {
             addCriterion("test_person_id >", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andTestPersonIdGreaterThanOrEqualTo(Long value) {
             addCriterion("test_person_id >=", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdLessThan(Integer value) {
+        public Criteria andTestPersonIdLessThan(Long value) {
             addCriterion("test_person_id <", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdLessThanOrEqualTo(Integer value) {
+        public Criteria andTestPersonIdLessThanOrEqualTo(Long value) {
             addCriterion("test_person_id <=", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdIn(List<Integer> values) {
+        public Criteria andTestPersonIdIn(List<Long> values) {
             addCriterion("test_person_id in", values, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdNotIn(List<Integer> values) {
+        public Criteria andTestPersonIdNotIn(List<Long> values) {
             addCriterion("test_person_id not in", values, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdBetween(Integer value1, Integer value2) {
+        public Criteria andTestPersonIdBetween(Long value1, Long value2) {
             addCriterion("test_person_id between", value1, value2, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andTestPersonIdNotBetween(Long value1, Long value2) {
             addCriterion("test_person_id not between", value1, value2, "testPersonId");
             return (Criteria) this;
         }
@@ -1445,52 +1445,52 @@ public class TestOriRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andReportPersonIdEqualTo(Integer value) {
+        public Criteria andReportPersonIdEqualTo(Long value) {
             addCriterion("report_person_id =", value, "reportPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andReportPersonIdNotEqualTo(Integer value) {
+        public Criteria andReportPersonIdNotEqualTo(Long value) {
             addCriterion("report_person_id <>", value, "reportPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andReportPersonIdGreaterThan(Integer value) {
+        public Criteria andReportPersonIdGreaterThan(Long value) {
             addCriterion("report_person_id >", value, "reportPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andReportPersonIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andReportPersonIdGreaterThanOrEqualTo(Long value) {
             addCriterion("report_person_id >=", value, "reportPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andReportPersonIdLessThan(Integer value) {
+        public Criteria andReportPersonIdLessThan(Long value) {
             addCriterion("report_person_id <", value, "reportPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andReportPersonIdLessThanOrEqualTo(Integer value) {
+        public Criteria andReportPersonIdLessThanOrEqualTo(Long value) {
             addCriterion("report_person_id <=", value, "reportPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andReportPersonIdIn(List<Integer> values) {
+        public Criteria andReportPersonIdIn(List<Long> values) {
             addCriterion("report_person_id in", values, "reportPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andReportPersonIdNotIn(List<Integer> values) {
+        public Criteria andReportPersonIdNotIn(List<Long> values) {
             addCriterion("report_person_id not in", values, "reportPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andReportPersonIdBetween(Integer value1, Integer value2) {
+        public Criteria andReportPersonIdBetween(Long value1, Long value2) {
             addCriterion("report_person_id between", value1, value2, "reportPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andReportPersonIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andReportPersonIdNotBetween(Long value1, Long value2) {
             addCriterion("report_person_id not between", value1, value2, "reportPersonId");
             return (Criteria) this;
         }

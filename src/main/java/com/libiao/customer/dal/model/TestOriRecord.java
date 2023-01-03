@@ -28,7 +28,7 @@ public class TestOriRecord implements Serializable {
 
     private String testDeviceName;
 
-    private Integer testPersonId;
+    private Long testPersonId;
 
     private String testPerson;
 
@@ -44,7 +44,7 @@ public class TestOriRecord implements Serializable {
 
     private String reportPerson;
 
-    private Integer reportPersonId;
+    private Long reportPersonId;
 
     private Byte status;
 
@@ -160,11 +160,11 @@ public class TestOriRecord implements Serializable {
         this.testDeviceName = testDeviceName;
     }
 
-    public Integer getTestPersonId() {
+    public Long getTestPersonId() {
         return testPersonId;
     }
 
-    public void setTestPersonId(Integer testPersonId) {
+    public void setTestPersonId(Long testPersonId) {
         this.testPersonId = testPersonId;
     }
 
@@ -224,11 +224,11 @@ public class TestOriRecord implements Serializable {
         this.reportPerson = reportPerson;
     }
 
-    public Integer getReportPersonId() {
+    public Long getReportPersonId() {
         return reportPersonId;
     }
 
-    public void setReportPersonId(Integer reportPersonId) {
+    public void setReportPersonId(Long reportPersonId) {
         this.reportPersonId = reportPersonId;
     }
 

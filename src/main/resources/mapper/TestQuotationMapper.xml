@@ -3,7 +3,7 @@
 <mapper namespace="com.libiao.customer.dal.mapper.TestQuotationMapper">
   <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestQuotation">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="client_id" jdbcType="INTEGER" property="clientId" />
+    <result column="client_id" jdbcType="BIGINT" property="clientId" />
     <result column="client_num" jdbcType="VARCHAR" property="clientNum" />
     <result column="client_name" jdbcType="VARCHAR" property="clientName" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
@@ -189,7 +189,7 @@
       single_report, orgQuotationNum, audit_id, 
       audit_name, audit_reason, remark
       )
-    values (#{clientId,jdbcType=INTEGER}, #{clientNum,jdbcType=VARCHAR}, #{clientName,jdbcType=VARCHAR}, 
+    values (#{clientId,jdbcType=BIGINT}, #{clientNum,jdbcType=VARCHAR}, #{clientName,jdbcType=VARCHAR}, 
       #{userId,jdbcType=BIGINT}, #{userOrgNo,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
       #{step,jdbcType=TINYINT}, #{tradeName,jdbcType=VARCHAR}, #{quotationNum,jdbcType=VARCHAR}, 
       #{payStatus,jdbcType=TINYINT}, #{tradeDesc,jdbcType=VARCHAR}, #{payType,jdbcType=TINYINT}, 
@@ -350,7 +350,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="clientId != null">
-        #{clientId,jdbcType=INTEGER},
+        #{clientId,jdbcType=BIGINT},
       </if>
       <if test="clientNum != null">
         #{clientNum,jdbcType=VARCHAR},
@@ -499,7 +499,7 @@
         id = #{row.id,jdbcType=BIGINT},
       </if>
       <if test="row.clientId != null">
-        client_id = #{row.clientId,jdbcType=INTEGER},
+        client_id = #{row.clientId,jdbcType=BIGINT},
       </if>
       <if test="row.clientNum != null">
         client_num = #{row.clientNum,jdbcType=VARCHAR},
@@ -641,7 +641,7 @@
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update test_quotation
     set id = #{row.id,jdbcType=BIGINT},
-      client_id = #{row.clientId,jdbcType=INTEGER},
+      client_id = #{row.clientId,jdbcType=BIGINT},
       client_num = #{row.clientNum,jdbcType=VARCHAR},
       client_name = #{row.clientName,jdbcType=VARCHAR},
       user_id = #{row.userId,jdbcType=BIGINT},
@@ -693,7 +693,7 @@
   <update id="updateByExample" parameterType="map">
     update test_quotation
     set id = #{row.id,jdbcType=BIGINT},
-      client_id = #{row.clientId,jdbcType=INTEGER},
+      client_id = #{row.clientId,jdbcType=BIGINT},
       client_num = #{row.clientNum,jdbcType=VARCHAR},
       client_name = #{row.clientName,jdbcType=VARCHAR},
       user_id = #{row.userId,jdbcType=BIGINT},
@@ -745,7 +745,7 @@
     update test_quotation
     <set>
       <if test="clientId != null">
-        client_id = #{clientId,jdbcType=INTEGER},
+        client_id = #{clientId,jdbcType=BIGINT},
       </if>
       <if test="clientNum != null">
         client_num = #{clientNum,jdbcType=VARCHAR},
@@ -884,7 +884,7 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.libiao.customer.dal.model.TestQuotation">
     update test_quotation
-    set client_id = #{clientId,jdbcType=INTEGER},
+    set client_id = #{clientId,jdbcType=BIGINT},
       client_num = #{clientNum,jdbcType=VARCHAR},
       client_name = #{clientName,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=BIGINT},
@@ -933,7 +933,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestQuotation">
     update test_quotation
-    set client_id = #{clientId,jdbcType=INTEGER},
+    set client_id = #{clientId,jdbcType=BIGINT},
       client_num = #{clientNum,jdbcType=VARCHAR},
       client_name = #{clientName,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=BIGINT},

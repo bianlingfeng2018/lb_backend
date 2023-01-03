@@ -1,10 +1,7 @@
 package com.libiao.customer.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.libiao.customer.dal.mapper.TestApplicationFormMapper;
-import com.libiao.customer.dal.mapper.TestApplicationItemMapper;
-import com.libiao.customer.dal.mapper.TestApplicationSampleMapper;
-import com.libiao.customer.dal.mapper.TestQuotationItemMapper;
+import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.application.*;
 import com.libiao.customer.model.quotation.QuotaDetailItemVO;
@@ -33,6 +30,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     private TestApplicationItemMapper testApplicationItemMapper;
     @Autowired
     private TestQuotationItemMapper testQuotationItemMapper;
+    @Autowired
+    private TestQuotationMapper testQuotationMapper;
+    @Autowired
+    private ClientMapper clientMapper;
 
     @Override
     public PageInfo<TestApplicationForm> list(ApplicationListReq req){
@@ -63,8 +64,23 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public void createApplication(AddApplicationReq req){
 
+        TestQuotationExample example = new TestQuotationExample();
+        example.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());
+        final List<TestQuotation> testQuotations = testQuotationMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(testQuotations)){
+            throw new ServiceException(HttpStatus.NOT_FOUND,"对应的报价单不存在");
+        }
+        final TestQuotation testQuotation = testQuotations.get(0);
+
+
         TestApplicationForm record = new TestApplicationForm();
         BeanCopyUtil.copy(req,record);
+        record.setApplicationName(testQuotation.getClientName());
+        if (!StringUtils.hasLength(req.getReportTitleCn()) && !StringUtils.hasLength(req.getReportTitleEn())){
+            final Client client = clientMapper.selectByPrimaryKey(testQuotation.getClientId());
+            record.setReportTitleCn(client.getInvoiceName());
+        }
+
         List<Integer> credentials = req.getCredentials();
         int credential = 0;
         if (!CollectionUtils.isEmpty(credentials)){
@@ -77,6 +93,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         //生成申请单号 LTI+T+年份后两位+月份+日+ （A-Z）
         String applicationNum = redisUtil.getAppNo(DateUtils.getDate("yyMMdd"));
         record.setApplicationNum(applicationNum);
+        record.setApplyPerson(req.getUser().getNickname());
+        record.setApplyPersonId(req.getUser().getId());
         testApplicationFormMapper.insertSelective(record);
 
         List<SampleTestReq> sampleList = req.getSampleList();

@@ -175,52 +175,52 @@ public class TestQuotationExample {
             return (Criteria) this;
         }
 
-        public Criteria andClientIdEqualTo(Integer value) {
+        public Criteria andClientIdEqualTo(Long value) {
             addCriterion("client_id =", value, "clientId");
             return (Criteria) this;
         }
 
-        public Criteria andClientIdNotEqualTo(Integer value) {
+        public Criteria andClientIdNotEqualTo(Long value) {
             addCriterion("client_id <>", value, "clientId");
             return (Criteria) this;
         }
 
-        public Criteria andClientIdGreaterThan(Integer value) {
+        public Criteria andClientIdGreaterThan(Long value) {
             addCriterion("client_id >", value, "clientId");
             return (Criteria) this;
         }
 
-        public Criteria andClientIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andClientIdGreaterThanOrEqualTo(Long value) {
             addCriterion("client_id >=", value, "clientId");
             return (Criteria) this;
         }
 
-        public Criteria andClientIdLessThan(Integer value) {
+        public Criteria andClientIdLessThan(Long value) {
             addCriterion("client_id <", value, "clientId");
             return (Criteria) this;
         }
 
-        public Criteria andClientIdLessThanOrEqualTo(Integer value) {
+        public Criteria andClientIdLessThanOrEqualTo(Long value) {
             addCriterion("client_id <=", value, "clientId");
             return (Criteria) this;
         }
 
-        public Criteria andClientIdIn(List<Integer> values) {
+        public Criteria andClientIdIn(List<Long> values) {
             addCriterion("client_id in", values, "clientId");
             return (Criteria) this;
         }
 
-        public Criteria andClientIdNotIn(List<Integer> values) {
+        public Criteria andClientIdNotIn(List<Long> values) {
             addCriterion("client_id not in", values, "clientId");
             return (Criteria) this;
         }
 
-        public Criteria andClientIdBetween(Integer value1, Integer value2) {
+        public Criteria andClientIdBetween(Long value1, Long value2) {
             addCriterion("client_id between", value1, value2, "clientId");
             return (Criteria) this;
         }
 
-        public Criteria andClientIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andClientIdNotBetween(Long value1, Long value2) {
             addCriterion("client_id not between", value1, value2, "clientId");
             return (Criteria) this;
         }

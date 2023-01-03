@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.libiao.customer.dal.mapper.ClientContractMapperExt">
-    
+
     <select id="getClientContractList" resultType="com.libiao.customer.model.client.contract.ClientContractListVO">
         SELECT cc.*,b.`balance_amt`,b.`unsettled_amt`
         FROM client_contract cc
@@ -16,6 +16,7 @@
         <if test="contractStatus != null">
             and cc.contract_status = #{contractStatus}
         </if>
+        order by cc.create_time desc
     </select>
 
 </mapper>

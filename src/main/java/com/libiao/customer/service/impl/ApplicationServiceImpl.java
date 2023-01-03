@@ -163,11 +163,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void modify(ModifyApplicationReq req){
+        //找到原来的申请单
+
+
         TestApplicationFormExample example = new TestApplicationFormExample();
         example.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
+        final List<TestApplicationForm> testApplicationForms = testApplicationFormMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(testApplicationForms)){
+            throw new ServiceException(HttpStatus.NOT_FOUND,"原申请单未找到");
+        }
+        final TestApplicationForm testApplicationForm = testApplicationForms.get(0);
 
         TestApplicationForm record = new TestApplicationForm();
         BeanCopyUtil.copy(req,record);
+        record.setId(testApplicationForm.getId());
         List<Integer> credentials = req.getCredentials();
         int credential = 0;
         if (!CollectionUtils.isEmpty(credentials)){
@@ -178,8 +187,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         //进行位运算
         record.setCredential(credential);
 
-
-        testApplicationFormMapper.updateByExampleSelective(record,example);
+        testApplicationFormMapper.updateByPrimaryKeySelective(record);
 
         List<SampleTestReq> sampleList = req.getSampleList();
         //删除下属的sample
@@ -211,6 +219,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 TestApplicationItem item = new TestApplicationItem();
                 BeanCopyUtil.copy(sampleItemReq,item);
                 item.setAppSampleId(row.getId());
+                item.setApplicationNum(req.getApplicationNum());
                 testApplicationItemMapper.insertSelective(item);
             }
         }

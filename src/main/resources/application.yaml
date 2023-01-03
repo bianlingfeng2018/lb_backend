@@ -33,6 +33,7 @@ swagger:
 CONTRACT_PATH: ${user.home}/contract/
 BILL_PATH: ${user.home}/bill/
 SAMPLE_PATH: ${user.home}/sample/
+RECORD_PATH: ${user.home}/record/
 
 pagehelper:
   helperDialect: mysql
@@ -41,4 +42,5 @@ pagehelper:
   params: count=countSql
 logging:
   config: classpath:logback-test.xml
-
+  level:
+    com.libiao.customer.dal.mapper: debug

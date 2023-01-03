@@ -15,4 +15,25 @@
         limit 1
     </select>
 
+    <select id="getQuotationList" resultType="com.libiao.customer.dal.model.TestQuotation">
+        select * from test_quotation
+        where (user_id = #{user.id} or user_org_no like concat(#{user.orgNo},'%') or service_id = #{user.id})
+        <if test="quotationNum != null and quotationNum != '%%'">
+            and quotation_num like #{quotationNum}
+        </if>
+        <if test="clientName != null and clientName != '%%'">
+            and client_name like #{clientName}
+        </if>
+        <if test="tradeName != null and tradeName != '%%'">
+            and trade_name like #{tradeName}
+        </if>
+        <if test="payStatus != null">
+            and pay_status = #{payStatus}
+        </if>
+        <if test="step != null">
+            and step = #{step}
+        </if>
+        order by gmt_create desc
+    </select>
+
 </mapper>

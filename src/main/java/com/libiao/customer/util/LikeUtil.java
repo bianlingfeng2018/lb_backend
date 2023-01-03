@@ -3,6 +3,9 @@ package com.libiao.customer.util;
 public class LikeUtil {
 
     public static String totalLike(String str){
+        if(str == null){
+            return null;
+        }
         return "%" + str + "%";
     }
 

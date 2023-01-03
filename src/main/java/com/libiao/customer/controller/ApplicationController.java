@@ -40,6 +40,7 @@ public class ApplicationController {
     @ApiOperation("新增申请单")
     @PostMapping("create")
     //TODO 同步报告抬头
+    //TODO 同步申请单位
     public ResponseEntity<BaseResponseVO> create(@RequestBody AddApplicationReq req){
         applicationService.createApplication(req);
         return ResponseUtil.getDefaultResp();

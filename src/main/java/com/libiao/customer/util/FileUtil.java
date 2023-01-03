@@ -24,6 +24,18 @@ public class FileUtil {
     public String BILL_PATH;
     @Value("${SAMPLE_PATH}")
     public String SAMPLE_PATH;
+    @Value("${RECORD_PATH}")
+    public String RECORD_PATH;
+
+    /**
+     * 保存原始记录
+     * @param multpartfile
+     * @param clientId
+     * @return
+     */
+    public String saveRecord(MultipartFile multpartfile, String clientId){
+        return saveFile(multpartfile,clientId,RECORD_PATH);
+    }
 
     /**
      * 保存样品图片

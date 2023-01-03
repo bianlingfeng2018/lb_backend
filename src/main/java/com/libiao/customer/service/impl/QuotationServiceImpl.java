@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -40,34 +38,17 @@ public class QuotationServiceImpl implements QuotationService {
     private QuotationMapperExt quotationMapperExt;
     @Autowired
     private CustomerBillMapper customerBillMapper;
-    @Autowired
-    private FileUtil fileUtil;
-
 
     @Override
     public PageInfo<TestQuotation> list(QuotationListReq req){
         PageInfo<TestQuotation> page = new PageInfo<>();
         page.setPageSize(req.getPageSize());
         page.setPageNum(req.getPage());
-        TestQuotationExample example = new TestQuotationExample();
-        final TestQuotationExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.hasLength(req.getQuotationNum())){
-            criteria.andQuotationNumEqualTo(req.getQuotationNum());
-        }
-        if (StringUtils.hasLength(req.getClientName())){
-            criteria.andClientNameEqualTo(req.getClientName());
-        }
-        if (StringUtils.hasLength(req.getTradeName())){
-            criteria.andTradeNameEqualTo(req.getTradeName());
-        }
-        if (Objects.nonNull(req.getPayStatus())){
-            criteria.andPayStatusEqualTo(req.getPayStatus());
-        }
-        if (Objects.nonNull(req.getStep())){
-            criteria.andStepEqualTo(req.getStep());
-        }
-        example.setOrderByClause("gmt_create desc");
-        final List<TestQuotation> quotations = testQuotationMapper.selectByExample(example);
+        req.setQuotationNum(LikeUtil.totalLike(req.getQuotationNum()));
+        req.setClientName(LikeUtil.totalLike(req.getClientName()));
+        req.setTradeName(LikeUtil.totalLike(req.getTradeName()));
+
+        final List<TestQuotation> quotations = quotationMapperExt.getQuotationList(req);
         page = new PageInfo<>(quotations);
         return page;
     }

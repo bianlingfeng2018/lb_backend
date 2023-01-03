@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.TestOriRecordMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestOriRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="record_num" jdbcType="VARCHAR" property="recordNum" />
+    <result column="work_order_num" jdbcType="VARCHAR" property="workOrderNum" />
+    <result column="quotation_num" jdbcType="VARCHAR" property="quotationNum" />
+    <result column="report_num" jdbcType="VARCHAR" property="reportNum" />
+    <result column="test_com" jdbcType="VARCHAR" property="testCom" />
+    <result column="test_com_id" jdbcType="INTEGER" property="testComId" />
+    <result column="test_item" jdbcType="VARCHAR" property="testItem" />
+    <result column="test_lab_id" jdbcType="INTEGER" property="testLabId" />
+    <result column="test_lab" jdbcType="VARCHAR" property="testLab" />
+    <result column="test_device_no" jdbcType="VARCHAR" property="testDeviceNo" />
+    <result column="test_device_name" jdbcType="VARCHAR" property="testDeviceName" />
+    <result column="test_person_id" jdbcType="INTEGER" property="testPersonId" />
+    <result column="test_person" jdbcType="VARCHAR" property="testPerson" />
+    <result column="test_method" jdbcType="VARCHAR" property="testMethod" />
+    <result column="test_case" jdbcType="VARCHAR" property="testCase" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="plan_date" jdbcType="TIMESTAMP" property="planDate" />
+    <result column="report_date" jdbcType="TIMESTAMP" property="reportDate" />
+    <result column="report_person" jdbcType="VARCHAR" property="reportPerson" />
+    <result column="report_person_id" jdbcType="INTEGER" property="reportPersonId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="test_result" jdbcType="VARCHAR" property="testResult" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="sample_date" jdbcType="TIMESTAMP" property="sampleDate" />
+    <result column="review_id" jdbcType="BIGINT" property="reviewId" />
+    <result column="review_name" jdbcType="VARCHAR" property="reviewName" />
+    <result column="review_reason" jdbcType="VARCHAR" property="reviewReason" />
+    <result column="review_time" jdbcType="TIMESTAMP" property="reviewTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, record_num, work_order_num, quotation_num, report_num, test_com, test_com_id, 
+    test_item, test_lab_id, test_lab, test_device_no, test_device_name, test_person_id, 
+    test_person, test_method, test_case, create_time, plan_date, report_date, report_person, 
+    report_person_id, status, test_result, remark, sample_date, review_id, review_name, 
+    review_reason, review_time
+  </sql>
+  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestOriRecordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from test_ori_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from test_ori_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from test_ori_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.TestOriRecordExample">
+    delete from test_ori_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.TestOriRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into test_ori_record (record_num, work_order_num, quotation_num, 
+      report_num, test_com, test_com_id, 
+      test_item, test_lab_id, test_lab, 
+      test_device_no, test_device_name, test_person_id, 
+      test_person, test_method, test_case, 
+      create_time, plan_date, report_date, 
+      report_person, report_person_id, status, 
+      test_result, remark, sample_date, 
+      review_id, review_name, review_reason, 
+      review_time)
+    values (#{recordNum,jdbcType=VARCHAR}, #{workOrderNum,jdbcType=VARCHAR}, #{quotationNum,jdbcType=VARCHAR}, 
+      #{reportNum,jdbcType=VARCHAR}, #{testCom,jdbcType=VARCHAR}, #{testComId,jdbcType=INTEGER}, 
+      #{testItem,jdbcType=VARCHAR}, #{testLabId,jdbcType=INTEGER}, #{testLab,jdbcType=VARCHAR}, 
+      #{testDeviceNo,jdbcType=VARCHAR}, #{testDeviceName,jdbcType=VARCHAR}, #{testPersonId,jdbcType=INTEGER}, 
+      #{testPerson,jdbcType=VARCHAR}, #{testMethod,jdbcType=VARCHAR}, #{testCase,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{planDate,jdbcType=TIMESTAMP}, #{reportDate,jdbcType=TIMESTAMP}, 
+      #{reportPerson,jdbcType=VARCHAR}, #{reportPersonId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{testResult,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{sampleDate,jdbcType=TIMESTAMP}, 
+      #{reviewId,jdbcType=BIGINT}, #{reviewName,jdbcType=VARCHAR}, #{reviewReason,jdbcType=VARCHAR}, 
+      #{reviewTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestOriRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into test_ori_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recordNum != null">
+        record_num,
+      </if>
+      <if test="workOrderNum != null">
+        work_order_num,
+      </if>
+      <if test="quotationNum != null">
+        quotation_num,
+      </if>
+      <if test="reportNum != null">
+        report_num,
+      </if>
+      <if test="testCom != null">
+        test_com,
+      </if>
+      <if test="testComId != null">
+        test_com_id,
+      </if>
+      <if test="testItem != null">
+        test_item,
+      </if>
+      <if test="testLabId != null">
+        test_lab_id,
+      </if>
+      <if test="testLab != null">
+        test_lab,
+      </if>
+      <if test="testDeviceNo != null">
+        test_device_no,
+      </if>
+      <if test="testDeviceName != null">
+        test_device_name,
+      </if>
+      <if test="testPersonId != null">
+        test_person_id,
+      </if>
+      <if test="testPerson != null">
+        test_person,
+      </if>
+      <if test="testMethod != null">
+        test_method,
+      </if>
+      <if test="testCase != null">
+        test_case,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="planDate != null">
+        plan_date,
+      </if>
+      <if test="reportDate != null">
+        report_date,
+      </if>
+      <if test="reportPerson != null">
+        report_person,
+      </if>
+      <if test="reportPersonId != null">
+        report_person_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="testResult != null">
+        test_result,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="sampleDate != null">
+        sample_date,
+      </if>
+      <if test="reviewId != null">
+        review_id,
+      </if>
+      <if test="reviewName != null">
+        review_name,
+      </if>
+      <if test="reviewReason != null">
+        review_reason,
+      </if>
+      <if test="reviewTime != null">
+        review_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recordNum != null">
+        #{recordNum,jdbcType=VARCHAR},
+      </if>
+      <if test="workOrderNum != null">
+        #{workOrderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="quotationNum != null">
+        #{quotationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="reportNum != null">
+        #{reportNum,jdbcType=VARCHAR},
+      </if>
+      <if test="testCom != null">
+        #{testCom,jdbcType=VARCHAR},
+      </if>
+      <if test="testComId != null">
+        #{testComId,jdbcType=INTEGER},
+      </if>
+      <if test="testItem != null">
+        #{testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="testLabId != null">
+        #{testLabId,jdbcType=INTEGER},
+      </if>
+      <if test="testLab != null">
+        #{testLab,jdbcType=VARCHAR},
+      </if>
+      <if test="testDeviceNo != null">
+        #{testDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="testDeviceName != null">
+        #{testDeviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="testPersonId != null">
+        #{testPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="testPerson != null">
+        #{testPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="testMethod != null">
+        #{testMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="testCase != null">
+        #{testCase,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planDate != null">
+        #{planDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportDate != null">
+        #{reportDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportPerson != null">
+        #{reportPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="reportPersonId != null">
+        #{reportPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="testResult != null">
+        #{testResult,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleDate != null">
+        #{sampleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reviewId != null">
+        #{reviewId,jdbcType=BIGINT},
+      </if>
+      <if test="reviewName != null">
+        #{reviewName,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewReason != null">
+        #{reviewReason,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewTime != null">
+        #{reviewTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.libiao.customer.dal.model.TestOriRecordExample" resultType="java.lang.Long">
+    select count(*) from test_ori_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update test_ori_record
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.recordNum != null">
+        record_num = #{row.recordNum,jdbcType=VARCHAR},
+      </if>
+      <if test="row.workOrderNum != null">
+        work_order_num = #{row.workOrderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="row.quotationNum != null">
+        quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="row.reportNum != null">
+        report_num = #{row.reportNum,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testCom != null">
+        test_com = #{row.testCom,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testComId != null">
+        test_com_id = #{row.testComId,jdbcType=INTEGER},
+      </if>
+      <if test="row.testItem != null">
+        test_item = #{row.testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testLabId != null">
+        test_lab_id = #{row.testLabId,jdbcType=INTEGER},
+      </if>
+      <if test="row.testLab != null">
+        test_lab = #{row.testLab,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testDeviceNo != null">
+        test_device_no = #{row.testDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testDeviceName != null">
+        test_device_name = #{row.testDeviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testPersonId != null">
+        test_person_id = #{row.testPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="row.testPerson != null">
+        test_person = #{row.testPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testMethod != null">
+        test_method = #{row.testMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testCase != null">
+        test_case = #{row.testCase,jdbcType=VARCHAR},
+      </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.planDate != null">
+        plan_date = #{row.planDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.reportDate != null">
+        report_date = #{row.reportDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.reportPerson != null">
+        report_person = #{row.reportPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="row.reportPersonId != null">
+        report_person_id = #{row.reportPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="row.status != null">
+        status = #{row.status,jdbcType=TINYINT},
+      </if>
+      <if test="row.testResult != null">
+        test_result = #{row.testResult,jdbcType=VARCHAR},
+      </if>
+      <if test="row.remark != null">
+        remark = #{row.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="row.sampleDate != null">
+        sample_date = #{row.sampleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.reviewId != null">
+        review_id = #{row.reviewId,jdbcType=BIGINT},
+      </if>
+      <if test="row.reviewName != null">
+        review_name = #{row.reviewName,jdbcType=VARCHAR},
+      </if>
+      <if test="row.reviewReason != null">
+        review_reason = #{row.reviewReason,jdbcType=VARCHAR},
+      </if>
+      <if test="row.reviewTime != null">
+        review_time = #{row.reviewTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update test_ori_record
+    set id = #{row.id,jdbcType=BIGINT},
+      record_num = #{row.recordNum,jdbcType=VARCHAR},
+      work_order_num = #{row.workOrderNum,jdbcType=VARCHAR},
+      quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
+      report_num = #{row.reportNum,jdbcType=VARCHAR},
+      test_com = #{row.testCom,jdbcType=VARCHAR},
+      test_com_id = #{row.testComId,jdbcType=INTEGER},
+      test_item = #{row.testItem,jdbcType=VARCHAR},
+      test_lab_id = #{row.testLabId,jdbcType=INTEGER},
+      test_lab = #{row.testLab,jdbcType=VARCHAR},
+      test_device_no = #{row.testDeviceNo,jdbcType=VARCHAR},
+      test_device_name = #{row.testDeviceName,jdbcType=VARCHAR},
+      test_person_id = #{row.testPersonId,jdbcType=INTEGER},
+      test_person = #{row.testPerson,jdbcType=VARCHAR},
+      test_method = #{row.testMethod,jdbcType=VARCHAR},
+      test_case = #{row.testCase,jdbcType=VARCHAR},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      plan_date = #{row.planDate,jdbcType=TIMESTAMP},
+      report_date = #{row.reportDate,jdbcType=TIMESTAMP},
+      report_person = #{row.reportPerson,jdbcType=VARCHAR},
+      report_person_id = #{row.reportPersonId,jdbcType=INTEGER},
+      status = #{row.status,jdbcType=TINYINT},
+      test_result = #{row.testResult,jdbcType=VARCHAR},
+      remark = #{row.remark,jdbcType=VARCHAR},
+      sample_date = #{row.sampleDate,jdbcType=TIMESTAMP},
+      review_id = #{row.reviewId,jdbcType=BIGINT},
+      review_name = #{row.reviewName,jdbcType=VARCHAR},
+      review_reason = #{row.reviewReason,jdbcType=VARCHAR},
+      review_time = #{row.reviewTime,jdbcType=TIMESTAMP}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.TestOriRecord">
+    update test_ori_record
+    <set>
+      <if test="recordNum != null">
+        record_num = #{recordNum,jdbcType=VARCHAR},
+      </if>
+      <if test="workOrderNum != null">
+        work_order_num = #{workOrderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="quotationNum != null">
+        quotation_num = #{quotationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="reportNum != null">
+        report_num = #{reportNum,jdbcType=VARCHAR},
+      </if>
+      <if test="testCom != null">
+        test_com = #{testCom,jdbcType=VARCHAR},
+      </if>
+      <if test="testComId != null">
+        test_com_id = #{testComId,jdbcType=INTEGER},
+      </if>
+      <if test="testItem != null">
+        test_item = #{testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="testLabId != null">
+        test_lab_id = #{testLabId,jdbcType=INTEGER},
+      </if>
+      <if test="testLab != null">
+        test_lab = #{testLab,jdbcType=VARCHAR},
+      </if>
+      <if test="testDeviceNo != null">
+        test_device_no = #{testDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="testDeviceName != null">
+        test_device_name = #{testDeviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="testPersonId != null">
+        test_person_id = #{testPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="testPerson != null">
+        test_person = #{testPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="testMethod != null">
+        test_method = #{testMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="testCase != null">
+        test_case = #{testCase,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planDate != null">
+        plan_date = #{planDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportDate != null">
+        report_date = #{reportDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportPerson != null">
+        report_person = #{reportPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="reportPersonId != null">
+        report_person_id = #{reportPersonId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="testResult != null">
+        test_result = #{testResult,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleDate != null">
+        sample_date = #{sampleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reviewId != null">
+        review_id = #{reviewId,jdbcType=BIGINT},
+      </if>
+      <if test="reviewName != null">
+        review_name = #{reviewName,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewReason != null">
+        review_reason = #{reviewReason,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewTime != null">
+        review_time = #{reviewTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestOriRecord">
+    update test_ori_record
+    set record_num = #{recordNum,jdbcType=VARCHAR},
+      work_order_num = #{workOrderNum,jdbcType=VARCHAR},
+      quotation_num = #{quotationNum,jdbcType=VARCHAR},
+      report_num = #{reportNum,jdbcType=VARCHAR},
+      test_com = #{testCom,jdbcType=VARCHAR},
+      test_com_id = #{testComId,jdbcType=INTEGER},
+      test_item = #{testItem,jdbcType=VARCHAR},
+      test_lab_id = #{testLabId,jdbcType=INTEGER},
+      test_lab = #{testLab,jdbcType=VARCHAR},
+      test_device_no = #{testDeviceNo,jdbcType=VARCHAR},
+      test_device_name = #{testDeviceName,jdbcType=VARCHAR},
+      test_person_id = #{testPersonId,jdbcType=INTEGER},
+      test_person = #{testPerson,jdbcType=VARCHAR},
+      test_method = #{testMethod,jdbcType=VARCHAR},
+      test_case = #{testCase,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      plan_date = #{planDate,jdbcType=TIMESTAMP},
+      report_date = #{reportDate,jdbcType=TIMESTAMP},
+      report_person = #{reportPerson,jdbcType=VARCHAR},
+      report_person_id = #{reportPersonId,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      test_result = #{testResult,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      sample_date = #{sampleDate,jdbcType=TIMESTAMP},
+      review_id = #{reviewId,jdbcType=BIGINT},
+      review_name = #{reviewName,jdbcType=VARCHAR},
+      review_reason = #{reviewReason,jdbcType=VARCHAR},
+      review_time = #{reviewTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

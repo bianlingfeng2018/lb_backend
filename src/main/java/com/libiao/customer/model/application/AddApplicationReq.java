@@ -4,11 +4,13 @@ import com.libiao.customer.model.BaseSessionReq;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
 public class AddApplicationReq extends BaseSessionReq {
 
+    @NotBlank(message = "报价单编号不能为空")
     @ApiModelProperty("报价单编号")
     private String quotationNum;
     @ApiModelProperty("申请单位地址")

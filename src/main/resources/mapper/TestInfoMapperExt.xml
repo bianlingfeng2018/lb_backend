@@ -7,7 +7,7 @@
         <result column="test_Method" jdbcType="VARCHAR" property="testMethod"/>
 
         <collection property="caseList" javaType="java.util.List" ofType="com.libiao.customer.model.test.TestCaseVO">
-            <result column="testCase" jdbcType="VARCHAR" property="testCase"/>
+            <result column="test_case" jdbcType="VARCHAR" property="testCase"/>
         </collection>
     </resultMap>
 

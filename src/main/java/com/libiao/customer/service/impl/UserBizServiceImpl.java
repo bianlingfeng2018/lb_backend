@@ -78,7 +78,6 @@ public class UserBizServiceImpl implements UserBizService {
         session.setAttribute(SessionInfoEnum.RULES.getName(),permissionVOList);
         SessionUser sessionUser = BeanCopyUtil.copy(userExt,SessionUser.class);
         sessionUser.setDiscount(userExt.getRole().getDiscount());
-
         session.setAttribute(SessionInfoEnum.USER.getName(), sessionUser);
         log.info("保存的sessionId为{}",session.getId());
         String key = "LOGIN_SESSION:" + sessionUser.getId();

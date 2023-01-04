@@ -55,6 +55,7 @@
       <id column="bid" property="id" jdbcType="BIGINT"/>
       <result column="bname" property="name" jdbcType="VARCHAR"/>
       <result column="desc" property="desc" jdbcType="VARCHAR"/>
+      <result column="discount" property="discount" jdbcType="INTEGER"/>
       <collection property="permission" javaType="java.util.List"
         ofType="com.libiao.customer.dal.model.Permission">
         <id column="did" property="id" jdbcType="BIGINT"/>
@@ -155,6 +156,7 @@
            b.id   bid,
            b.name bname,
            b.`desc`,
+           b.discount,
            d.id   did,
            d.name dname,
            e.city,

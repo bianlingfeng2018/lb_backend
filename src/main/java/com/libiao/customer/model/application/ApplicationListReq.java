@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class ApplicationListReq extends BasePageReq {
 
+    @ApiModelProperty("报价单编号")
+    private String quotationNum;
     @ApiModelProperty("申请单编号")
     private String applicationNum;
     @ApiModelProperty("申请单号名称")
@@ -15,4 +17,5 @@ public class ApplicationListReq extends BasePageReq {
     private Byte sampleStatus;
     @ApiModelProperty("合同状态 0待审核 1评审通过 2评审不通过 3已下单")
     private Byte contractStatus;
+
 }

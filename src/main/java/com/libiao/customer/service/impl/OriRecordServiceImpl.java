@@ -42,6 +42,9 @@ public class OriRecordServiceImpl implements OriRecordService {
         if (req.getStatus() != null){
             criteria.andStatusEqualTo(req.getStatus());
         }
+        if (StringUtils.hasLength(req.getQuotationNum())){
+            criteria.andQuotationNumEqualTo(req.getQuotationNum());
+        }
         final List<TestOriRecord> testOriRecords = testOriRecordMapper.selectByExample(example);
         page = new PageInfo<>(testOriRecords);
         return page;

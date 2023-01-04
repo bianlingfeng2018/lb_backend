@@ -56,6 +56,9 @@ public class WorkServiceImpl implements WorkService {
             criteria.andPlanDateBetween(DateUtils.stringToDate(req.getPlanDateStart(),"yyyy-MM-dd"),
                     DateUtils.stringToDate(req.getPlanDateEnd(),"yyyy-MM-dd"));
         }
+        if (StringUtils.hasLength(req.getQuotationNum())){
+            criteria.andQuotationNumEqualTo(req.getQuotationNum());
+        }
         PageInfo<TestWorkOrder> page = new PageInfo<>();
         page.setPageSize(req.getPageSize());
         page.setPageNum(req.getPage());

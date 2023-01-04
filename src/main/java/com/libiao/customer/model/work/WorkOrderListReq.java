@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class WorkOrderListReq extends BasePageReq {
 
+    @ApiModelProperty("报价单编号")
+    private String quotationNum;
     @ApiModelProperty("工作单编号")
     private String workOrderNum;
     @ApiModelProperty("检测单位名称")

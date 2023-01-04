@@ -55,6 +55,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (req.getContractStatus() != null){
             criteria.andContractStatusEqualTo(req.getContractStatus());
         }
+        if (StringUtils.hasLength(req.getQuotationNum())){
+            criteria.andQuotationNumEqualTo(req.getQuotationNum());
+        }
         List<TestApplicationForm> testApplicationForms = testApplicationFormMapper.selectByExample(testApplicationFormExample);
         page = new PageInfo<>(testApplicationForms);
         return page;

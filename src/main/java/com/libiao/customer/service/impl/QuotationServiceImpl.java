@@ -288,21 +288,21 @@ public class QuotationServiceImpl implements QuotationService {
 
         }
         //插入报价单
-        testQuotationMapper.updateByPrimaryKey(record);
+        testQuotationMapper.updateByPrimaryKeySelective(record);
 
         final TestQuotationGoodsExample testQuotationGoodsExample = new TestQuotationGoodsExample();
         testQuotationGoodsExample.createCriteria().andQuotationNumEqualTo(testQuotation.getQuotationNum());
         testQuotationGoodsMapper.deleteByExample(testQuotationGoodsExample);
         //批量插入报价单下属商品
         for (TestQuotationGoods testQuotationGoods : testQuotationGoodsList) {
-            testQuotationGoodsMapper.insert(testQuotationGoods);
+            testQuotationGoodsMapper.insertSelective(testQuotationGoods);
         }
         final TestQuotationItemExample testQuotationItemExample = new TestQuotationItemExample();
         testQuotationItemExample.createCriteria().andTestQuotationNumEqualTo(testQuotation.getQuotationNum());
         testQuotationItemMapper.deleteByExample(testQuotationItemExample);
         //批量插入报价单下属测试项
         for (TestQuotationItem testQuotationItem : testQuotationItemList) {
-            testQuotationItemMapper.insert(testQuotationItem);
+            testQuotationItemMapper.insertSelective(testQuotationItem);
         }
     }
 
@@ -399,6 +399,7 @@ public class QuotationServiceImpl implements QuotationService {
             //生产报价单号
             quotNo = testQuotation.getQuotationNum()+"-r"+l;
         }
+        record.setOrgQuotationNum(req.getOrgQuotationNum());
         record.setDiscount(String.valueOf(dis));
         if (dis < req.getUser().getDiscount()){
             //状态设置为待审核
@@ -465,15 +466,15 @@ public class QuotationServiceImpl implements QuotationService {
 
         }
         //插入报价单
-        testQuotationMapper.insert(record);
+        testQuotationMapper.insertSelective(record);
 
         //批量插入报价单下属商品
         for (TestQuotationGoods testQuotationGoods : testQuotationGoodsList) {
-            testQuotationGoodsMapper.insert(testQuotationGoods);
+            testQuotationGoodsMapper.insertSelective(testQuotationGoods);
         }
         //批量插入报价单下属测试项
         for (TestQuotationItem testQuotationItem : testQuotationItemList) {
-            testQuotationItemMapper.insert(testQuotationItem);
+            testQuotationItemMapper.insertSelective(testQuotationItem);
         }
     }
 

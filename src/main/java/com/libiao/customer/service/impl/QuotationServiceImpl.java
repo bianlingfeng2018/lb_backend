@@ -105,7 +105,8 @@ public class QuotationServiceImpl implements QuotationService {
         //生产报价单号
         String quotNo = redisUtil.getNo(req.getUser().getCity(),DateUtils.getDate("yyMMdd"));
         record.setQuotationNum(quotNo);
-
+        record.setUserId(req.getUser().getId());
+        record.setUserOrgNo(req.getUser().getOrgNo());
         record.setPayStatus(QuotationEnum.PRICE_CHECK.getCode());
 
 
@@ -161,6 +162,7 @@ public class QuotationServiceImpl implements QuotationService {
 
         final Long serviceId = quotationMapperExt.getServiceId();
         record.setServiceId(serviceId);
+
 
         //插入报价单
         testQuotationMapper.insertSelective(record);
@@ -330,12 +332,14 @@ public class QuotationServiceImpl implements QuotationService {
         }else {
             update.setStep(QuotationEnum.STEP_QUOT_CHECKED.getCode());
             if (testQuotation.getPayType() == 0) {//挂账
+                //创建挂账记录，同时删减少用户挂账金额
+
                 update.setState(QuotationEnum.CREDIT.getCode());
             }else {//未支付，待上传支付凭证
                 update.setState(QuotationEnum.NOT_PAID.getCode());
             }
         }
-
+        testQuotationMapper.updateByPrimaryKeySelective(update);
     }
 
     /**

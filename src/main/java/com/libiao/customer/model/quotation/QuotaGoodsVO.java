@@ -40,4 +40,6 @@ public class QuotaGoodsVO {
     private List<AdditionalQuotationVO> aList;
     @ApiModelProperty("复测列表")
     private List<AdditionalQuotationVO> rList;
+    @ApiModelProperty("是否有申请单")
+    private boolean applied;
 }

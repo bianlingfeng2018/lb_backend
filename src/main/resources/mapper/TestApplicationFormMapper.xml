@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestApplicationForm">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="quotation_num" jdbcType="VARCHAR" property="quotationNum" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
     <result column="application_num" jdbcType="VARCHAR" property="applicationNum" />
     <result column="application_name" jdbcType="VARCHAR" property="applicationName" />
     <result column="application_date" jdbcType="DATE" property="applicationDate" />
@@ -111,11 +112,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, quotation_num, application_num, application_name, application_date, sample_status, 
-    sample_date, report_addr, plan_date, contract_status, review_id, review_name, service_id, 
-    service_name, apply_person, apply_person_id, com_addr_cn, com_addr_en, report_title_cn, 
-    report_title_en, report_address_cn, report_address_en, invoice_title, credential, 
-    sample_name_cn, sample_name_en, sample_quantity, sample_model_cn, sample_model_en, 
+    id, quotation_num, goods_id, application_num, application_name, application_date, 
+    sample_status, sample_date, report_addr, plan_date, contract_status, review_id, review_name, 
+    service_id, service_name, apply_person, apply_person_id, com_addr_cn, com_addr_en, 
+    report_title_cn, report_title_en, report_address_cn, report_address_en, invoice_title, 
+    credential, sample_name_cn, sample_name_en, sample_quantity, sample_model_cn, sample_model_en, 
     sample_status_cn, sample_status_en, brand_cn, brand_en, lot_no_cn, lot_no_en, specification_cn, 
     specification_en, supplier_cn, supplier_en, order_no, buyer_cn, buyer_en, manufacturer_cn, 
     manufacturer_en, exported_to, origin_country, sample_deal, review_time, review_remark
@@ -154,40 +155,40 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into test_application_form (quotation_num, application_num, application_name, 
-      application_date, sample_status, sample_date, 
-      report_addr, plan_date, contract_status, 
-      review_id, review_name, service_id, 
-      service_name, apply_person, apply_person_id, 
-      com_addr_cn, com_addr_en, report_title_cn, 
-      report_title_en, report_address_cn, report_address_en, 
-      invoice_title, credential, sample_name_cn, 
-      sample_name_en, sample_quantity, sample_model_cn, 
-      sample_model_en, sample_status_cn, sample_status_en, 
-      brand_cn, brand_en, lot_no_cn, 
-      lot_no_en, specification_cn, specification_en, 
-      supplier_cn, supplier_en, order_no, 
-      buyer_cn, buyer_en, manufacturer_cn, 
-      manufacturer_en, exported_to, origin_country, 
-      sample_deal, review_time, review_remark
-      )
-    values (#{quotationNum,jdbcType=VARCHAR}, #{applicationNum,jdbcType=VARCHAR}, #{applicationName,jdbcType=VARCHAR}, 
-      #{applicationDate,jdbcType=DATE}, #{sampleStatus,jdbcType=TINYINT}, #{sampleDate,jdbcType=DATE}, 
-      #{reportAddr,jdbcType=VARCHAR}, #{planDate,jdbcType=DATE}, #{contractStatus,jdbcType=TINYINT}, 
-      #{reviewId,jdbcType=BIGINT}, #{reviewName,jdbcType=VARCHAR}, #{serviceId,jdbcType=BIGINT}, 
-      #{serviceName,jdbcType=VARCHAR}, #{applyPerson,jdbcType=VARCHAR}, #{applyPersonId,jdbcType=BIGINT}, 
-      #{comAddrCn,jdbcType=VARCHAR}, #{comAddrEn,jdbcType=VARCHAR}, #{reportTitleCn,jdbcType=VARCHAR}, 
-      #{reportTitleEn,jdbcType=VARCHAR}, #{reportAddressCn,jdbcType=VARCHAR}, #{reportAddressEn,jdbcType=VARCHAR}, 
-      #{invoiceTitle,jdbcType=VARCHAR}, #{credential,jdbcType=INTEGER}, #{sampleNameCn,jdbcType=VARCHAR}, 
-      #{sampleNameEn,jdbcType=VARCHAR}, #{sampleQuantity,jdbcType=VARCHAR}, #{sampleModelCn,jdbcType=VARCHAR}, 
-      #{sampleModelEn,jdbcType=VARCHAR}, #{sampleStatusCn,jdbcType=VARCHAR}, #{sampleStatusEn,jdbcType=VARCHAR}, 
-      #{brandCn,jdbcType=VARCHAR}, #{brandEn,jdbcType=VARCHAR}, #{lotNoCn,jdbcType=VARCHAR}, 
-      #{lotNoEn,jdbcType=VARCHAR}, #{specificationCn,jdbcType=VARCHAR}, #{specificationEn,jdbcType=VARCHAR}, 
-      #{supplierCn,jdbcType=VARCHAR}, #{supplierEn,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
-      #{buyerCn,jdbcType=VARCHAR}, #{buyerEn,jdbcType=VARCHAR}, #{manufacturerCn,jdbcType=VARCHAR}, 
-      #{manufacturerEn,jdbcType=VARCHAR}, #{exportedTo,jdbcType=VARCHAR}, #{originCountry,jdbcType=VARCHAR}, 
-      #{sampleDeal,jdbcType=TINYINT}, #{reviewTime,jdbcType=TIMESTAMP}, #{reviewRemark,jdbcType=VARCHAR}
-      )
+    insert into test_application_form (quotation_num, goods_id, application_num, 
+      application_name, application_date, sample_status, 
+      sample_date, report_addr, plan_date, 
+      contract_status, review_id, review_name, 
+      service_id, service_name, apply_person, 
+      apply_person_id, com_addr_cn, com_addr_en, 
+      report_title_cn, report_title_en, report_address_cn, 
+      report_address_en, invoice_title, credential, 
+      sample_name_cn, sample_name_en, sample_quantity, 
+      sample_model_cn, sample_model_en, sample_status_cn, 
+      sample_status_en, brand_cn, brand_en, 
+      lot_no_cn, lot_no_en, specification_cn, 
+      specification_en, supplier_cn, supplier_en, 
+      order_no, buyer_cn, buyer_en, 
+      manufacturer_cn, manufacturer_en, exported_to, 
+      origin_country, sample_deal, review_time, 
+      review_remark)
+    values (#{quotationNum,jdbcType=VARCHAR}, #{goodsId,jdbcType=BIGINT}, #{applicationNum,jdbcType=VARCHAR}, 
+      #{applicationName,jdbcType=VARCHAR}, #{applicationDate,jdbcType=DATE}, #{sampleStatus,jdbcType=TINYINT}, 
+      #{sampleDate,jdbcType=DATE}, #{reportAddr,jdbcType=VARCHAR}, #{planDate,jdbcType=DATE}, 
+      #{contractStatus,jdbcType=TINYINT}, #{reviewId,jdbcType=BIGINT}, #{reviewName,jdbcType=VARCHAR}, 
+      #{serviceId,jdbcType=BIGINT}, #{serviceName,jdbcType=VARCHAR}, #{applyPerson,jdbcType=VARCHAR}, 
+      #{applyPersonId,jdbcType=BIGINT}, #{comAddrCn,jdbcType=VARCHAR}, #{comAddrEn,jdbcType=VARCHAR}, 
+      #{reportTitleCn,jdbcType=VARCHAR}, #{reportTitleEn,jdbcType=VARCHAR}, #{reportAddressCn,jdbcType=VARCHAR}, 
+      #{reportAddressEn,jdbcType=VARCHAR}, #{invoiceTitle,jdbcType=VARCHAR}, #{credential,jdbcType=INTEGER}, 
+      #{sampleNameCn,jdbcType=VARCHAR}, #{sampleNameEn,jdbcType=VARCHAR}, #{sampleQuantity,jdbcType=VARCHAR}, 
+      #{sampleModelCn,jdbcType=VARCHAR}, #{sampleModelEn,jdbcType=VARCHAR}, #{sampleStatusCn,jdbcType=VARCHAR}, 
+      #{sampleStatusEn,jdbcType=VARCHAR}, #{brandCn,jdbcType=VARCHAR}, #{brandEn,jdbcType=VARCHAR}, 
+      #{lotNoCn,jdbcType=VARCHAR}, #{lotNoEn,jdbcType=VARCHAR}, #{specificationCn,jdbcType=VARCHAR}, 
+      #{specificationEn,jdbcType=VARCHAR}, #{supplierCn,jdbcType=VARCHAR}, #{supplierEn,jdbcType=VARCHAR}, 
+      #{orderNo,jdbcType=VARCHAR}, #{buyerCn,jdbcType=VARCHAR}, #{buyerEn,jdbcType=VARCHAR}, 
+      #{manufacturerCn,jdbcType=VARCHAR}, #{manufacturerEn,jdbcType=VARCHAR}, #{exportedTo,jdbcType=VARCHAR}, 
+      #{originCountry,jdbcType=VARCHAR}, #{sampleDeal,jdbcType=TINYINT}, #{reviewTime,jdbcType=TIMESTAMP}, 
+      #{reviewRemark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestApplicationForm">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -197,6 +198,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="quotationNum != null">
         quotation_num,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
       </if>
       <if test="applicationNum != null">
         application_num,
@@ -343,6 +347,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="quotationNum != null">
         #{quotationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
       </if>
       <if test="applicationNum != null">
         #{applicationNum,jdbcType=VARCHAR},
@@ -502,6 +509,9 @@
       <if test="row.quotationNum != null">
         quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
       </if>
+      <if test="row.goodsId != null">
+        goods_id = #{row.goodsId,jdbcType=BIGINT},
+      </if>
       <if test="row.applicationNum != null">
         application_num = #{row.applicationNum,jdbcType=VARCHAR},
       </if>
@@ -652,6 +662,7 @@
     update test_application_form
     set id = #{row.id,jdbcType=BIGINT},
       quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
+      goods_id = #{row.goodsId,jdbcType=BIGINT},
       application_num = #{row.applicationNum,jdbcType=VARCHAR},
       application_name = #{row.applicationName,jdbcType=VARCHAR},
       application_date = #{row.applicationDate,jdbcType=DATE},
@@ -708,6 +719,9 @@
     <set>
       <if test="quotationNum != null">
         quotation_num = #{quotationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=BIGINT},
       </if>
       <if test="applicationNum != null">
         application_num = #{applicationNum,jdbcType=VARCHAR},
@@ -856,6 +870,7 @@
   <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestApplicationForm">
     update test_application_form
     set quotation_num = #{quotationNum,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=BIGINT},
       application_num = #{applicationNum,jdbcType=VARCHAR},
       application_name = #{applicationName,jdbcType=VARCHAR},
       application_date = #{applicationDate,jdbcType=DATE},

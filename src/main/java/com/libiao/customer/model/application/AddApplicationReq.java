@@ -5,11 +5,15 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 public class AddApplicationReq extends BaseSessionReq {
 
+    @NotNull
+    @ApiModelProperty("报价单上对应的商品")
+    private Long goodsId;
     @NotBlank(message = "报价单编号不能为空")
     @ApiModelProperty("报价单编号")
     private String quotationNum;

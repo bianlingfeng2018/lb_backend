@@ -8,6 +8,8 @@ public class TestApplicationForm implements Serializable {
 
     private String quotationNum;
 
+    private Long goodsId;
+
     private String applicationNum;
 
     private String applicationName;
@@ -118,6 +120,14 @@ public class TestApplicationForm implements Serializable {
 
     public void setQuotationNum(String quotationNum) {
         this.quotationNum = quotationNum;
+    }
+
+    public Long getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Long goodsId) {
+        this.goodsId = goodsId;
     }
 
     public String getApplicationNum() {
@@ -504,6 +514,7 @@ public class TestApplicationForm implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", quotationNum=").append(quotationNum);
+        sb.append(", goodsId=").append(goodsId);
         sb.append(", applicationNum=").append(applicationNum);
         sb.append(", applicationName=").append(applicationName);
         sb.append(", applicationDate=").append(applicationDate);

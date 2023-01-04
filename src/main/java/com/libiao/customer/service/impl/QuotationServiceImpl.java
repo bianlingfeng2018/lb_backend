@@ -38,6 +38,8 @@ public class QuotationServiceImpl implements QuotationService {
     private QuotationMapperExt quotationMapperExt;
     @Autowired
     private CustomerBillMapper customerBillMapper;
+    @Autowired
+    private TestApplicationFormMapper testApplicationFormMapper;
 
     @Override
     public PageInfo<TestQuotation> list(QuotationListReq req){
@@ -303,6 +305,7 @@ public class QuotationServiceImpl implements QuotationService {
     }
 
     @Override
+    @Transactional
     public void examine(ExamineQuotationReq req){
         final TestQuotationExample testQuotationExample = new TestQuotationExample();
         testQuotationExample.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());
@@ -340,6 +343,7 @@ public class QuotationServiceImpl implements QuotationService {
      * @param req
      */
     @Override
+    @Transactional
     public void addQuot(AddQuotationReq req){
         final TestQuotationExample testQuotationExample = new TestQuotationExample();
         testQuotationExample.createCriteria().andQuotationNumEqualTo(req.getOrgQuotationNum());
@@ -586,6 +590,11 @@ public class QuotationServiceImpl implements QuotationService {
                     quotaGoodsVO.setRList(rList);
                 }
             }
+
+            TestApplicationFormExample appExample = new TestApplicationFormExample();
+            appExample.createCriteria().andQuotationNumEqualTo(req.getQuotationNum()).andGoodsIdEqualTo(testQuotationGood.getGoodsId());
+            final List<TestApplicationForm> testApplicationForms = testApplicationFormMapper.selectByExample(appExample);
+            quotaGoodsVO.setApplied(!CollectionUtils.isEmpty(testApplicationForms));
         }
 
 

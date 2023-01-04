@@ -131,7 +131,7 @@ public class QuotationServiceImpl implements QuotationService {
             }
             String result3 = sb.deleteCharAt(sb.length()-1).toString();
             testQuotationGoods.setReprotType(result3);
-            testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
+            //testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
 
             testQuotationGoods.setReportAmt(calReportAmt(result3));
             //对应下属测试项目组装
@@ -258,7 +258,7 @@ public class QuotationServiceImpl implements QuotationService {
             }
             String result3 = sb.deleteCharAt(sb.length()-1).toString();
             testQuotationGoods.setReprotType(result3);
-            testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
+            //testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
 
             testQuotationGoods.setReportAmt(calReportAmt(result3));
             //对应下属测试项目组装
@@ -431,7 +431,7 @@ public class QuotationServiceImpl implements QuotationService {
             }
             String result3 = sb.deleteCharAt(sb.length()-1).toString();
             testQuotationGoods.setReprotType(result3);
-            testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
+            //testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
 
             testQuotationGoods.setReportAmt(calReportAmt(result3));
             //对应下属测试项目组装

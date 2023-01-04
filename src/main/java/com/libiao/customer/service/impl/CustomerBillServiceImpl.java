@@ -34,14 +34,11 @@ import java.util.List;
 public class CustomerBillServiceImpl implements CustomerBillService {
 
     @Autowired
-    CustomerBillMapper billMapper;
+    private CustomerBillMapper billMapper;
     @Autowired
     CustomerService customerService;
     @Autowired
     TestQuotationMapper quotationMapper;
-
-    @Autowired
-    private CustomerBillMapper customerBillMapper;
     @Autowired
     private TestQuotationMapper testQuotationMapper;
 

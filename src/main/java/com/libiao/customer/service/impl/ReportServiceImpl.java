@@ -7,6 +7,7 @@ import com.libiao.customer.dal.model.TestReportExample;
 import com.libiao.customer.model.report.ReportListReq;
 import com.libiao.customer.service.ReportService;
 import com.libiao.customer.util.LikeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Service
 public class ReportServiceImpl implements ReportService {
 
+    @Autowired
     private TestReportMapper testReportMapper;
 
     @Override

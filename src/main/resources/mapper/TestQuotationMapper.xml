@@ -20,22 +20,10 @@
     <result column="fax_client" jdbcType="VARCHAR" property="faxClient" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
-    <result column="invoice_title" jdbcType="VARCHAR" property="invoiceTitle" />
     <result column="delivery_address" jdbcType="VARCHAR" property="deliveryAddress" />
-    <result column="bank_account_name" jdbcType="VARCHAR" property="bankAccountName" />
-    <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
-    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
-    <result column="client_com_signature" jdbcType="VARCHAR" property="clientComSignature" />
-    <result column="libiao_representative_signature" jdbcType="VARCHAR" property="libiaoRepresentativeSignature" />
-    <result column="client_com_chop" jdbcType="VARCHAR" property="clientComChop" />
-    <result column="audit" jdbcType="VARCHAR" property="audit" />
-    <result column="client_signature_date" jdbcType="VARCHAR" property="clientSignatureDate" />
-    <result column="libiao_signature_date" jdbcType="VARCHAR" property="libiaoSignatureDate" />
-    <result column="test_trade_id" jdbcType="BIGINT" property="testTradeId" />
-    <result column="from_com" jdbcType="VARCHAR" property="fromCom" />
-    <result column="report_fee" jdbcType="VARCHAR" property="reportFee" />
-    <result column="courier_fee" jdbcType="VARCHAR" property="courierFee" />
-    <result column="tax_fee" jdbcType="VARCHAR" property="taxFee" />
+    <result column="report_fee" jdbcType="INTEGER" property="reportFee" />
+    <result column="postage" jdbcType="INTEGER" property="postage" />
+    <result column="tax_fee" jdbcType="INTEGER" property="taxFee" />
     <result column="discount" jdbcType="VARCHAR" property="discount" />
     <result column="total_cost" jdbcType="INTEGER" property="totalCost" />
     <result column="total_test_amt" jdbcType="INTEGER" property="totalTestAmt" />
@@ -47,9 +35,6 @@
     <result column="audit_id" jdbcType="BIGINT" property="auditId" />
     <result column="audit_name" jdbcType="VARCHAR" property="auditName" />
     <result column="audit_reason" jdbcType="VARCHAR" property="auditReason" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.libiao.customer.dal.model.TestQuotation">
-    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -112,31 +97,10 @@
   <sql id="Base_Column_List">
     id, client_id, client_num, client_name, user_id, user_org_no, state, step, trade_name, 
     quotation_num, pay_status, trade_desc, pay_type, attn, tel_client, fax_client, email, 
-    gmt_create, invoice_title, delivery_address, bank_account_name, bank_account, bank_name, 
-    client_com_signature, libiao_representative_signature, client_com_chop, audit, client_signature_date, 
-    libiao_signature_date, test_trade_id, from_com, report_fee, courier_fee, tax_fee, 
-    discount, total_cost, total_test_amt, paid_amt, service_id, type, single_report, 
-    orgQuotationNum, audit_id, audit_name, audit_reason
+    gmt_create, delivery_address, report_fee, postage, tax_fee, discount, total_cost, 
+    total_test_amt, paid_amt, service_id, type, single_report, orgQuotationNum, audit_id, 
+    audit_name, audit_reason
   </sql>
-  <sql id="Blob_Column_List">
-    remark
-  </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.libiao.customer.dal.model.TestQuotationExample" resultMap="ResultMapWithBLOBs">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from test_quotation
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestQuotationExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -151,11 +115,9 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from test_quotation
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -178,33 +140,23 @@
       step, trade_name, quotation_num, 
       pay_status, trade_desc, pay_type, 
       attn, tel_client, fax_client, 
-      email, gmt_create, invoice_title, 
-      delivery_address, bank_account_name, bank_account, 
-      bank_name, client_com_signature, libiao_representative_signature, 
-      client_com_chop, audit, client_signature_date, 
-      libiao_signature_date, test_trade_id, from_com, 
-      report_fee, courier_fee, tax_fee, 
+      email, gmt_create, delivery_address, 
+      report_fee, postage, tax_fee, 
       discount, total_cost, total_test_amt, 
       paid_amt, service_id, type, 
       single_report, orgQuotationNum, audit_id, 
-      audit_name, audit_reason, remark
-      )
+      audit_name, audit_reason)
     values (#{clientId,jdbcType=BIGINT}, #{clientNum,jdbcType=VARCHAR}, #{clientName,jdbcType=VARCHAR}, 
       #{userId,jdbcType=BIGINT}, #{userOrgNo,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
       #{step,jdbcType=TINYINT}, #{tradeName,jdbcType=VARCHAR}, #{quotationNum,jdbcType=VARCHAR}, 
       #{payStatus,jdbcType=TINYINT}, #{tradeDesc,jdbcType=VARCHAR}, #{payType,jdbcType=TINYINT}, 
       #{attn,jdbcType=VARCHAR}, #{telClient,jdbcType=VARCHAR}, #{faxClient,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{invoiceTitle,jdbcType=VARCHAR}, 
-      #{deliveryAddress,jdbcType=VARCHAR}, #{bankAccountName,jdbcType=VARCHAR}, #{bankAccount,jdbcType=VARCHAR}, 
-      #{bankName,jdbcType=VARCHAR}, #{clientComSignature,jdbcType=VARCHAR}, #{libiaoRepresentativeSignature,jdbcType=VARCHAR}, 
-      #{clientComChop,jdbcType=VARCHAR}, #{audit,jdbcType=VARCHAR}, #{clientSignatureDate,jdbcType=VARCHAR}, 
-      #{libiaoSignatureDate,jdbcType=VARCHAR}, #{testTradeId,jdbcType=BIGINT}, #{fromCom,jdbcType=VARCHAR}, 
-      #{reportFee,jdbcType=VARCHAR}, #{courierFee,jdbcType=VARCHAR}, #{taxFee,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{deliveryAddress,jdbcType=VARCHAR}, 
+      #{reportFee,jdbcType=INTEGER}, #{postage,jdbcType=INTEGER}, #{taxFee,jdbcType=INTEGER}, 
       #{discount,jdbcType=VARCHAR}, #{totalCost,jdbcType=INTEGER}, #{totalTestAmt,jdbcType=INTEGER}, 
       #{paidAmt,jdbcType=INTEGER}, #{serviceId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
       #{singleReport,jdbcType=TINYINT}, #{orgquotationnum,jdbcType=VARCHAR}, #{auditId,jdbcType=BIGINT}, 
-      #{auditName,jdbcType=VARCHAR}, #{auditReason,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR}
-      )
+      #{auditName,jdbcType=VARCHAR}, #{auditReason,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestQuotation">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -263,50 +215,14 @@
       <if test="gmtCreate != null">
         gmt_create,
       </if>
-      <if test="invoiceTitle != null">
-        invoice_title,
-      </if>
       <if test="deliveryAddress != null">
         delivery_address,
-      </if>
-      <if test="bankAccountName != null">
-        bank_account_name,
-      </if>
-      <if test="bankAccount != null">
-        bank_account,
-      </if>
-      <if test="bankName != null">
-        bank_name,
-      </if>
-      <if test="clientComSignature != null">
-        client_com_signature,
-      </if>
-      <if test="libiaoRepresentativeSignature != null">
-        libiao_representative_signature,
-      </if>
-      <if test="clientComChop != null">
-        client_com_chop,
-      </if>
-      <if test="audit != null">
-        audit,
-      </if>
-      <if test="clientSignatureDate != null">
-        client_signature_date,
-      </if>
-      <if test="libiaoSignatureDate != null">
-        libiao_signature_date,
-      </if>
-      <if test="testTradeId != null">
-        test_trade_id,
-      </if>
-      <if test="fromCom != null">
-        from_com,
       </if>
       <if test="reportFee != null">
         report_fee,
       </if>
-      <if test="courierFee != null">
-        courier_fee,
+      <if test="postage != null">
+        postage,
       </if>
       <if test="taxFee != null">
         tax_fee,
@@ -343,9 +259,6 @@
       </if>
       <if test="auditReason != null">
         audit_reason,
-      </if>
-      <if test="remark != null">
-        remark,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -400,53 +313,17 @@
       <if test="gmtCreate != null">
         #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="invoiceTitle != null">
-        #{invoiceTitle,jdbcType=VARCHAR},
-      </if>
       <if test="deliveryAddress != null">
         #{deliveryAddress,jdbcType=VARCHAR},
       </if>
-      <if test="bankAccountName != null">
-        #{bankAccountName,jdbcType=VARCHAR},
-      </if>
-      <if test="bankAccount != null">
-        #{bankAccount,jdbcType=VARCHAR},
-      </if>
-      <if test="bankName != null">
-        #{bankName,jdbcType=VARCHAR},
-      </if>
-      <if test="clientComSignature != null">
-        #{clientComSignature,jdbcType=VARCHAR},
-      </if>
-      <if test="libiaoRepresentativeSignature != null">
-        #{libiaoRepresentativeSignature,jdbcType=VARCHAR},
-      </if>
-      <if test="clientComChop != null">
-        #{clientComChop,jdbcType=VARCHAR},
-      </if>
-      <if test="audit != null">
-        #{audit,jdbcType=VARCHAR},
-      </if>
-      <if test="clientSignatureDate != null">
-        #{clientSignatureDate,jdbcType=VARCHAR},
-      </if>
-      <if test="libiaoSignatureDate != null">
-        #{libiaoSignatureDate,jdbcType=VARCHAR},
-      </if>
-      <if test="testTradeId != null">
-        #{testTradeId,jdbcType=BIGINT},
-      </if>
-      <if test="fromCom != null">
-        #{fromCom,jdbcType=VARCHAR},
-      </if>
       <if test="reportFee != null">
-        #{reportFee,jdbcType=VARCHAR},
+        #{reportFee,jdbcType=INTEGER},
       </if>
-      <if test="courierFee != null">
-        #{courierFee,jdbcType=VARCHAR},
+      <if test="postage != null">
+        #{postage,jdbcType=INTEGER},
       </if>
       <if test="taxFee != null">
-        #{taxFee,jdbcType=VARCHAR},
+        #{taxFee,jdbcType=INTEGER},
       </if>
       <if test="discount != null">
         #{discount,jdbcType=VARCHAR},
@@ -480,9 +357,6 @@
       </if>
       <if test="auditReason != null">
         #{auditReason,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -549,53 +423,17 @@
       <if test="row.gmtCreate != null">
         gmt_create = #{row.gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="row.invoiceTitle != null">
-        invoice_title = #{row.invoiceTitle,jdbcType=VARCHAR},
-      </if>
       <if test="row.deliveryAddress != null">
         delivery_address = #{row.deliveryAddress,jdbcType=VARCHAR},
       </if>
-      <if test="row.bankAccountName != null">
-        bank_account_name = #{row.bankAccountName,jdbcType=VARCHAR},
-      </if>
-      <if test="row.bankAccount != null">
-        bank_account = #{row.bankAccount,jdbcType=VARCHAR},
-      </if>
-      <if test="row.bankName != null">
-        bank_name = #{row.bankName,jdbcType=VARCHAR},
-      </if>
-      <if test="row.clientComSignature != null">
-        client_com_signature = #{row.clientComSignature,jdbcType=VARCHAR},
-      </if>
-      <if test="row.libiaoRepresentativeSignature != null">
-        libiao_representative_signature = #{row.libiaoRepresentativeSignature,jdbcType=VARCHAR},
-      </if>
-      <if test="row.clientComChop != null">
-        client_com_chop = #{row.clientComChop,jdbcType=VARCHAR},
-      </if>
-      <if test="row.audit != null">
-        audit = #{row.audit,jdbcType=VARCHAR},
-      </if>
-      <if test="row.clientSignatureDate != null">
-        client_signature_date = #{row.clientSignatureDate,jdbcType=VARCHAR},
-      </if>
-      <if test="row.libiaoSignatureDate != null">
-        libiao_signature_date = #{row.libiaoSignatureDate,jdbcType=VARCHAR},
-      </if>
-      <if test="row.testTradeId != null">
-        test_trade_id = #{row.testTradeId,jdbcType=BIGINT},
-      </if>
-      <if test="row.fromCom != null">
-        from_com = #{row.fromCom,jdbcType=VARCHAR},
-      </if>
       <if test="row.reportFee != null">
-        report_fee = #{row.reportFee,jdbcType=VARCHAR},
+        report_fee = #{row.reportFee,jdbcType=INTEGER},
       </if>
-      <if test="row.courierFee != null">
-        courier_fee = #{row.courierFee,jdbcType=VARCHAR},
+      <if test="row.postage != null">
+        postage = #{row.postage,jdbcType=INTEGER},
       </if>
       <if test="row.taxFee != null">
-        tax_fee = #{row.taxFee,jdbcType=VARCHAR},
+        tax_fee = #{row.taxFee,jdbcType=INTEGER},
       </if>
       <if test="row.discount != null">
         discount = #{row.discount,jdbcType=VARCHAR},
@@ -630,62 +468,7 @@
       <if test="row.auditReason != null">
         audit_reason = #{row.auditReason,jdbcType=VARCHAR},
       </if>
-      <if test="row.remark != null">
-        remark = #{row.remark,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    <if test="example != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map">
-    update test_quotation
-    set id = #{row.id,jdbcType=BIGINT},
-      client_id = #{row.clientId,jdbcType=BIGINT},
-      client_num = #{row.clientNum,jdbcType=VARCHAR},
-      client_name = #{row.clientName,jdbcType=VARCHAR},
-      user_id = #{row.userId,jdbcType=BIGINT},
-      user_org_no = #{row.userOrgNo,jdbcType=VARCHAR},
-      state = #{row.state,jdbcType=TINYINT},
-      step = #{row.step,jdbcType=TINYINT},
-      trade_name = #{row.tradeName,jdbcType=VARCHAR},
-      quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
-      pay_status = #{row.payStatus,jdbcType=TINYINT},
-      trade_desc = #{row.tradeDesc,jdbcType=VARCHAR},
-      pay_type = #{row.payType,jdbcType=TINYINT},
-      attn = #{row.attn,jdbcType=VARCHAR},
-      tel_client = #{row.telClient,jdbcType=VARCHAR},
-      fax_client = #{row.faxClient,jdbcType=VARCHAR},
-      email = #{row.email,jdbcType=VARCHAR},
-      gmt_create = #{row.gmtCreate,jdbcType=TIMESTAMP},
-      invoice_title = #{row.invoiceTitle,jdbcType=VARCHAR},
-      delivery_address = #{row.deliveryAddress,jdbcType=VARCHAR},
-      bank_account_name = #{row.bankAccountName,jdbcType=VARCHAR},
-      bank_account = #{row.bankAccount,jdbcType=VARCHAR},
-      bank_name = #{row.bankName,jdbcType=VARCHAR},
-      client_com_signature = #{row.clientComSignature,jdbcType=VARCHAR},
-      libiao_representative_signature = #{row.libiaoRepresentativeSignature,jdbcType=VARCHAR},
-      client_com_chop = #{row.clientComChop,jdbcType=VARCHAR},
-      audit = #{row.audit,jdbcType=VARCHAR},
-      client_signature_date = #{row.clientSignatureDate,jdbcType=VARCHAR},
-      libiao_signature_date = #{row.libiaoSignatureDate,jdbcType=VARCHAR},
-      test_trade_id = #{row.testTradeId,jdbcType=BIGINT},
-      from_com = #{row.fromCom,jdbcType=VARCHAR},
-      report_fee = #{row.reportFee,jdbcType=VARCHAR},
-      courier_fee = #{row.courierFee,jdbcType=VARCHAR},
-      tax_fee = #{row.taxFee,jdbcType=VARCHAR},
-      discount = #{row.discount,jdbcType=VARCHAR},
-      total_cost = #{row.totalCost,jdbcType=INTEGER},
-      total_test_amt = #{row.totalTestAmt,jdbcType=INTEGER},
-      paid_amt = #{row.paidAmt,jdbcType=INTEGER},
-      service_id = #{row.serviceId,jdbcType=BIGINT},
-      type = #{row.type,jdbcType=TINYINT},
-      single_report = #{row.singleReport,jdbcType=TINYINT},
-      orgQuotationNum = #{row.orgquotationnum,jdbcType=VARCHAR},
-      audit_id = #{row.auditId,jdbcType=BIGINT},
-      audit_name = #{row.auditName,jdbcType=VARCHAR},
-      audit_reason = #{row.auditReason,jdbcType=VARCHAR},
-      remark = #{row.remark,jdbcType=LONGVARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -710,22 +493,10 @@
       fax_client = #{row.faxClient,jdbcType=VARCHAR},
       email = #{row.email,jdbcType=VARCHAR},
       gmt_create = #{row.gmtCreate,jdbcType=TIMESTAMP},
-      invoice_title = #{row.invoiceTitle,jdbcType=VARCHAR},
       delivery_address = #{row.deliveryAddress,jdbcType=VARCHAR},
-      bank_account_name = #{row.bankAccountName,jdbcType=VARCHAR},
-      bank_account = #{row.bankAccount,jdbcType=VARCHAR},
-      bank_name = #{row.bankName,jdbcType=VARCHAR},
-      client_com_signature = #{row.clientComSignature,jdbcType=VARCHAR},
-      libiao_representative_signature = #{row.libiaoRepresentativeSignature,jdbcType=VARCHAR},
-      client_com_chop = #{row.clientComChop,jdbcType=VARCHAR},
-      audit = #{row.audit,jdbcType=VARCHAR},
-      client_signature_date = #{row.clientSignatureDate,jdbcType=VARCHAR},
-      libiao_signature_date = #{row.libiaoSignatureDate,jdbcType=VARCHAR},
-      test_trade_id = #{row.testTradeId,jdbcType=BIGINT},
-      from_com = #{row.fromCom,jdbcType=VARCHAR},
-      report_fee = #{row.reportFee,jdbcType=VARCHAR},
-      courier_fee = #{row.courierFee,jdbcType=VARCHAR},
-      tax_fee = #{row.taxFee,jdbcType=VARCHAR},
+      report_fee = #{row.reportFee,jdbcType=INTEGER},
+      postage = #{row.postage,jdbcType=INTEGER},
+      tax_fee = #{row.taxFee,jdbcType=INTEGER},
       discount = #{row.discount,jdbcType=VARCHAR},
       total_cost = #{row.totalCost,jdbcType=INTEGER},
       total_test_amt = #{row.totalTestAmt,jdbcType=INTEGER},
@@ -795,53 +566,17 @@
       <if test="gmtCreate != null">
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       </if>
-      <if test="invoiceTitle != null">
-        invoice_title = #{invoiceTitle,jdbcType=VARCHAR},
-      </if>
       <if test="deliveryAddress != null">
         delivery_address = #{deliveryAddress,jdbcType=VARCHAR},
       </if>
-      <if test="bankAccountName != null">
-        bank_account_name = #{bankAccountName,jdbcType=VARCHAR},
-      </if>
-      <if test="bankAccount != null">
-        bank_account = #{bankAccount,jdbcType=VARCHAR},
-      </if>
-      <if test="bankName != null">
-        bank_name = #{bankName,jdbcType=VARCHAR},
-      </if>
-      <if test="clientComSignature != null">
-        client_com_signature = #{clientComSignature,jdbcType=VARCHAR},
-      </if>
-      <if test="libiaoRepresentativeSignature != null">
-        libiao_representative_signature = #{libiaoRepresentativeSignature,jdbcType=VARCHAR},
-      </if>
-      <if test="clientComChop != null">
-        client_com_chop = #{clientComChop,jdbcType=VARCHAR},
-      </if>
-      <if test="audit != null">
-        audit = #{audit,jdbcType=VARCHAR},
-      </if>
-      <if test="clientSignatureDate != null">
-        client_signature_date = #{clientSignatureDate,jdbcType=VARCHAR},
-      </if>
-      <if test="libiaoSignatureDate != null">
-        libiao_signature_date = #{libiaoSignatureDate,jdbcType=VARCHAR},
-      </if>
-      <if test="testTradeId != null">
-        test_trade_id = #{testTradeId,jdbcType=BIGINT},
-      </if>
-      <if test="fromCom != null">
-        from_com = #{fromCom,jdbcType=VARCHAR},
-      </if>
       <if test="reportFee != null">
-        report_fee = #{reportFee,jdbcType=VARCHAR},
+        report_fee = #{reportFee,jdbcType=INTEGER},
       </if>
-      <if test="courierFee != null">
-        courier_fee = #{courierFee,jdbcType=VARCHAR},
+      <if test="postage != null">
+        postage = #{postage,jdbcType=INTEGER},
       </if>
       <if test="taxFee != null">
-        tax_fee = #{taxFee,jdbcType=VARCHAR},
+        tax_fee = #{taxFee,jdbcType=INTEGER},
       </if>
       <if test="discount != null">
         discount = #{discount,jdbcType=VARCHAR},
@@ -876,59 +611,7 @@
       <if test="auditReason != null">
         audit_reason = #{auditReason,jdbcType=VARCHAR},
       </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.libiao.customer.dal.model.TestQuotation">
-    update test_quotation
-    set client_id = #{clientId,jdbcType=BIGINT},
-      client_num = #{clientNum,jdbcType=VARCHAR},
-      client_name = #{clientName,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=BIGINT},
-      user_org_no = #{userOrgNo,jdbcType=VARCHAR},
-      state = #{state,jdbcType=TINYINT},
-      step = #{step,jdbcType=TINYINT},
-      trade_name = #{tradeName,jdbcType=VARCHAR},
-      quotation_num = #{quotationNum,jdbcType=VARCHAR},
-      pay_status = #{payStatus,jdbcType=TINYINT},
-      trade_desc = #{tradeDesc,jdbcType=VARCHAR},
-      pay_type = #{payType,jdbcType=TINYINT},
-      attn = #{attn,jdbcType=VARCHAR},
-      tel_client = #{telClient,jdbcType=VARCHAR},
-      fax_client = #{faxClient,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
-      invoice_title = #{invoiceTitle,jdbcType=VARCHAR},
-      delivery_address = #{deliveryAddress,jdbcType=VARCHAR},
-      bank_account_name = #{bankAccountName,jdbcType=VARCHAR},
-      bank_account = #{bankAccount,jdbcType=VARCHAR},
-      bank_name = #{bankName,jdbcType=VARCHAR},
-      client_com_signature = #{clientComSignature,jdbcType=VARCHAR},
-      libiao_representative_signature = #{libiaoRepresentativeSignature,jdbcType=VARCHAR},
-      client_com_chop = #{clientComChop,jdbcType=VARCHAR},
-      audit = #{audit,jdbcType=VARCHAR},
-      client_signature_date = #{clientSignatureDate,jdbcType=VARCHAR},
-      libiao_signature_date = #{libiaoSignatureDate,jdbcType=VARCHAR},
-      test_trade_id = #{testTradeId,jdbcType=BIGINT},
-      from_com = #{fromCom,jdbcType=VARCHAR},
-      report_fee = #{reportFee,jdbcType=VARCHAR},
-      courier_fee = #{courierFee,jdbcType=VARCHAR},
-      tax_fee = #{taxFee,jdbcType=VARCHAR},
-      discount = #{discount,jdbcType=VARCHAR},
-      total_cost = #{totalCost,jdbcType=INTEGER},
-      total_test_amt = #{totalTestAmt,jdbcType=INTEGER},
-      paid_amt = #{paidAmt,jdbcType=INTEGER},
-      service_id = #{serviceId,jdbcType=BIGINT},
-      type = #{type,jdbcType=TINYINT},
-      single_report = #{singleReport,jdbcType=TINYINT},
-      orgQuotationNum = #{orgquotationnum,jdbcType=VARCHAR},
-      audit_id = #{auditId,jdbcType=BIGINT},
-      audit_name = #{auditName,jdbcType=VARCHAR},
-      audit_reason = #{auditReason,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestQuotation">
@@ -950,22 +633,10 @@
       fax_client = #{faxClient,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
-      invoice_title = #{invoiceTitle,jdbcType=VARCHAR},
       delivery_address = #{deliveryAddress,jdbcType=VARCHAR},
-      bank_account_name = #{bankAccountName,jdbcType=VARCHAR},
-      bank_account = #{bankAccount,jdbcType=VARCHAR},
-      bank_name = #{bankName,jdbcType=VARCHAR},
-      client_com_signature = #{clientComSignature,jdbcType=VARCHAR},
-      libiao_representative_signature = #{libiaoRepresentativeSignature,jdbcType=VARCHAR},
-      client_com_chop = #{clientComChop,jdbcType=VARCHAR},
-      audit = #{audit,jdbcType=VARCHAR},
-      client_signature_date = #{clientSignatureDate,jdbcType=VARCHAR},
-      libiao_signature_date = #{libiaoSignatureDate,jdbcType=VARCHAR},
-      test_trade_id = #{testTradeId,jdbcType=BIGINT},
-      from_com = #{fromCom,jdbcType=VARCHAR},
-      report_fee = #{reportFee,jdbcType=VARCHAR},
-      courier_fee = #{courierFee,jdbcType=VARCHAR},
-      tax_fee = #{taxFee,jdbcType=VARCHAR},
+      report_fee = #{reportFee,jdbcType=INTEGER},
+      postage = #{postage,jdbcType=INTEGER},
+      tax_fee = #{taxFee,jdbcType=INTEGER},
       discount = #{discount,jdbcType=VARCHAR},
       total_cost = #{totalCost,jdbcType=INTEGER},
       total_test_amt = #{totalTestAmt,jdbcType=INTEGER},

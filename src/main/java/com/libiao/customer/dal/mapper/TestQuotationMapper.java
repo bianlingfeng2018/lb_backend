@@ -16,21 +16,15 @@ public interface TestQuotationMapper {
 
     int insertSelective(TestQuotation row);
 
-    List<TestQuotation> selectByExampleWithBLOBs(TestQuotationExample example);
-
     List<TestQuotation> selectByExample(TestQuotationExample example);
 
     TestQuotation selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("row") TestQuotation row, @Param("example") TestQuotationExample example);
 
-    int updateByExampleWithBLOBs(@Param("row") TestQuotation row, @Param("example") TestQuotationExample example);
-
     int updateByExample(@Param("row") TestQuotation row, @Param("example") TestQuotationExample example);
 
     int updateByPrimaryKeySelective(TestQuotation row);
-
-    int updateByPrimaryKeyWithBLOBs(TestQuotation row);
 
     int updateByPrimaryKey(TestQuotation row);
 }

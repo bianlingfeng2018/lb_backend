@@ -40,37 +40,13 @@ public class TestQuotation implements Serializable {
 
     private Date gmtCreate;
 
-    private String invoiceTitle;
-
     private String deliveryAddress;
 
-    private String bankAccountName;
+    private Integer reportFee;
 
-    private String bankAccount;
+    private Integer postage;
 
-    private String bankName;
-
-    private String clientComSignature;
-
-    private String libiaoRepresentativeSignature;
-
-    private String clientComChop;
-
-    private String audit;
-
-    private String clientSignatureDate;
-
-    private String libiaoSignatureDate;
-
-    private Long testTradeId;
-
-    private String fromCom;
-
-    private String reportFee;
-
-    private String courierFee;
-
-    private String taxFee;
+    private Integer taxFee;
 
     private String discount;
 
@@ -93,8 +69,6 @@ public class TestQuotation implements Serializable {
     private String auditName;
 
     private String auditReason;
-
-    private String remark;
 
     private static final long serialVersionUID = 1L;
 
@@ -242,14 +216,6 @@ public class TestQuotation implements Serializable {
         this.gmtCreate = gmtCreate;
     }
 
-    public String getInvoiceTitle() {
-        return invoiceTitle;
-    }
-
-    public void setInvoiceTitle(String invoiceTitle) {
-        this.invoiceTitle = invoiceTitle;
-    }
-
     public String getDeliveryAddress() {
         return deliveryAddress;
     }
@@ -258,115 +224,27 @@ public class TestQuotation implements Serializable {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public String getBankAccountName() {
-        return bankAccountName;
-    }
-
-    public void setBankAccountName(String bankAccountName) {
-        this.bankAccountName = bankAccountName;
-    }
-
-    public String getBankAccount() {
-        return bankAccount;
-    }
-
-    public void setBankAccount(String bankAccount) {
-        this.bankAccount = bankAccount;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public String getClientComSignature() {
-        return clientComSignature;
-    }
-
-    public void setClientComSignature(String clientComSignature) {
-        this.clientComSignature = clientComSignature;
-    }
-
-    public String getLibiaoRepresentativeSignature() {
-        return libiaoRepresentativeSignature;
-    }
-
-    public void setLibiaoRepresentativeSignature(String libiaoRepresentativeSignature) {
-        this.libiaoRepresentativeSignature = libiaoRepresentativeSignature;
-    }
-
-    public String getClientComChop() {
-        return clientComChop;
-    }
-
-    public void setClientComChop(String clientComChop) {
-        this.clientComChop = clientComChop;
-    }
-
-    public String getAudit() {
-        return audit;
-    }
-
-    public void setAudit(String audit) {
-        this.audit = audit;
-    }
-
-    public String getClientSignatureDate() {
-        return clientSignatureDate;
-    }
-
-    public void setClientSignatureDate(String clientSignatureDate) {
-        this.clientSignatureDate = clientSignatureDate;
-    }
-
-    public String getLibiaoSignatureDate() {
-        return libiaoSignatureDate;
-    }
-
-    public void setLibiaoSignatureDate(String libiaoSignatureDate) {
-        this.libiaoSignatureDate = libiaoSignatureDate;
-    }
-
-    public Long getTestTradeId() {
-        return testTradeId;
-    }
-
-    public void setTestTradeId(Long testTradeId) {
-        this.testTradeId = testTradeId;
-    }
-
-    public String getFromCom() {
-        return fromCom;
-    }
-
-    public void setFromCom(String fromCom) {
-        this.fromCom = fromCom;
-    }
-
-    public String getReportFee() {
+    public Integer getReportFee() {
         return reportFee;
     }
 
-    public void setReportFee(String reportFee) {
+    public void setReportFee(Integer reportFee) {
         this.reportFee = reportFee;
     }
 
-    public String getCourierFee() {
-        return courierFee;
+    public Integer getPostage() {
+        return postage;
     }
 
-    public void setCourierFee(String courierFee) {
-        this.courierFee = courierFee;
+    public void setPostage(Integer postage) {
+        this.postage = postage;
     }
 
-    public String getTaxFee() {
+    public Integer getTaxFee() {
         return taxFee;
     }
 
-    public void setTaxFee(String taxFee) {
+    public void setTaxFee(Integer taxFee) {
         this.taxFee = taxFee;
     }
 
@@ -458,14 +336,6 @@ public class TestQuotation implements Serializable {
         this.auditReason = auditReason;
     }
 
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -490,21 +360,9 @@ public class TestQuotation implements Serializable {
         sb.append(", faxClient=").append(faxClient);
         sb.append(", email=").append(email);
         sb.append(", gmtCreate=").append(gmtCreate);
-        sb.append(", invoiceTitle=").append(invoiceTitle);
         sb.append(", deliveryAddress=").append(deliveryAddress);
-        sb.append(", bankAccountName=").append(bankAccountName);
-        sb.append(", bankAccount=").append(bankAccount);
-        sb.append(", bankName=").append(bankName);
-        sb.append(", clientComSignature=").append(clientComSignature);
-        sb.append(", libiaoRepresentativeSignature=").append(libiaoRepresentativeSignature);
-        sb.append(", clientComChop=").append(clientComChop);
-        sb.append(", audit=").append(audit);
-        sb.append(", clientSignatureDate=").append(clientSignatureDate);
-        sb.append(", libiaoSignatureDate=").append(libiaoSignatureDate);
-        sb.append(", testTradeId=").append(testTradeId);
-        sb.append(", fromCom=").append(fromCom);
         sb.append(", reportFee=").append(reportFee);
-        sb.append(", courierFee=").append(courierFee);
+        sb.append(", postage=").append(postage);
         sb.append(", taxFee=").append(taxFee);
         sb.append(", discount=").append(discount);
         sb.append(", totalCost=").append(totalCost);
@@ -517,7 +375,6 @@ public class TestQuotation implements Serializable {
         sb.append(", auditId=").append(auditId);
         sb.append(", auditName=").append(auditName);
         sb.append(", auditReason=").append(auditReason);
-        sb.append(", remark=").append(remark);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

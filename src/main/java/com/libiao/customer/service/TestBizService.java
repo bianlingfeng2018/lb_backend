@@ -52,9 +52,9 @@ public interface TestBizService {
 
     //ResponseVO queryAllFormByTestTradeId(Long testTradeId);
 
-    ResponseVO saveTestReport(String testReport, MultipartFile[] imgList);
+    //ResponseVO saveTestReport(String testReport, MultipartFile[] imgList);
 
-    ResponseVO queryTestReportList(int pageNum, int pageSize);
+    //ResponseVO queryTestReportList(int pageNum, int pageSize);
 
     /**
      * 确认报价单
@@ -87,7 +87,7 @@ public interface TestBizService {
     ResponseVO confirmTestReport(Long testTradeId, List<UserExt> userExtList);
 
 
-    ResponseVO exportTestReport(HttpServletResponse response, Long testTradeId);
+    //ResponseVO exportTestReport(HttpServletResponse response, Long testTradeId);
 
     //ResponseVO<?> auditTestApply(Long testTradeId, String testTradeStatus, MultipartFile[] applyFileList, MultipartFile[] payFileList);
 
@@ -99,7 +99,7 @@ public interface TestBizService {
 
     //ResponseEntity<?> previewTestWorkOrderByTestTradeId(Long testTradeId);
 
-    ResponseEntity<?> previewTestReportByTestTradeId(Long testTradeId);
+    //ResponseEntity<?> previewTestReportByTestTradeId(Long testTradeId);
 
     ResponseVO deleteTestQuotation(Long testQuotationId);
 
@@ -111,7 +111,7 @@ public interface TestBizService {
 
     ResponseVO deleteTestWorkOrder(Long testWorkOrderId);
 
-    ResponseVO updateTestReport(String testReport, MultipartFile[] imgList);
+    //ResponseVO updateTestReport(String testReport, MultipartFile[] imgList);
 
     ResponseVO deleteTestReport(Long testReportId);
 

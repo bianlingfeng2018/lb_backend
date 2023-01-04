@@ -518,7 +518,7 @@ public class FileUtil {
 
     }*/
 
-    public static File exportTestReport(TestReport testReport, String outpath) throws IOException {
+    /*public static File exportTestReport(TestReport testReport, String outpath) throws IOException {
         PdfFont coverFont = PdfFontFactory.createFont("STSong-Light", "UniGB-UCS2-H"); // 封面
 
         PdfFont contentFont = PdfFontFactory.createFont("STSong-Light", "UniGB-UCS2-H"); // 内容
@@ -553,7 +553,7 @@ public class FileUtil {
         pdfDoc.close();
         document.close();
         return new File(outpath);
-    }
+    }*/
 
     /**
      * 检测报告,这里采用测试报告模板

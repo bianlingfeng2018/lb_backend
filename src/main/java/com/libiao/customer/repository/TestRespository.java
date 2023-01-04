@@ -87,7 +87,7 @@ public interface TestRespository {
 
     //public List<TestWorkOrder> queryTestWorkOrder(int pageNum, int pageSize);
 
-    List<TestReport> queryTestReport(int pageNum, int pageSize);
+    //List<TestReport> queryTestReport(int pageNum, int pageSize);
 
     //public List<TestWorkOrderItem> queryTestWorkOrderItemByWorkOrderId(Long testWorkOrderId);
     /********************************************* 测试工作单 *********************************************/
@@ -102,7 +102,7 @@ public interface TestRespository {
 
     public int insertTestReport(TestReport testReport); // 插入测试报告
 
-    public TestReport queryTestReportByTestTradeId(Long testTradeId); // 查询测试报告
+    //public TestReport queryTestReportByTestTradeId(Long testTradeId); // 查询测试报告
 
 
     int deleteTestQuotationById(Long testQuotationId);
@@ -141,5 +141,5 @@ public interface TestRespository {
 
     void deleteTestWorkOrderItemById(Long id);
 
-  TestReport selectTestReportByReportNum(String reportNum);
+    //TestReport selectTestReportByReportNum(String reportNum);
 }

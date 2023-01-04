@@ -608,7 +608,7 @@ public class TestBizServiceImpl implements TestBizService {
         }
     }*/
 
-    @Override
+    /*@Override
     public ResponseVO saveTestReport(String testReportStr, MultipartFile[] imgList) {
         try {
             TestReport testReport = JSON.parseObject(testReportStr, TestReport.class);
@@ -635,7 +635,7 @@ public class TestBizServiceImpl implements TestBizService {
         }catch (Exception e){
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
     /**
      * 查询报告单列表
@@ -643,7 +643,7 @@ public class TestBizServiceImpl implements TestBizService {
      * @param pageSize
      * @return
      */
-    @Override
+    /*@Override
     public ResponseVO<?> queryTestReportList(int pageNum, int pageSize) {
       try {
         List<TestReport> testReportList = testRespository.queryTestReport(pageNum, pageSize);
@@ -677,7 +677,7 @@ public class TestBizServiceImpl implements TestBizService {
       } catch (Exception e) {
         return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
       }
-    }
+    }*/
 
     /**
      *
@@ -787,7 +787,7 @@ public class TestBizServiceImpl implements TestBizService {
         }
     }
 
-    @Override
+    /*@Override
     public ResponseVO exportTestReport(HttpServletResponse response, Long testTradeId) {
         try{
             TestTrade testTrade = testRespository.selectTestTradeById(testTradeId);
@@ -816,7 +816,7 @@ public class TestBizServiceImpl implements TestBizService {
         }catch (Exception e){
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
     /*@Override
     public ResponseVO<?> auditTestApply(Long testTradeId, String testTradeStatus,
@@ -981,7 +981,7 @@ public class TestBizServiceImpl implements TestBizService {
         }
     }*/
 
-    @Override
+    /*@Override
     public ResponseEntity<?> previewTestReportByTestTradeId(Long testTradeId) {
         try {
             TestTrade testTrade = testRespository.selectTestTradeById(testTradeId);
@@ -1008,7 +1008,7 @@ public class TestBizServiceImpl implements TestBizService {
             return new ResponseEntity(new LibiaoException(ErrorCodeEnum.UNKNOWN_ERROR),
                 HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     @Override
     public ResponseVO deleteTestQuotation(Long testQuotationId) {
@@ -1142,7 +1142,7 @@ public class TestBizServiceImpl implements TestBizService {
         }
     }
 
-    @Override
+    /*@Override
     public ResponseVO updateTestReport(String testReportStr, MultipartFile[] imgList) {
         try {
           TestReport testReport = JSON.parseObject(testReportStr, TestReport.class);
@@ -1173,7 +1173,7 @@ public class TestBizServiceImpl implements TestBizService {
             e.printStackTrace();
             return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
         }
-    }
+    }*/
 
     @Override
     public ResponseVO deleteTestReport(Long testReportId) {

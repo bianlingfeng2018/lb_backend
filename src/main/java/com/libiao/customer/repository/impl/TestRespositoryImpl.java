@@ -189,7 +189,7 @@ public class TestRespositoryImpl implements TestRespository {
         return testWorkOrderList;
     }*/
 
-    @Override
+    /*@Override
     public List<TestReport> queryTestReport(int pageNum, int pageSize) {
         String userName = WebUtil.getAccessToken().getUsername();
         String permission = WebUtil.getAccessToken().getPermission();
@@ -202,7 +202,7 @@ public class TestRespositoryImpl implements TestRespository {
             testReportList = testReportMapper.selectAllByOwner(userName);
         }
         return testReportList;
-    }
+    }*/
 
     /*@Override
     public List<TestWorkOrderItem> queryTestWorkOrderItemByWorkOrderId(Long testWorkOrderId) {
@@ -247,7 +247,7 @@ public class TestRespositoryImpl implements TestRespository {
         return testReportMapper.insert(testReport);
     }
 
-    @Override
+    /*@Override
     public TestReport queryTestReportByTestTradeId(Long testTradeId) {
         List<TestReport> testReportList = testReportMapper.queryTestReportByTestTradeId(testTradeId);
         if(testReportList != null && testReportList.size() != 0){
@@ -255,7 +255,7 @@ public class TestRespositoryImpl implements TestRespository {
             return testReport;
         }
         return null;
-    }
+    }*/
 
     @Override
     public int deleteTestQuotationById(Long testQuotationId) {
@@ -347,8 +347,8 @@ public class TestRespositoryImpl implements TestRespository {
         testWorkOrderItemMapper.deleteByPrimaryKey(id);
     }
 
-  @Override
+  /*@Override
   public TestReport selectTestReportByReportNum(String reportNum) {
     return testReportMapper.selectTestReportByReportNum(reportNum);
-  }
+  }*/
 }

@@ -299,13 +299,13 @@ public class TestTradeCtrl {
         return testBizService.queryAllFormByTestTradeId(testTradeId);
     }*/
 
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/saveTestReport", method = RequestMethod.POST)
     public ResponseVO saveTestReport(
         @RequestParam("postForm") String testReport,
         @RequestParam("imgList") MultipartFile[] imgList){
         return testBizService.saveTestReport(testReport, imgList);
-    }
+    }*/
 
     /**
      * 查询报告单列表
@@ -313,57 +313,57 @@ public class TestTradeCtrl {
      * @param pageSize
      * @return
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/queryTestReportList", method = RequestMethod.GET)
     public ResponseVO<?> queryTestReportList(
         @RequestParam(name = "pageNum", required = false, defaultValue = "1") int pageNum,
         @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize) {
         return testBizService.queryTestReportList(pageNum, pageSize);
-    }
+    }*/
 
   /**
    * 更新报告单
    */
-  @ResponseBody
+  /*@ResponseBody
   @RequestMapping(value = "/updateTestReport", method = RequestMethod.POST)
   public ResponseVO updateTestReport(
       @RequestParam("postForm") String testReport,
       MultipartFile[] imgList){
     return testBizService.updateTestReport(testReport, imgList);
-  }
+  }*/
 
   /**
    * 删除报告单
    */
-  @ResponseBody
+  /*@ResponseBody
   @RequestMapping(value = "/deleteTestReport", method = RequestMethod.DELETE)
   public ResponseVO deleteTestReport(@RequestParam("testReportId") Long testReportId){
     return testBizService.deleteTestReport(testReportId);
-  }
+  }*/
 
   /**
    * 预览检测报告单
    * @param testTradeId
    * @return
    */
-  @ResponseBody
+  /*@ResponseBody
   @RequestMapping(value = "/previewTestReport", method = RequestMethod.GET)
   public ResponseEntity<?> previewTestReport(@RequestParam("testTradeId") Long testTradeId){
     return testBizService.previewTestReportByTestTradeId(testTradeId);
-  }
+  }*/
 
     /** 确认测试报价单
      * 发送报价单给客户, 系统发送、邮件发送，同步给客服。（代劳客户录入申请单）
      * @return
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value="/confirmTestQuotation",method = RequestMethod.POST)
     public ResponseVO sentTestQuotationToCustomer(@RequestBody JSONObject message){
         Long testTradeId = message.getLong("testTradeId"); // 报价单
         Long customerId = message.getLong("customerId"); // 客户
         Long serviceStaffId = message.getLong("serviceStaffId"); // 客服ID
         return testBizService.confirmTestQuotation(serviceStaffId, testTradeId,  customerId);
-    }
+    }*/
 
     /**
      * 客户【客服代劳】上传签字或者盖章的申请单的pdf
@@ -413,13 +413,13 @@ public class TestTradeCtrl {
         return testBizService.confirmTestReport(testTradeId, userExtList);
     }
 
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "/downloadTestReport", method = RequestMethod.GET)
     public void downloadTestReport(HttpServletResponse response,
                                          @RequestParam(name="testTradeId", required = true) Long testTradeId){
 //        return testBizService.exportTestReport(response, testTradeId);
         testBizService.exportTestReport(response, testTradeId);
-    }
+    }*/
 
   /**
    * 审核检测申请单

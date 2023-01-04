@@ -3,122 +3,336 @@
 <mapper namespace="com.libiao.customer.dal.mapper.TestReportMapper">
   <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestReport">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="quotation_num" jdbcType="VARCHAR" property="quotationNum" />
+    <result column="application_num" jdbcType="VARCHAR" property="applicationNum" />
     <result column="report_num" jdbcType="VARCHAR" property="reportNum" />
-    <result column="sample_name" jdbcType="VARCHAR" property="sampleName" />
+    <result column="report_date" jdbcType="TIMESTAMP" property="reportDate" />
+    <result column="plan_date" jdbcType="VARCHAR" property="planDate" />
     <result column="client" jdbcType="VARCHAR" property="client" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="sample_model" jdbcType="VARCHAR" property="sampleModel" />
-    <result column="brand" jdbcType="VARCHAR" property="brand" />
-    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
-    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
-    <result column="buyer" jdbcType="VARCHAR" property="buyer" />
-    <result column="producers" jdbcType="VARCHAR" property="producers" />
-    <result column="export_place" jdbcType="VARCHAR" property="exportPlace" />
-    <result column="producing_country" jdbcType="VARCHAR" property="producingCountry" />
-    <result column="test_trade_id" jdbcType="VARCHAR" property="testTradeId" />
-    <result column="receiving_date" jdbcType="TIMESTAMP" property="receivingDate" />
-    <result column="test_start_date" jdbcType="DATE" property="testStartDate" />
-    <result column="test_end_date" jdbcType="DATE" property="testEndDate" />
     <result column="approver" jdbcType="VARCHAR" property="approver" />
     <result column="reviewer" jdbcType="VARCHAR" property="reviewer" />
     <result column="editor" jdbcType="VARCHAR" property="editor" />
-    <result column="sample_desc" jdbcType="LONGVARCHAR" property="sampleDesc" />
-    <result column="test_experiment" jdbcType="LONGVARCHAR" property="testExperiment" />
-    <result column="test_remark" jdbcType="LONGVARCHAR" property="testRemark" />
-    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
-    <result column="test_period" jdbcType="VARCHAR" property="testPeriod" />
-    <result column="flex_obj" jdbcType="LONGVARCHAR" property="flexObj" />
+    <result column="charger" jdbcType="VARCHAR" property="charger" />
+    <result column="tester" jdbcType="VARCHAR" property="tester" />
+    <result column="report_status" jdbcType="TINYINT" property="reportStatus" />
   </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, quotation_num, application_num, report_num, report_date, plan_date, client, approver, 
+    reviewer, editor, charger, tester, report_status
+  </sql>
+  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestReportExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from test_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from test_report
+    where id = #{id,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from test_report
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.TestReportExample">
+    delete from test_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
   <insert id="insert" parameterType="com.libiao.customer.dal.model.TestReport">
-    insert into test_report (id, report_num, sample_name,
-      client, address, sample_model,
-      brand, supplier, order_num,
-      buyer, producers, export_place,
-      producing_country, test_trade_id, receiving_date,
-      test_start_date, test_end_date, approver,
-      reviewer, editor, sample_desc,
-      test_experiment, test_remark, remark, test_period, flex_obj)
-    values (#{id,jdbcType=BIGINT}, #{reportNum,jdbcType=VARCHAR}, #{sampleName,jdbcType=VARCHAR},
-      #{client,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{sampleModel,jdbcType=VARCHAR},
-      #{brand,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR},
-      #{buyer,jdbcType=VARCHAR}, #{producers,jdbcType=VARCHAR}, #{exportPlace,jdbcType=VARCHAR},
-      #{producingCountry,jdbcType=VARCHAR}, #{testTradeId,jdbcType=VARCHAR}, #{receivingDate,jdbcType=TIMESTAMP},
-      #{testStartDate,jdbcType=DATE}, #{testEndDate,jdbcType=DATE}, #{approver,jdbcType=VARCHAR},
-      #{reviewer,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}, #{sampleDesc,jdbcType=LONGVARCHAR},
-      #{testExperiment,jdbcType=LONGVARCHAR}, #{testRemark,jdbcType=LONGVARCHAR}, #{remark,jdbcType=LONGVARCHAR},
-            #{testPeriod,jdbcType=VARCHAR}, #{flexObj,jdbcType=LONGVARCHAR})
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      select LAST_INSERT_ID()
-    </selectKey>
+    insert into test_report (id, quotation_num, application_num, 
+      report_num, report_date, plan_date, 
+      client, approver, reviewer, 
+      editor, charger, tester, 
+      report_status)
+    values (#{id,jdbcType=BIGINT}, #{quotationNum,jdbcType=VARCHAR}, #{applicationNum,jdbcType=VARCHAR}, 
+      #{reportNum,jdbcType=VARCHAR}, #{reportDate,jdbcType=TIMESTAMP}, #{planDate,jdbcType=VARCHAR}, 
+      #{client,jdbcType=VARCHAR}, #{approver,jdbcType=VARCHAR}, #{reviewer,jdbcType=VARCHAR}, 
+      #{editor,jdbcType=VARCHAR}, #{charger,jdbcType=VARCHAR}, #{tester,jdbcType=VARCHAR}, 
+      #{reportStatus,jdbcType=TINYINT})
   </insert>
+  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestReport">
+    insert into test_report
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="quotationNum != null">
+        quotation_num,
+      </if>
+      <if test="applicationNum != null">
+        application_num,
+      </if>
+      <if test="reportNum != null">
+        report_num,
+      </if>
+      <if test="reportDate != null">
+        report_date,
+      </if>
+      <if test="planDate != null">
+        plan_date,
+      </if>
+      <if test="client != null">
+        client,
+      </if>
+      <if test="approver != null">
+        approver,
+      </if>
+      <if test="reviewer != null">
+        reviewer,
+      </if>
+      <if test="editor != null">
+        editor,
+      </if>
+      <if test="charger != null">
+        charger,
+      </if>
+      <if test="tester != null">
+        tester,
+      </if>
+      <if test="reportStatus != null">
+        report_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="quotationNum != null">
+        #{quotationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationNum != null">
+        #{applicationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="reportNum != null">
+        #{reportNum,jdbcType=VARCHAR},
+      </if>
+      <if test="reportDate != null">
+        #{reportDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planDate != null">
+        #{planDate,jdbcType=VARCHAR},
+      </if>
+      <if test="client != null">
+        #{client,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null">
+        #{approver,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewer != null">
+        #{reviewer,jdbcType=VARCHAR},
+      </if>
+      <if test="editor != null">
+        #{editor,jdbcType=VARCHAR},
+      </if>
+      <if test="charger != null">
+        #{charger,jdbcType=VARCHAR},
+      </if>
+      <if test="tester != null">
+        #{tester,jdbcType=VARCHAR},
+      </if>
+      <if test="reportStatus != null">
+        #{reportStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.libiao.customer.dal.model.TestReportExample" resultType="java.lang.Long">
+    select count(*) from test_report
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update test_report
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.quotationNum != null">
+        quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="row.applicationNum != null">
+        application_num = #{row.applicationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="row.reportNum != null">
+        report_num = #{row.reportNum,jdbcType=VARCHAR},
+      </if>
+      <if test="row.reportDate != null">
+        report_date = #{row.reportDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.planDate != null">
+        plan_date = #{row.planDate,jdbcType=VARCHAR},
+      </if>
+      <if test="row.client != null">
+        client = #{row.client,jdbcType=VARCHAR},
+      </if>
+      <if test="row.approver != null">
+        approver = #{row.approver,jdbcType=VARCHAR},
+      </if>
+      <if test="row.reviewer != null">
+        reviewer = #{row.reviewer,jdbcType=VARCHAR},
+      </if>
+      <if test="row.editor != null">
+        editor = #{row.editor,jdbcType=VARCHAR},
+      </if>
+      <if test="row.charger != null">
+        charger = #{row.charger,jdbcType=VARCHAR},
+      </if>
+      <if test="row.tester != null">
+        tester = #{row.tester,jdbcType=VARCHAR},
+      </if>
+      <if test="row.reportStatus != null">
+        report_status = #{row.reportStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update test_report
+    set id = #{row.id,jdbcType=BIGINT},
+      quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
+      application_num = #{row.applicationNum,jdbcType=VARCHAR},
+      report_num = #{row.reportNum,jdbcType=VARCHAR},
+      report_date = #{row.reportDate,jdbcType=TIMESTAMP},
+      plan_date = #{row.planDate,jdbcType=VARCHAR},
+      client = #{row.client,jdbcType=VARCHAR},
+      approver = #{row.approver,jdbcType=VARCHAR},
+      reviewer = #{row.reviewer,jdbcType=VARCHAR},
+      editor = #{row.editor,jdbcType=VARCHAR},
+      charger = #{row.charger,jdbcType=VARCHAR},
+      tester = #{row.tester,jdbcType=VARCHAR},
+      report_status = #{row.reportStatus,jdbcType=TINYINT}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.TestReport">
+    update test_report
+    <set>
+      <if test="quotationNum != null">
+        quotation_num = #{quotationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationNum != null">
+        application_num = #{applicationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="reportNum != null">
+        report_num = #{reportNum,jdbcType=VARCHAR},
+      </if>
+      <if test="reportDate != null">
+        report_date = #{reportDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planDate != null">
+        plan_date = #{planDate,jdbcType=VARCHAR},
+      </if>
+      <if test="client != null">
+        client = #{client,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null">
+        approver = #{approver,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewer != null">
+        reviewer = #{reviewer,jdbcType=VARCHAR},
+      </if>
+      <if test="editor != null">
+        editor = #{editor,jdbcType=VARCHAR},
+      </if>
+      <if test="charger != null">
+        charger = #{charger,jdbcType=VARCHAR},
+      </if>
+      <if test="tester != null">
+        tester = #{tester,jdbcType=VARCHAR},
+      </if>
+      <if test="reportStatus != null">
+        report_status = #{reportStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
   <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestReport">
     update test_report
-    set report_num = #{reportNum,jdbcType=VARCHAR},
-      sample_name = #{sampleName,jdbcType=VARCHAR},
+    set quotation_num = #{quotationNum,jdbcType=VARCHAR},
+      application_num = #{applicationNum,jdbcType=VARCHAR},
+      report_num = #{reportNum,jdbcType=VARCHAR},
+      report_date = #{reportDate,jdbcType=TIMESTAMP},
+      plan_date = #{planDate,jdbcType=VARCHAR},
       client = #{client,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      sample_model = #{sampleModel,jdbcType=VARCHAR},
-      brand = #{brand,jdbcType=VARCHAR},
-      supplier = #{supplier,jdbcType=VARCHAR},
-      order_num = #{orderNum,jdbcType=VARCHAR},
-      buyer = #{buyer,jdbcType=VARCHAR},
-      producers = #{producers,jdbcType=VARCHAR},
-      export_place = #{exportPlace,jdbcType=VARCHAR},
-      producing_country = #{producingCountry,jdbcType=VARCHAR},
-      test_trade_id = #{testTradeId,jdbcType=VARCHAR},
-      receiving_date = #{receivingDate,jdbcType=TIMESTAMP},
-      test_start_date = #{testStartDate,jdbcType=DATE},
-      test_end_date = #{testEndDate,jdbcType=DATE},
       approver = #{approver,jdbcType=VARCHAR},
       reviewer = #{reviewer,jdbcType=VARCHAR},
       editor = #{editor,jdbcType=VARCHAR},
-      sample_desc = #{sampleDesc,jdbcType=LONGVARCHAR},
-      test_experiment = #{testExperiment,jdbcType=LONGVARCHAR},
-      test_remark = #{testRemark,jdbcType=LONGVARCHAR},
-      remark = #{remark,jdbcType=LONGVARCHAR},
-      test_period = #{testPeriod,jdbcType=VARCHAR},
-      flex_obj = #{flexObj,jdbcType=LONGVARCHAR}
+      charger = #{charger,jdbcType=VARCHAR},
+      tester = #{tester,jdbcType=VARCHAR},
+      report_status = #{reportStatus,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, report_num, sample_name, client, address, sample_model, brand, supplier,
-    order_num, buyer, producers, export_place, producing_country, test_trade_id, receiving_date,
-    test_start_date, test_end_date, approver, reviewer, editor, sample_desc, test_experiment,
-    test_remark, remark, test_period, flex_obj
-    from test_report
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, report_num, sample_name, client, address, sample_model, brand, supplier,
-    order_num, buyer, producers, export_place, producing_country, test_trade_id, receiving_date,
-    test_start_date, test_end_date, approver, reviewer, editor, sample_desc, test_experiment,
-    test_remark, remark, test_period, flex_obj
-    from test_report
-  </select>
-  <select id="queryTestReportByTestTradeId" resultMap="BaseResultMap">
-    select id, report_num, sample_name, client, address, sample_model, brand, supplier,
-           order_num, buyer, producers, export_place, producing_country, test_trade_id, receiving_date,
-           test_start_date, test_end_date, approver, reviewer, editor, sample_desc, test_experiment,
-           test_remark, remark, test_period, flex_obj
-    from test_report
-    where test_trade_id = #{testTradeId,jdbcType=BIGINT}
-  </select>
-  <select id="selectAllByOwner" resultMap="BaseResultMap">
-    select a.*
-    from test_report a
-           left join user_test_trade b
-                     on a.test_trade_id = b.test_trade_id
-           left join user c
-                     on b.user_id = c.id
-    where c.username = #{owner,jdbcType=VARCHAR}
-  </select>
-  <select id="selectTestReportByReportNum" resultMap="BaseResultMap">
-    select a.*
-    from test_report a
-    where a.report_num = #{reportNum,jdbcType=VARCHAR}
-  </select>
 </mapper>

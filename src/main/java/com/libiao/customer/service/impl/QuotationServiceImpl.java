@@ -64,10 +64,8 @@ public class QuotationServiceImpl implements QuotationService {
         int trans_amount = 0;
         for (CreateQuotaGoodsReqVO goods : req.getGoods()) {
             trans_amount += goods.getTestPrice();
-            //List<Integer> itemsIds = new ArrayList<>();
             for (QuotaGoodsItemVO item : goods.getItems()) {
                 itemMap.put(item.getItemId(), item.getQuantity());
-                //itemsIds.add(item.getItemId());
             }
             goodsMap.put(goods.getGoodsId(),goods.getItems());
         }
@@ -106,6 +104,9 @@ public class QuotationServiceImpl implements QuotationService {
         String quotNo = redisUtil.getNo(req.getUser().getCity(),DateUtils.getDate("yyMMdd"));
         record.setQuotationNum(quotNo);
 
+        record.setPayStatus(QuotationEnum.PRICE_CHECK.getCode());
+
+
         MallGoodsExample mallGoodsExample = new MallGoodsExample();
         mallGoodsExample.createCriteria().andIdIn(new ArrayList<>(goodsMap.keySet()));
         List<MallGoods> goodsList = mallGoodsMapper.selectByExample(mallGoodsExample);
@@ -135,7 +136,7 @@ public class QuotationServiceImpl implements QuotationService {
             testQuotationGoods.setReportAmt(calReportAmt(result3));
             //对应下属测试项目组装
             testQuotationGoodsList.add(testQuotationGoods);
-            //TODO 邮费计算
+
             final List<QuotaGoodsItemVO> quotaGoodsItemVOS = goodsMap.get(mallGoods.getId());
 
             //组装测试项目
@@ -160,15 +161,15 @@ public class QuotationServiceImpl implements QuotationService {
         record.setServiceId(serviceId);
 
         //插入报价单
-        testQuotationMapper.insert(record);
+        testQuotationMapper.insertSelective(record);
 
         //批量插入报价单下属商品
         for (TestQuotationGoods testQuotationGoods : testQuotationGoodsList) {
-            testQuotationGoodsMapper.insert(testQuotationGoods);
+            testQuotationGoodsMapper.insertSelective(testQuotationGoods);
         }
         //批量插入报价单下属测试项
         for (TestQuotationItem testQuotationItem : testQuotationItemList) {
-            testQuotationItemMapper.insert(testQuotationItem);
+            testQuotationItemMapper.insertSelective(testQuotationItem);
         }
     }
 
@@ -262,7 +263,7 @@ public class QuotationServiceImpl implements QuotationService {
             testQuotationGoods.setReportAmt(calReportAmt(result3));
             //对应下属测试项目组装
             testQuotationGoodsList.add(testQuotationGoods);
-            //TODO 邮费计算
+
             final List<QuotaGoodsItemVO> quotaGoodsItemVOS = goodsMap.get(mallGoods.getId());
 
             //组装测试项目
@@ -435,7 +436,7 @@ public class QuotationServiceImpl implements QuotationService {
             testQuotationGoods.setReportAmt(calReportAmt(result3));
             //对应下属测试项目组装
             testQuotationGoodsList.add(testQuotationGoods);
-            //TODO 邮费计算
+
             final List<QuotaGoodsItemVO> quotaGoodsItemVOS = goodsMap.get(mallGoods.getId());
 
             //组装测试项目

@@ -1,11 +1,11 @@
 package com.libiao.customer.model.quotation;
 
-import com.libiao.customer.model.BaseRequest;
+import com.libiao.customer.model.BaseSessionReq;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class AddQuotationBillReq extends BaseRequest {
+public class AddQuotationBillReq extends BaseSessionReq {
 
     @ApiModelProperty("报价单编号")
     private String quotationNum;

@@ -557,8 +557,10 @@ public class QuotationServiceImpl implements QuotationService {
         record.setUploadTime(new Date());
         record.setStatus((byte) 0);
         record.setSettleAmt(0);
-
+        record.setOperUser(req.getUser().getNickname());
+        record.setOperTime(new Date());
         customerBillMapper.insertSelective(record);
+
     }
 
     public QuotationDetailVO convert(TestQuotation testQuotation){

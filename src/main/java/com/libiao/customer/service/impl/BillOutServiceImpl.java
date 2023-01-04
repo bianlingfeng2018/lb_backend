@@ -3,6 +3,7 @@ package com.libiao.customer.service.impl;
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.libiao.customer.dal.mapper.BalanceMapper;
 import com.libiao.customer.dal.mapper.ClientBillOutMapper;
 import com.libiao.customer.dal.mapper.TestQuotationMapper;
 import com.libiao.customer.dal.model.*;
@@ -35,7 +36,7 @@ import java.util.List;
 public class BillOutServiceImpl implements BillOutService {
 
     @Autowired
-    ClientBillOutMapper outMapper;
+    private ClientBillOutMapper outMapper;
 
     @Autowired
     BillIncomeService incomeService;
@@ -45,6 +46,9 @@ public class BillOutServiceImpl implements BillOutService {
 
     @Autowired
     TestQuotationMapper quotationMapper;
+
+    @Autowired
+    private BalanceMapper balanceMapper;
 
 
     @Override
@@ -121,6 +125,34 @@ public class BillOutServiceImpl implements BillOutService {
 
         //todo 保存佣金记录、修改客户状态为成交客户，修改最后放出日期：当前日期+30天（数字做成可配置参数）
         return ResponseUtil.success();
+    }
+
+    @Override
+    @Transactional
+    public boolean creditRecord(TestQuotation req){
+        BalanceExample balanceExample = new BalanceExample();
+        balanceExample.createCriteria().andClientIdEqualTo(req.getClientId().toString());
+        List<Balance> list = balanceMapper.selectByExample(balanceExample);
+        final Balance balance = list.get(0);
+        long val = balance.getCreditLimit() - balance.getUnsettledAmt();
+        if (req.getTotalCost() > val){
+            return false;
+        }
+        //修改用户的未核销金额
+        Balance update = new Balance();
+        update.setId(balance.getId());
+        update.setUnsettledAmt(balance.getUnsettledAmt() + req.getTotalCost());
+        balanceMapper.updateByPrimaryKeySelective(update);
+        //插入
+        ClientBillOut row = new ClientBillOut();
+        row.setClientId(req.getClientId().toString());
+        row.setTradeId(req.getQuotationNum());
+        row.setOnaccountAmt(Long.valueOf(req.getTotalCost()));
+        row.setUnAmt(Long.valueOf(req.getTotalCost()));
+        row.setStartTime(new Date());
+        row.setStatus("未核销");
+        outMapper.insertSelective(row);
+        return true;
     }
 
 

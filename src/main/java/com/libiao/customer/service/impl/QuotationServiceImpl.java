@@ -5,6 +5,7 @@ import com.libiao.customer.constant.QuotationEnum;
 import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.quotation.*;
+import com.libiao.customer.service.BillOutService;
 import com.libiao.customer.service.QuotationService;
 import com.libiao.customer.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,8 @@ public class QuotationServiceImpl implements QuotationService {
     private CustomerBillMapper customerBillMapper;
     @Autowired
     private TestApplicationFormMapper testApplicationFormMapper;
+    @Autowired
+    private BillOutService billOutService;
 
     @Override
     public PageInfo<TestQuotation> list(QuotationListReq req){
@@ -333,8 +336,14 @@ public class QuotationServiceImpl implements QuotationService {
             update.setStep(QuotationEnum.STEP_QUOT_CHECKED.getCode());
             if (testQuotation.getPayType() == 0) {//挂账
                 //创建挂账记录，同时删减少用户挂账金额
-
-                update.setState(QuotationEnum.CREDIT.getCode());
+                final boolean result = billOutService.creditRecord(testQuotation);
+                if (result){
+                    //挂账成功
+                    update.setState(QuotationEnum.CREDIT.getCode());
+                }else {
+                    //挂账失败
+                    update.setState(QuotationEnum.NOT_PAID.getCode());
+                }
             }else {//未支付，待上传支付凭证
                 update.setState(QuotationEnum.NOT_PAID.getCode());
             }

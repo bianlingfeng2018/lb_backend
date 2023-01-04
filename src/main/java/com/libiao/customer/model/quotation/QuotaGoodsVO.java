@@ -36,4 +36,8 @@ public class QuotaGoodsVO {
     private Integer reportAmt;
     @ApiModelProperty("检测费")
     private Integer amount;
+    @ApiModelProperty("加测列表")
+    private List<AdditionalQuotationVO> aList;
+    @ApiModelProperty("复测列表")
+    private List<AdditionalQuotationVO> rList;
 }

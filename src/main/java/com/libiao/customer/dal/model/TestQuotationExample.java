@@ -1965,73 +1965,73 @@ public class TestQuotationExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumIsNull() {
-            addCriterion("orgQuotationNum is null");
+        public Criteria andOrgQuotationNumIsNull() {
+            addCriterion("org_quotation_num is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumIsNotNull() {
-            addCriterion("orgQuotationNum is not null");
+        public Criteria andOrgQuotationNumIsNotNull() {
+            addCriterion("org_quotation_num is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumEqualTo(String value) {
-            addCriterion("orgQuotationNum =", value, "orgquotationnum");
+        public Criteria andOrgQuotationNumEqualTo(String value) {
+            addCriterion("org_quotation_num =", value, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumNotEqualTo(String value) {
-            addCriterion("orgQuotationNum <>", value, "orgquotationnum");
+        public Criteria andOrgQuotationNumNotEqualTo(String value) {
+            addCriterion("org_quotation_num <>", value, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumGreaterThan(String value) {
-            addCriterion("orgQuotationNum >", value, "orgquotationnum");
+        public Criteria andOrgQuotationNumGreaterThan(String value) {
+            addCriterion("org_quotation_num >", value, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumGreaterThanOrEqualTo(String value) {
-            addCriterion("orgQuotationNum >=", value, "orgquotationnum");
+        public Criteria andOrgQuotationNumGreaterThanOrEqualTo(String value) {
+            addCriterion("org_quotation_num >=", value, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumLessThan(String value) {
-            addCriterion("orgQuotationNum <", value, "orgquotationnum");
+        public Criteria andOrgQuotationNumLessThan(String value) {
+            addCriterion("org_quotation_num <", value, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumLessThanOrEqualTo(String value) {
-            addCriterion("orgQuotationNum <=", value, "orgquotationnum");
+        public Criteria andOrgQuotationNumLessThanOrEqualTo(String value) {
+            addCriterion("org_quotation_num <=", value, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumLike(String value) {
-            addCriterion("orgQuotationNum like", value, "orgquotationnum");
+        public Criteria andOrgQuotationNumLike(String value) {
+            addCriterion("org_quotation_num like", value, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumNotLike(String value) {
-            addCriterion("orgQuotationNum not like", value, "orgquotationnum");
+        public Criteria andOrgQuotationNumNotLike(String value) {
+            addCriterion("org_quotation_num not like", value, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumIn(List<String> values) {
-            addCriterion("orgQuotationNum in", values, "orgquotationnum");
+        public Criteria andOrgQuotationNumIn(List<String> values) {
+            addCriterion("org_quotation_num in", values, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumNotIn(List<String> values) {
-            addCriterion("orgQuotationNum not in", values, "orgquotationnum");
+        public Criteria andOrgQuotationNumNotIn(List<String> values) {
+            addCriterion("org_quotation_num not in", values, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumBetween(String value1, String value2) {
-            addCriterion("orgQuotationNum between", value1, value2, "orgquotationnum");
+        public Criteria andOrgQuotationNumBetween(String value1, String value2) {
+            addCriterion("org_quotation_num between", value1, value2, "orgQuotationNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrgquotationnumNotBetween(String value1, String value2) {
-            addCriterion("orgQuotationNum not between", value1, value2, "orgquotationnum");
+        public Criteria andOrgQuotationNumNotBetween(String value1, String value2) {
+            addCriterion("org_quotation_num not between", value1, value2, "orgQuotationNum");
             return (Criteria) this;
         }
 

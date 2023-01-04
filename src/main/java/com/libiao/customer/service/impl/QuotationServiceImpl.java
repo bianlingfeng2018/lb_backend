@@ -379,7 +379,7 @@ public class QuotationServiceImpl implements QuotationService {
         record.setType(req.getType());
         String quotNo = testQuotation.getQuotationNum();
         TestQuotationExample example = new TestQuotationExample();
-        example.createCriteria().andOrgquotationnumEqualTo(req.getOrgQuotationNum()).andTypeEqualTo(req.getType());
+        example.createCriteria().andOrgQuotationNumEqualTo(req.getOrgQuotationNum()).andTypeEqualTo(req.getType());
         final long l = testQuotationMapper.countByExample(example);
         //String no = String.format("%02d",l);
         if (2 == req.getType()){//加测
@@ -475,7 +475,7 @@ public class QuotationServiceImpl implements QuotationService {
         testQuotationExample.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());
         final List<TestQuotation> testQuotations = testQuotationMapper.selectByExample(testQuotationExample);
         if (testQuotations == null){
-            throw new ServiceException(HttpStatus.NOT_FOUND,"原报价单不存在");
+            throw new ServiceException(HttpStatus.NOT_FOUND,"报价单不存在");
         }
         final TestQuotation testQuotation = testQuotations.get(0);
         QuotationDetailVO vo = BeanCopyUtil.copy(testQuotation, QuotationDetailVO.class);
@@ -484,6 +484,26 @@ public class QuotationServiceImpl implements QuotationService {
         example.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());
         final List<TestQuotationGoods> testQuotationGoods = testQuotationGoodsMapper.selectByExample(example);
         List<QuotaGoodsVO> goodsVOList = new ArrayList<>();
+
+        //获取该商品是否有加测
+        TestQuotationExample aExample = new TestQuotationExample();
+        aExample.createCriteria().andOrgQuotationNumEqualTo(req.getQuotationNum());
+        final List<TestQuotation> arList = testQuotationMapper.selectByExample(aExample);
+        List<String> addList = new ArrayList<>();
+        List<String> repList = new ArrayList<>();
+        Map<String,TestQuotation> map = new HashMap<>();
+        if (arList != null){
+            for (TestQuotation quotation : arList) {
+                map.put(quotation.getQuotationNum(),quotation);
+                if (quotation.getType() == 2){
+                    addList.add(quotation.getQuotationNum());
+                }
+                if (quotation.getType() == 3){
+                    repList.add(quotation.getQuotationNum());
+                }
+            }
+        }
+
         //获取items
         for (TestQuotationGoods testQuotationGood : testQuotationGoods) {
             final TestQuotationItemExample testQuotationItemExample = new TestQuotationItemExample();
@@ -507,32 +527,70 @@ public class QuotationServiceImpl implements QuotationService {
             }
             quotaGoodsVO.setItems(itemVOList);
             goodsVOList.add(quotaGoodsVO);
+            if (!CollectionUtils.isEmpty(addList)) {
+                TestQuotationGoodsExample aaExample = new TestQuotationGoodsExample();
+                aaExample.createCriteria().andQuotationNumIn(addList).andGoodsIdEqualTo(testQuotationGood.getGoodsId());
+                final List<TestQuotationGoods> addGoods = testQuotationGoodsMapper.selectByExample(aaExample);
+                if (!CollectionUtils.isEmpty(addGoods)){
+                    List<AdditionalQuotationVO> aList = new ArrayList<>();
+                    for (TestQuotationGoods ag : addGoods) {
+                        AdditionalQuotationVO addiVo = new AdditionalQuotationVO();
+                        //找到下属的item
+                        TestQuotationItemExample aItemExample = new TestQuotationItemExample();
+                        aaExample.createCriteria().andQuotationNumEqualTo(ag.getQuotationNum()).andGoodsIdEqualTo(ag.getGoodsId());
+                        final List<TestQuotationItem> aItemList = testQuotationItemMapper.selectByExample(aItemExample);
+                        List<QuotaDetailItemVO> aItemVOList = new ArrayList<>();
+                        for (TestQuotationItem testQuotationItem : aItemList) {
+                            QuotaDetailItemVO itemVO = new QuotaDetailItemVO();
+                            BeanCopyUtil.copy(testQuotationItem,itemVO);
+                            aItemVOList.add(itemVO);
+                        }
+                        final TestQuotation testQuotation1 = map.get(ag.getQuotationNum());
+                        addiVo.setItems(aItemVOList);
+                        addiVo.setTestPeriod(ag.getTestPeriod());
+                        addiVo.setSampleNum(ag.getSampleNum());
+                        addiVo.setQuotationNum(ag.getQuotationNum());
+                        addiVo.setTotalCost(testQuotation1.getTotalCost());
+                        aList.add(addiVo);
+                    }
+                    quotaGoodsVO.setAList(aList);
+                }
+            }
+
+            if (!CollectionUtils.isEmpty(repList)) {
+                TestQuotationGoodsExample aaExample = new TestQuotationGoodsExample();
+                aaExample.createCriteria().andQuotationNumIn(repList).andGoodsIdEqualTo(testQuotationGood.getGoodsId());
+                final List<TestQuotationGoods> repGoods = testQuotationGoodsMapper.selectByExample(aaExample);
+                if (!CollectionUtils.isEmpty(repGoods)){
+                    List<AdditionalQuotationVO> rList = new ArrayList<>();
+                    for (TestQuotationGoods rg : repGoods) {
+                        AdditionalQuotationVO repVO = new AdditionalQuotationVO();
+                        //找到下属的item
+                        TestQuotationItemExample aItemExample = new TestQuotationItemExample();
+                        aaExample.createCriteria().andQuotationNumEqualTo(rg.getQuotationNum()).andGoodsIdEqualTo(rg.getGoodsId());
+                        final List<TestQuotationItem> aItemList = testQuotationItemMapper.selectByExample(aItemExample);
+                        List<QuotaDetailItemVO> aItemVOList = new ArrayList<>();
+                        for (TestQuotationItem testQuotationItem : aItemList) {
+                            QuotaDetailItemVO itemVO = new QuotaDetailItemVO();
+                            BeanCopyUtil.copy(testQuotationItem,itemVO);
+                            aItemVOList.add(itemVO);
+                        }
+                        final TestQuotation testQuotation1 = map.get(rg.getQuotationNum());
+                        repVO.setItems(aItemVOList);
+                        repVO.setTestPeriod(rg.getTestPeriod());
+                        repVO.setSampleNum(rg.getSampleNum());
+                        repVO.setQuotationNum(rg.getQuotationNum());
+                        repVO.setTotalCost(testQuotation1.getTotalCost());
+                        rList.add(repVO);
+                    }
+                    quotaGoodsVO.setRList(rList);
+                }
+            }
         }
+
+
         vo.setGoods(goodsVOList);
 
-        List<QuotationDetailVO> aList =new ArrayList<>();
-        List<QuotationDetailVO> rList =new ArrayList<>();
-
-        //获取加测
-        TestQuotationExample example1 = new TestQuotationExample();
-        example1.createCriteria().andOrgquotationnumEqualTo(req.getQuotationNum()).andTypeEqualTo((byte) 2);
-        List<TestQuotation> addList = testQuotationMapper.selectByExample(testQuotationExample);
-        if (!CollectionUtils.isEmpty(addList)){
-            for (TestQuotation quotation : addList) {
-                aList.add(convert(quotation));
-            }
-        }
-        //获取复测
-        example1 = new TestQuotationExample();
-        example1.createCriteria().andOrgquotationnumEqualTo(req.getQuotationNum()).andTypeEqualTo((byte) 3);
-        List<TestQuotation> repeatList = testQuotationMapper.selectByExample(testQuotationExample);
-        if (!CollectionUtils.isEmpty(repeatList)){
-            for (TestQuotation quotation : repeatList) {
-                rList.add(convert(quotation));
-            }
-        }
-        vo.setAList(aList);
-        vo.setRList(rList);
         return vo;
     }
 
@@ -564,7 +622,7 @@ public class QuotationServiceImpl implements QuotationService {
 
     }
 
-    public QuotationDetailVO convert(TestQuotation testQuotation){
+    /*public QuotationDetailVO convert(TestQuotation testQuotation){
         QuotationDetailVO vo = BeanCopyUtil.copy(testQuotation, QuotationDetailVO.class);
         //获取goods
         TestQuotationGoodsExample example = new TestQuotationGoodsExample();
@@ -597,7 +655,7 @@ public class QuotationServiceImpl implements QuotationService {
         }
         vo.setGoods(goodsVOList);
         return vo;
-    }
+    }*/
 
 
 

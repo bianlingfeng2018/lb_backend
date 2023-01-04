@@ -31,7 +31,7 @@
     <result column="service_id" jdbcType="BIGINT" property="serviceId" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="single_report" jdbcType="TINYINT" property="singleReport" />
-    <result column="orgQuotationNum" jdbcType="VARCHAR" property="orgquotationnum" />
+    <result column="org_quotation_num" jdbcType="VARCHAR" property="orgQuotationNum" />
     <result column="audit_id" jdbcType="BIGINT" property="auditId" />
     <result column="audit_name" jdbcType="VARCHAR" property="auditName" />
     <result column="audit_reason" jdbcType="VARCHAR" property="auditReason" />
@@ -98,7 +98,7 @@
     id, client_id, client_num, client_name, user_id, user_org_no, state, step, trade_name, 
     quotation_num, pay_status, trade_desc, pay_type, attn, tel_client, fax_client, email, 
     gmt_create, delivery_address, report_fee, postage, tax_fee, discount, total_cost, 
-    total_test_amt, paid_amt, service_id, type, single_report, orgQuotationNum, audit_id, 
+    total_test_amt, paid_amt, service_id, type, single_report, org_quotation_num, audit_id, 
     audit_name, audit_reason
   </sql>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestQuotationExample" resultMap="BaseResultMap">
@@ -144,7 +144,7 @@
       report_fee, postage, tax_fee, 
       discount, total_cost, total_test_amt, 
       paid_amt, service_id, type, 
-      single_report, orgQuotationNum, audit_id, 
+      single_report, org_quotation_num, audit_id, 
       audit_name, audit_reason)
     values (#{clientId,jdbcType=BIGINT}, #{clientNum,jdbcType=VARCHAR}, #{clientName,jdbcType=VARCHAR}, 
       #{userId,jdbcType=BIGINT}, #{userOrgNo,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
@@ -155,7 +155,7 @@
       #{reportFee,jdbcType=INTEGER}, #{postage,jdbcType=INTEGER}, #{taxFee,jdbcType=INTEGER}, 
       #{discount,jdbcType=VARCHAR}, #{totalCost,jdbcType=INTEGER}, #{totalTestAmt,jdbcType=INTEGER}, 
       #{paidAmt,jdbcType=INTEGER}, #{serviceId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
-      #{singleReport,jdbcType=TINYINT}, #{orgquotationnum,jdbcType=VARCHAR}, #{auditId,jdbcType=BIGINT}, 
+      #{singleReport,jdbcType=TINYINT}, #{orgQuotationNum,jdbcType=VARCHAR}, #{auditId,jdbcType=BIGINT}, 
       #{auditName,jdbcType=VARCHAR}, #{auditReason,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestQuotation">
@@ -248,8 +248,8 @@
       <if test="singleReport != null">
         single_report,
       </if>
-      <if test="orgquotationnum != null">
-        orgQuotationNum,
+      <if test="orgQuotationNum != null">
+        org_quotation_num,
       </if>
       <if test="auditId != null">
         audit_id,
@@ -346,8 +346,8 @@
       <if test="singleReport != null">
         #{singleReport,jdbcType=TINYINT},
       </if>
-      <if test="orgquotationnum != null">
-        #{orgquotationnum,jdbcType=VARCHAR},
+      <if test="orgQuotationNum != null">
+        #{orgQuotationNum,jdbcType=VARCHAR},
       </if>
       <if test="auditId != null">
         #{auditId,jdbcType=BIGINT},
@@ -456,8 +456,8 @@
       <if test="row.singleReport != null">
         single_report = #{row.singleReport,jdbcType=TINYINT},
       </if>
-      <if test="row.orgquotationnum != null">
-        orgQuotationNum = #{row.orgquotationnum,jdbcType=VARCHAR},
+      <if test="row.orgQuotationNum != null">
+        org_quotation_num = #{row.orgQuotationNum,jdbcType=VARCHAR},
       </if>
       <if test="row.auditId != null">
         audit_id = #{row.auditId,jdbcType=BIGINT},
@@ -504,7 +504,7 @@
       service_id = #{row.serviceId,jdbcType=BIGINT},
       type = #{row.type,jdbcType=TINYINT},
       single_report = #{row.singleReport,jdbcType=TINYINT},
-      orgQuotationNum = #{row.orgquotationnum,jdbcType=VARCHAR},
+      org_quotation_num = #{row.orgQuotationNum,jdbcType=VARCHAR},
       audit_id = #{row.auditId,jdbcType=BIGINT},
       audit_name = #{row.auditName,jdbcType=VARCHAR},
       audit_reason = #{row.auditReason,jdbcType=VARCHAR}
@@ -599,8 +599,8 @@
       <if test="singleReport != null">
         single_report = #{singleReport,jdbcType=TINYINT},
       </if>
-      <if test="orgquotationnum != null">
-        orgQuotationNum = #{orgquotationnum,jdbcType=VARCHAR},
+      <if test="orgQuotationNum != null">
+        org_quotation_num = #{orgQuotationNum,jdbcType=VARCHAR},
       </if>
       <if test="auditId != null">
         audit_id = #{auditId,jdbcType=BIGINT},
@@ -644,7 +644,7 @@
       service_id = #{serviceId,jdbcType=BIGINT},
       type = #{type,jdbcType=TINYINT},
       single_report = #{singleReport,jdbcType=TINYINT},
-      orgQuotationNum = #{orgquotationnum,jdbcType=VARCHAR},
+      org_quotation_num = #{orgQuotationNum,jdbcType=VARCHAR},
       audit_id = #{auditId,jdbcType=BIGINT},
       audit_name = #{auditName,jdbcType=VARCHAR},
       audit_reason = #{auditReason,jdbcType=VARCHAR}

@@ -62,7 +62,7 @@ public class TestQuotation implements Serializable {
 
     private Byte singleReport;
 
-    private String orgquotationnum;
+    private String orgQuotationNum;
 
     private Long auditId;
 
@@ -304,12 +304,12 @@ public class TestQuotation implements Serializable {
         this.singleReport = singleReport;
     }
 
-    public String getOrgquotationnum() {
-        return orgquotationnum;
+    public String getOrgQuotationNum() {
+        return orgQuotationNum;
     }
 
-    public void setOrgquotationnum(String orgquotationnum) {
-        this.orgquotationnum = orgquotationnum;
+    public void setOrgQuotationNum(String orgQuotationNum) {
+        this.orgQuotationNum = orgQuotationNum;
     }
 
     public Long getAuditId() {
@@ -371,7 +371,7 @@ public class TestQuotation implements Serializable {
         sb.append(", serviceId=").append(serviceId);
         sb.append(", type=").append(type);
         sb.append(", singleReport=").append(singleReport);
-        sb.append(", orgquotationnum=").append(orgquotationnum);
+        sb.append(", orgQuotationNum=").append(orgQuotationNum);
         sb.append(", auditId=").append(auditId);
         sb.append(", auditName=").append(auditName);
         sb.append(", auditReason=").append(auditReason);

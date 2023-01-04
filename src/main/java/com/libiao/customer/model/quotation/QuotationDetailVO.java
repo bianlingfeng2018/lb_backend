@@ -51,8 +51,5 @@ public class QuotationDetailVO {
     private Byte type;
     @ApiModelProperty("当报价单类型不为1是，传入原报价单号")
     private Long oriId;
-    @ApiModelProperty("加测报价单列表")
-    private List<QuotationDetailVO> aList;
-    @ApiModelProperty("复测报价单列表")
-    private List<QuotationDetailVO> rList;
+
 }

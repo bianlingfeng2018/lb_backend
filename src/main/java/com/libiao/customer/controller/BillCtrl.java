@@ -4,6 +4,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.libiao.customer.dal.model.ClientBillIncome;
 import com.libiao.customer.dal.model.ClientBillOut;
 import com.libiao.customer.dal.model.CustomerBill;
+import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ErrorMessage;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.bill.*;
@@ -132,7 +133,7 @@ public class BillCtrl {
     @ResponseBody
     @ApiOperation("修改个人客户账单信息")
     @RequestMapping(value = "updatePersonalBill", method = RequestMethod.POST)
-    public ResponseEntity updatePersonalBill(@RequestBody CustomerBillReq req){
+    public ResponseEntity<BaseResponseVO> updatePersonalBill(@RequestBody CustomerBillReq req){
         return customerBillService.update(req);
     }
 
@@ -142,7 +143,7 @@ public class BillCtrl {
     @ResponseBody
     @ApiOperation("批量修改个人客户账单信息")
     @RequestMapping(value = "updatePersonalBillBatch", method = RequestMethod.POST)
-    public ResponseEntity updatePersonalBillBatch(@RequestBody CustomerBillBatchReq req){
+    public ResponseEntity<BaseResponseVO> updatePersonalBillBatch(@RequestBody CustomerBillBatchReq req){
         req.getList().forEach(customerBillReq -> {
             customerBillReq.setUser(req.getUser());
             customerBillReq.setRequestId(req.getRequestId());

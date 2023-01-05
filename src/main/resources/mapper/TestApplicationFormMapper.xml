@@ -52,6 +52,7 @@
     <result column="sample_deal" jdbcType="TINYINT" property="sampleDeal" />
     <result column="review_time" jdbcType="TIMESTAMP" property="reviewTime" />
     <result column="review_remark" jdbcType="VARCHAR" property="reviewRemark" />
+    <result column="service" jdbcType="TINYINT" property="service" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -119,7 +120,8 @@
     credential, sample_name_cn, sample_name_en, sample_quantity, sample_model_cn, sample_model_en, 
     sample_status_cn, sample_status_en, brand_cn, brand_en, lot_no_cn, lot_no_en, specification_cn, 
     specification_en, supplier_cn, supplier_en, order_no, buyer_cn, buyer_en, manufacturer_cn, 
-    manufacturer_en, exported_to, origin_country, sample_deal, review_time, review_remark
+    manufacturer_en, exported_to, origin_country, sample_deal, review_time, review_remark, 
+    service
   </sql>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestApplicationFormExample" resultMap="BaseResultMap">
     select
@@ -171,7 +173,7 @@
       order_no, buyer_cn, buyer_en, 
       manufacturer_cn, manufacturer_en, exported_to, 
       origin_country, sample_deal, review_time, 
-      review_remark)
+      review_remark, service)
     values (#{quotationNum,jdbcType=VARCHAR}, #{goodsId,jdbcType=BIGINT}, #{applicationNum,jdbcType=VARCHAR}, 
       #{applicationName,jdbcType=VARCHAR}, #{applicationDate,jdbcType=DATE}, #{sampleStatus,jdbcType=TINYINT}, 
       #{sampleDate,jdbcType=DATE}, #{reportAddr,jdbcType=VARCHAR}, #{planDate,jdbcType=DATE}, 
@@ -188,7 +190,7 @@
       #{orderNo,jdbcType=VARCHAR}, #{buyerCn,jdbcType=VARCHAR}, #{buyerEn,jdbcType=VARCHAR}, 
       #{manufacturerCn,jdbcType=VARCHAR}, #{manufacturerEn,jdbcType=VARCHAR}, #{exportedTo,jdbcType=VARCHAR}, 
       #{originCountry,jdbcType=VARCHAR}, #{sampleDeal,jdbcType=TINYINT}, #{reviewTime,jdbcType=TIMESTAMP}, 
-      #{reviewRemark,jdbcType=VARCHAR})
+      #{reviewRemark,jdbcType=VARCHAR}, #{service,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestApplicationForm">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -343,6 +345,9 @@
       <if test="reviewRemark != null">
         review_remark,
       </if>
+      <if test="service != null">
+        service,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="quotationNum != null">
@@ -491,6 +496,9 @@
       </if>
       <if test="reviewRemark != null">
         #{reviewRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="service != null">
+        #{service,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -653,6 +661,9 @@
       <if test="row.reviewRemark != null">
         review_remark = #{row.reviewRemark,jdbcType=VARCHAR},
       </if>
+      <if test="row.service != null">
+        service = #{row.service,jdbcType=TINYINT},
+      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -709,7 +720,8 @@
       origin_country = #{row.originCountry,jdbcType=VARCHAR},
       sample_deal = #{row.sampleDeal,jdbcType=TINYINT},
       review_time = #{row.reviewTime,jdbcType=TIMESTAMP},
-      review_remark = #{row.reviewRemark,jdbcType=VARCHAR}
+      review_remark = #{row.reviewRemark,jdbcType=VARCHAR},
+      service = #{row.service,jdbcType=TINYINT}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -864,6 +876,9 @@
       <if test="reviewRemark != null">
         review_remark = #{reviewRemark,jdbcType=VARCHAR},
       </if>
+      <if test="service != null">
+        service = #{service,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -917,7 +932,8 @@
       origin_country = #{originCountry,jdbcType=VARCHAR},
       sample_deal = #{sampleDeal,jdbcType=TINYINT},
       review_time = #{reviewTime,jdbcType=TIMESTAMP},
-      review_remark = #{reviewRemark,jdbcType=VARCHAR}
+      review_remark = #{reviewRemark,jdbcType=VARCHAR},
+      service = #{service,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

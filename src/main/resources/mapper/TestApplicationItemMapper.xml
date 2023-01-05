@@ -5,7 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="app_sample_id" jdbcType="BIGINT" property="appSampleId" />
     <result column="application_num" jdbcType="VARCHAR" property="applicationNum" />
-    <result column="test_item_id" jdbcType="BIGINT" property="testItemId" />
+    <result column="test_item_id" jdbcType="INTEGER" property="testItemId" />
     <result column="item_name" jdbcType="VARCHAR" property="itemName" />
     <result column="test_method" jdbcType="VARCHAR" property="testMethod" />
     <result column="test_case" jdbcType="VARCHAR" property="testCase" />
@@ -104,22 +104,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.libiao.customer.dal.model.TestApplicationItem">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into test_application_item (app_sample_id, application_num, test_item_id, 
-      item_name, test_method, test_case, 
-      remark)
-    values (#{appSampleId,jdbcType=BIGINT}, #{applicationNum,jdbcType=VARCHAR}, #{testItemId,jdbcType=BIGINT}, 
-      #{itemName,jdbcType=VARCHAR}, #{testMethod,jdbcType=VARCHAR}, #{testCase,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR})
+    insert into test_application_item (id, app_sample_id, application_num, 
+      test_item_id, item_name, test_method, 
+      test_case, remark)
+    values (#{id,jdbcType=BIGINT}, #{appSampleId,jdbcType=BIGINT}, #{applicationNum,jdbcType=VARCHAR}, 
+      #{testItemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{testMethod,jdbcType=VARCHAR}, 
+      #{testCase,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestApplicationItem">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into test_application_item
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="appSampleId != null">
         app_sample_id,
       </if>
@@ -143,6 +140,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="appSampleId != null">
         #{appSampleId,jdbcType=BIGINT},
       </if>
@@ -150,7 +150,7 @@
         #{applicationNum,jdbcType=VARCHAR},
       </if>
       <if test="testItemId != null">
-        #{testItemId,jdbcType=BIGINT},
+        #{testItemId,jdbcType=INTEGER},
       </if>
       <if test="itemName != null">
         #{itemName,jdbcType=VARCHAR},
@@ -185,7 +185,7 @@
         application_num = #{row.applicationNum,jdbcType=VARCHAR},
       </if>
       <if test="row.testItemId != null">
-        test_item_id = #{row.testItemId,jdbcType=BIGINT},
+        test_item_id = #{row.testItemId,jdbcType=INTEGER},
       </if>
       <if test="row.itemName != null">
         item_name = #{row.itemName,jdbcType=VARCHAR},
@@ -209,7 +209,7 @@
     set id = #{row.id,jdbcType=BIGINT},
       app_sample_id = #{row.appSampleId,jdbcType=BIGINT},
       application_num = #{row.applicationNum,jdbcType=VARCHAR},
-      test_item_id = #{row.testItemId,jdbcType=BIGINT},
+      test_item_id = #{row.testItemId,jdbcType=INTEGER},
       item_name = #{row.itemName,jdbcType=VARCHAR},
       test_method = #{row.testMethod,jdbcType=VARCHAR},
       test_case = #{row.testCase,jdbcType=VARCHAR},
@@ -228,7 +228,7 @@
         application_num = #{applicationNum,jdbcType=VARCHAR},
       </if>
       <if test="testItemId != null">
-        test_item_id = #{testItemId,jdbcType=BIGINT},
+        test_item_id = #{testItemId,jdbcType=INTEGER},
       </if>
       <if test="itemName != null">
         item_name = #{itemName,jdbcType=VARCHAR},
@@ -249,7 +249,7 @@
     update test_application_item
     set app_sample_id = #{appSampleId,jdbcType=BIGINT},
       application_num = #{applicationNum,jdbcType=VARCHAR},
-      test_item_id = #{testItemId,jdbcType=BIGINT},
+      test_item_id = #{testItemId,jdbcType=INTEGER},
       item_name = #{itemName,jdbcType=VARCHAR},
       test_method = #{testMethod,jdbcType=VARCHAR},
       test_case = #{testCase,jdbcType=VARCHAR},

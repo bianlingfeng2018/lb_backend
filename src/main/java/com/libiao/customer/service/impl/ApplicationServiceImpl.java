@@ -13,9 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -33,7 +32,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Autowired
     private TestQuotationMapper testQuotationMapper;
     @Autowired
+    private TestQuotationGoodsMapper testQuotationGoodsMapper;
+    @Autowired
     private ClientMapper clientMapper;
+    @Autowired
+    private TestInfoMapperExt testInfoMapperExt;
 
     @Override
     public PageInfo<TestApplicationForm> list(ApplicationListReq req){
@@ -74,6 +77,11 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new ServiceException(HttpStatus.NOT_FOUND,"对应的报价单不存在");
         }
         final TestQuotation testQuotation = testQuotations.get(0);
+        //找到报价单对应的商品单
+        TestQuotationGoodsExample goodExample = new TestQuotationGoodsExample();
+        goodExample.createCriteria().andQuotationNumEqualTo(req.getQuotationNum()).andGoodsIdEqualTo(req.getGoodsId());
+        final List<TestQuotationGoods> testQuotationGoods = testQuotationGoodsMapper.selectByExample(goodExample);
+        final TestQuotationGoods testQuotationGoods1 = testQuotationGoods.get(0);
 
 
         TestApplicationForm record = new TestApplicationForm();
@@ -98,6 +106,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         record.setApplicationNum(applicationNum);
         record.setApplyPerson(req.getUser().getNickname());
         record.setApplyPersonId(req.getUser().getId());
+        record.setService(testQuotationGoods1.getService());
         testApplicationFormMapper.insertSelective(record);
 
         List<SampleTestReq> sampleList = req.getSampleList();
@@ -256,5 +265,78 @@ public class ApplicationServiceImpl implements ApplicationService {
         TestApplicationFormExample example = new TestApplicationFormExample();
         example.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
         testApplicationFormMapper.updateByExampleSelective(record,example);
+    }
+
+    public void confirm(ApplicationDetailReq req){
+        TestApplicationFormExample example = new TestApplicationFormExample();
+        example.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
+        final List<TestApplicationForm> testApplicationForms = testApplicationFormMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(testApplicationForms)){
+            throw new ServiceException(HttpStatus.NOT_FOUND,"申请单未找到");
+        }
+        final TestApplicationForm testApplicationForm = testApplicationForms.get(0);
+
+        //找到申请单后，
+        //根据申请单下属的测试项目来进行拆分
+        TestApplicationItemExample itemExample = new TestApplicationItemExample();
+        itemExample.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
+        final List<TestApplicationItem> testApplicationItems = testApplicationItemMapper.selectByExample(itemExample);
+
+
+
+
+
+    }
+
+    //拆工作单
+    public void split(List<TestApplicationItem> testApplicationItems, Byte service){
+        Set<Integer> itemSet = testApplicationItems.stream().map(TestApplicationItem::getTestItemId).collect(Collectors.toSet());
+        final List<SplitInfo> totalSplitInfo = testInfoMapperExt.getTotalSplitInfo();
+        Map<Long,List<SplitInfo>> selfSpMap = new HashMap<>();//直属
+        Map<Long,List<SplitInfo>> otherSpMap = new HashMap<>();//分包商
+        Set<Integer> selfSet = new HashSet<>();
+
+        //1根据测试项目和资质条件，匹配满足条件的公司：测试项目,对应公司
+        //2对应公司为内部公司，直接确认测试项目与内部公司的对应关系
+        //3检测项目与外部检测公司做排序（按周期或价格排序)
+        //4选择每个项目排序最前的的记录，按公司分组；
+
+        for (SplitInfo splitInfo : totalSplitInfo) {
+            if (splitInfo.getSubContract() == 0){
+                selfSet.add(splitInfo.getItemId());
+                if (selfSpMap.containsKey(splitInfo.getId())){
+                    selfSpMap.get(splitInfo.getId()).add(splitInfo);
+                }else {
+                    List<SplitInfo> list = new ArrayList<>();
+                    list.add(splitInfo);
+                    selfSpMap.put(splitInfo.getId(),list);
+                }
+            }else {
+                if (otherSpMap.containsKey(splitInfo.getId())){
+                    otherSpMap.get(splitInfo.getId()).add(splitInfo);
+                }else {
+                    List<SplitInfo> list = new ArrayList<>();
+                    list.add(splitInfo);
+                    otherSpMap.put(splitInfo.getId(),list);
+                }
+            }
+        }
+
+        //先找直属的。
+        if (selfSet.containsAll(itemSet)){
+            //完全走直属的
+            //
+            //算法
+            //
+
+        }else {
+            //直属的
+            final Set<Integer> sLabSet = itemSet.stream().filter(selfSet::contains).collect(Collectors.toSet());
+            //分包的
+            final Set<Integer> oLabSet = itemSet.stream().filter(f->!selfSet.contains(f)).collect(Collectors.toSet());
+        }
+
+
+
     }
 }

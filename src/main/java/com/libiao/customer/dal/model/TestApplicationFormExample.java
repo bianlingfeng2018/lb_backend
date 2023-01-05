@@ -3501,6 +3501,66 @@ public class TestApplicationFormExample {
             addCriterion("review_remark not between", value1, value2, "reviewRemark");
             return (Criteria) this;
         }
+
+        public Criteria andServiceIsNull() {
+            addCriterion("service is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceIsNotNull() {
+            addCriterion("service is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceEqualTo(Byte value) {
+            addCriterion("service =", value, "service");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceNotEqualTo(Byte value) {
+            addCriterion("service <>", value, "service");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceGreaterThan(Byte value) {
+            addCriterion("service >", value, "service");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceGreaterThanOrEqualTo(Byte value) {
+            addCriterion("service >=", value, "service");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceLessThan(Byte value) {
+            addCriterion("service <", value, "service");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceLessThanOrEqualTo(Byte value) {
+            addCriterion("service <=", value, "service");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceIn(List<Byte> values) {
+            addCriterion("service in", values, "service");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceNotIn(List<Byte> values) {
+            addCriterion("service not in", values, "service");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBetween(Byte value1, Byte value2) {
+            addCriterion("service between", value1, value2, "service");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceNotBetween(Byte value1, Byte value2) {
+            addCriterion("service not between", value1, value2, "service");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

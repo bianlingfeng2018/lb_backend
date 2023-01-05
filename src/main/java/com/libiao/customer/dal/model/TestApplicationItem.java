@@ -9,7 +9,7 @@ public class TestApplicationItem implements Serializable {
 
     private String applicationNum;
 
-    private Long testItemId;
+    private Integer testItemId;
 
     private String itemName;
 
@@ -45,11 +45,11 @@ public class TestApplicationItem implements Serializable {
         this.applicationNum = applicationNum;
     }
 
-    public Long getTestItemId() {
+    public Integer getTestItemId() {
         return testItemId;
     }
 
-    public void setTestItemId(Long testItemId) {
+    public void setTestItemId(Integer testItemId) {
         this.testItemId = testItemId;
     }
 

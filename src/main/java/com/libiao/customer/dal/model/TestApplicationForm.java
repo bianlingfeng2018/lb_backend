@@ -104,6 +104,8 @@ public class TestApplicationForm implements Serializable {
 
     private String reviewRemark;
 
+    private Byte service;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -506,6 +508,14 @@ public class TestApplicationForm implements Serializable {
         this.reviewRemark = reviewRemark;
     }
 
+    public Byte getService() {
+        return service;
+    }
+
+    public void setService(Byte service) {
+        this.service = service;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -562,6 +572,7 @@ public class TestApplicationForm implements Serializable {
         sb.append(", sampleDeal=").append(sampleDeal);
         sb.append(", reviewTime=").append(reviewTime);
         sb.append(", reviewRemark=").append(reviewRemark);
+        sb.append(", service=").append(service);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

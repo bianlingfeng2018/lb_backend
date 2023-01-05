@@ -304,52 +304,52 @@ public class TestApplicationItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andTestItemIdEqualTo(Long value) {
+        public Criteria andTestItemIdEqualTo(Integer value) {
             addCriterion("test_item_id =", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestItemIdNotEqualTo(Long value) {
+        public Criteria andTestItemIdNotEqualTo(Integer value) {
             addCriterion("test_item_id <>", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestItemIdGreaterThan(Long value) {
+        public Criteria andTestItemIdGreaterThan(Integer value) {
             addCriterion("test_item_id >", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestItemIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andTestItemIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("test_item_id >=", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestItemIdLessThan(Long value) {
+        public Criteria andTestItemIdLessThan(Integer value) {
             addCriterion("test_item_id <", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestItemIdLessThanOrEqualTo(Long value) {
+        public Criteria andTestItemIdLessThanOrEqualTo(Integer value) {
             addCriterion("test_item_id <=", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestItemIdIn(List<Long> values) {
+        public Criteria andTestItemIdIn(List<Integer> values) {
             addCriterion("test_item_id in", values, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestItemIdNotIn(List<Long> values) {
+        public Criteria andTestItemIdNotIn(List<Integer> values) {
             addCriterion("test_item_id not in", values, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestItemIdBetween(Long value1, Long value2) {
+        public Criteria andTestItemIdBetween(Integer value1, Integer value2) {
             addCriterion("test_item_id between", value1, value2, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestItemIdNotBetween(Long value1, Long value2) {
+        public Criteria andTestItemIdNotBetween(Integer value1, Integer value2) {
             addCriterion("test_item_id not between", value1, value2, "testItemId");
             return (Criteria) this;
         }

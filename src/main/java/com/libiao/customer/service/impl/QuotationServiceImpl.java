@@ -227,7 +227,7 @@ public class QuotationServiceImpl implements QuotationService {
             dbItemMap.put(item.getId(),item);
         }
         //然后再对比实际的金额来计算折扣 报价/基本售价 = 折扣
-        final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100)).divide(new BigDecimal(amount)).setScale(0, RoundingMode.HALF_UP);
+        final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100)).divide(new BigDecimal(amount),0, RoundingMode.HALF_UP);
         int dis = discount.intValue();
         TestQuotation record = new TestQuotation();
         BeanCopyUtil.copy(req,record);

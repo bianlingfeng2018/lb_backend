@@ -58,8 +58,6 @@ public class QuotationServiceImpl implements QuotationService {
         return page;
     }
 
-    //基础是检测项目，商品是相关检测项的合集。实际报价单中仅体现到商品和检测项。设计稿没有套餐，不做。
-
     @Override
     @Transactional
     public void create(CreateQuotationReq req){
@@ -86,11 +84,19 @@ public class QuotationServiceImpl implements QuotationService {
             dbItemMap.put(item.getId(),item);
         }
         //然后再对比实际的金额来计算折扣 报价/基本售价 = 折扣
-        final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100)).divide(new BigDecimal(amount)).setScale(0, RoundingMode.HALF_UP);
+        final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100))
+                .divide(new BigDecimal(amount)).setScale(0, RoundingMode.HALF_UP);
         int dis = discount.intValue();
         TestQuotation record = new TestQuotation();
         BeanCopyUtil.copy(req,record);
         record.setDiscount(String.valueOf(dis));
+        //生产报价单号
+        String quotNo = redisUtil.getNo(req.getUser().getCity(),DateUtils.getDate("yyMMdd"));
+        record.setQuotationNum(quotNo);
+        record.setUserId(req.getUser().getId());
+        record.setUserOrgNo(req.getUser().getOrgNo());
+        record.setPayStatus(QuotationEnum.PRICE_CHECK.getCode());
+
         if (dis < req.getUser().getDiscount()){
             //状态设置为待审核
             record.setState(QuotationEnum.PRICE_CHECK.getCode());
@@ -99,19 +105,20 @@ public class QuotationServiceImpl implements QuotationService {
             //状态设置为报价审核通过
             record.setStep(QuotationEnum.STEP_QUOT_CHECKED.getCode());
             if (req.getPayType() == 0) {//挂账
-                record.setState(QuotationEnum.CREDIT.getCode());
+
+                //创建挂账记录，同时删减少用户挂账金额
+                final boolean result = billOutService.creditRecord(record);
+                if (result){
+                    //挂账成功
+                    record.setState(QuotationEnum.CREDIT.getCode());
+                }else {
+                    //挂账失败
+                    record.setState(QuotationEnum.NOT_PAID.getCode());
+                }
             }else {//未支付，待上传支付凭证
                 record.setState(QuotationEnum.NOT_PAID.getCode());
             }
         }
-
-        //生产报价单号
-        String quotNo = redisUtil.getNo(req.getUser().getCity(),DateUtils.getDate("yyMMdd"));
-        record.setQuotationNum(quotNo);
-        record.setUserId(req.getUser().getId());
-        record.setUserOrgNo(req.getUser().getOrgNo());
-        record.setPayStatus(QuotationEnum.PRICE_CHECK.getCode());
-
 
         MallGoodsExample mallGoodsExample = new MallGoodsExample();
         mallGoodsExample.createCriteria().andIdIn(new ArrayList<>(goodsMap.keySet()));

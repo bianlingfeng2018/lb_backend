@@ -21,7 +21,9 @@ public class ModifyQuotationReq extends BaseSessionReq {
     @NotBlank
     @ApiModelProperty("客户名称")
     private String clientName;
-
+    @NotBlank
+    @ApiModelProperty("客户名称")
+    private String clientNum;
     @NotBlank
     @ApiModelProperty("交易名称")
     private String tradeName;

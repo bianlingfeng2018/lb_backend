@@ -83,6 +83,7 @@ public class QuotationServiceImpl implements QuotationService {
             amount += item.getPrice() * itemMap.get(item.getId());
             dbItemMap.put(item.getId(),item);
         }
+
         //然后再对比实际的金额来计算折扣 报价/基本售价 = 折扣
         final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100))
                 .divide(new BigDecimal(amount),0, RoundingMode.HALF_UP);
@@ -562,7 +563,7 @@ public class QuotationServiceImpl implements QuotationService {
                         AdditionalQuotationVO addiVo = new AdditionalQuotationVO();
                         //找到下属的item
                         TestQuotationItemExample aItemExample = new TestQuotationItemExample();
-                        aaExample.createCriteria().andQuotationNumEqualTo(ag.getQuotationNum()).andGoodsIdEqualTo(ag.getGoodsId());
+                        aItemExample.createCriteria().andTestQuotationNumEqualTo(ag.getQuotationNum()).andTestQuotationGoodsIdEqualTo(ag.getGoodsId());
                         final List<TestQuotationItem> aItemList = testQuotationItemMapper.selectByExample(aItemExample);
                         List<QuotaDetailItemVO> aItemVOList = new ArrayList<>();
                         for (TestQuotationItem testQuotationItem : aItemList) {

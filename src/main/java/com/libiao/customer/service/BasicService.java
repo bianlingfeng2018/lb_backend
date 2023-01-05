@@ -7,4 +7,5 @@ public interface BasicService {
   ResponseVO<?> getAllTestItems();
 
   ResponseVO<?> getAllStandards();
+
 }

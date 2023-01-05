@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.11.230:3306/ppc?allowMultiQueries=true
+    username: ppcuser
+    password: 2mH0tJuuSG@KJaSd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 192.168.11.231
+    port: 6379
+    database: 0
+    password: foobared*20170620Pwq
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 30MB
+
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
+  configuration:
+    mapUnderscoreToCamelCase: true
+
+swagger:
+  show: true
+
+CONTRACT_PATH: ${user.home}/contract/
+BILL_PATH: ${user.home}/bill/
+SAMPLE_PATH: ${user.home}/sample/
+RECORD_PATH: ${user.home}/record/
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+logging:
+  config: classpath:logback-test.xml
+  level:
+    com.libiao.customer.dal.mapper: debug

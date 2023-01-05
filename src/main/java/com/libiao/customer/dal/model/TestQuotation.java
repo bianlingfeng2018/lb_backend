@@ -6,6 +6,8 @@ import java.util.Date;
 public class TestQuotation implements Serializable {
     private Long id;
 
+    private String quotationNum;
+
     private Long clientId;
 
     private String clientNum;
@@ -21,8 +23,6 @@ public class TestQuotation implements Serializable {
     private Byte step;
 
     private String tradeName;
-
-    private String quotationNum;
 
     private Byte payStatus;
 
@@ -78,6 +78,14 @@ public class TestQuotation implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getQuotationNum() {
+        return quotationNum;
+    }
+
+    public void setQuotationNum(String quotationNum) {
+        this.quotationNum = quotationNum;
     }
 
     public Long getClientId() {
@@ -142,14 +150,6 @@ public class TestQuotation implements Serializable {
 
     public void setTradeName(String tradeName) {
         this.tradeName = tradeName;
-    }
-
-    public String getQuotationNum() {
-        return quotationNum;
-    }
-
-    public void setQuotationNum(String quotationNum) {
-        this.quotationNum = quotationNum;
     }
 
     public Byte getPayStatus() {
@@ -343,6 +343,7 @@ public class TestQuotation implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", quotationNum=").append(quotationNum);
         sb.append(", clientId=").append(clientId);
         sb.append(", clientNum=").append(clientNum);
         sb.append(", clientName=").append(clientName);
@@ -351,7 +352,6 @@ public class TestQuotation implements Serializable {
         sb.append(", state=").append(state);
         sb.append(", step=").append(step);
         sb.append(", tradeName=").append(tradeName);
-        sb.append(", quotationNum=").append(quotationNum);
         sb.append(", payStatus=").append(payStatus);
         sb.append(", tradeDesc=").append(tradeDesc);
         sb.append(", payType=").append(payType);

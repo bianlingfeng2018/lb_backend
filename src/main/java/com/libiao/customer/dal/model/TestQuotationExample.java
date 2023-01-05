@@ -165,6 +165,76 @@ public class TestQuotationExample {
             return (Criteria) this;
         }
 
+        public Criteria andQuotationNumIsNull() {
+            addCriterion("quotation_num is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumIsNotNull() {
+            addCriterion("quotation_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumEqualTo(String value) {
+            addCriterion("quotation_num =", value, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumNotEqualTo(String value) {
+            addCriterion("quotation_num <>", value, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumGreaterThan(String value) {
+            addCriterion("quotation_num >", value, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumGreaterThanOrEqualTo(String value) {
+            addCriterion("quotation_num >=", value, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumLessThan(String value) {
+            addCriterion("quotation_num <", value, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumLessThanOrEqualTo(String value) {
+            addCriterion("quotation_num <=", value, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumLike(String value) {
+            addCriterion("quotation_num like", value, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumNotLike(String value) {
+            addCriterion("quotation_num not like", value, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumIn(List<String> values) {
+            addCriterion("quotation_num in", values, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumNotIn(List<String> values) {
+            addCriterion("quotation_num not in", values, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumBetween(String value1, String value2) {
+            addCriterion("quotation_num between", value1, value2, "quotationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuotationNumNotBetween(String value1, String value2) {
+            addCriterion("quotation_num not between", value1, value2, "quotationNum");
+            return (Criteria) this;
+        }
+
         public Criteria andClientIdIsNull() {
             addCriterion("client_id is null");
             return (Criteria) this;
@@ -682,76 +752,6 @@ public class TestQuotationExample {
 
         public Criteria andTradeNameNotBetween(String value1, String value2) {
             addCriterion("trade_name not between", value1, value2, "tradeName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumIsNull() {
-            addCriterion("quotation_num is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumIsNotNull() {
-            addCriterion("quotation_num is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumEqualTo(String value) {
-            addCriterion("quotation_num =", value, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumNotEqualTo(String value) {
-            addCriterion("quotation_num <>", value, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumGreaterThan(String value) {
-            addCriterion("quotation_num >", value, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumGreaterThanOrEqualTo(String value) {
-            addCriterion("quotation_num >=", value, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumLessThan(String value) {
-            addCriterion("quotation_num <", value, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumLessThanOrEqualTo(String value) {
-            addCriterion("quotation_num <=", value, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumLike(String value) {
-            addCriterion("quotation_num like", value, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumNotLike(String value) {
-            addCriterion("quotation_num not like", value, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumIn(List<String> values) {
-            addCriterion("quotation_num in", values, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumNotIn(List<String> values) {
-            addCriterion("quotation_num not in", values, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumBetween(String value1, String value2) {
-            addCriterion("quotation_num between", value1, value2, "quotationNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuotationNumNotBetween(String value1, String value2) {
-            addCriterion("quotation_num not between", value1, value2, "quotationNum");
             return (Criteria) this;
         }
 

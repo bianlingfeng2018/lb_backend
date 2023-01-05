@@ -158,6 +158,7 @@ public class QuotationServiceImpl implements QuotationService {
                 final BasicTestItem basicTestItem = dbItemMap.get(quotaGoodsItemVO.getItemId());
                 TestQuotationItem testQuotationItem = new TestQuotationItem();
                 testQuotationItem.setTestItem(basicTestItem.getName());
+                testQuotationItem.setItemId(basicTestItem.getId());
                 testQuotationItem.setTestQuotationGoodsId(mallGoods.getId());
                 testQuotationItem.setTestQuotationNum(quotNo);
                 testQuotationItem.setTestItem(basicTestItem.getName());
@@ -285,6 +286,7 @@ public class QuotationServiceImpl implements QuotationService {
             for (QuotaGoodsItemVO quotaGoodsItemVO : quotaGoodsItemVOS) {
                 final BasicTestItem basicTestItem = dbItemMap.get(quotaGoodsItemVO.getItemId());
                 TestQuotationItem testQuotationItem = new TestQuotationItem();
+                testQuotationItem.setItemId(basicTestItem.getId());
                 testQuotationItem.setTestItem(basicTestItem.getName());
                 testQuotationItem.setTestQuotationGoodsId(mallGoods.getId());
                 testQuotationItem.setTestQuotationNum(testQuotation.getQuotationNum());
@@ -470,6 +472,7 @@ public class QuotationServiceImpl implements QuotationService {
                 final BasicTestItem basicTestItem = dbItemMap.get(quotaGoodsItemVO.getItemId());
                 TestQuotationItem testQuotationItem = new TestQuotationItem();
                 testQuotationItem.setTestItem(basicTestItem.getName());
+                testQuotationItem.setItemId(basicTestItem.getId());
                 testQuotationItem.setTestQuotationGoodsId(mallGoods.getId());
                 testQuotationItem.setTestQuotationNum(quotNo);
                 testQuotationItem.setTestItem(basicTestItem.getName());

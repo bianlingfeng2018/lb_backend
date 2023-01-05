@@ -3,6 +3,7 @@
 <mapper namespace="com.libiao.customer.dal.mapper.TestQuotationMapper">
   <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestQuotation">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="quotation_num" jdbcType="VARCHAR" property="quotationNum" />
     <result column="client_id" jdbcType="BIGINT" property="clientId" />
     <result column="client_num" jdbcType="VARCHAR" property="clientNum" />
     <result column="client_name" jdbcType="VARCHAR" property="clientName" />
@@ -11,7 +12,6 @@
     <result column="state" jdbcType="TINYINT" property="state" />
     <result column="step" jdbcType="TINYINT" property="step" />
     <result column="trade_name" jdbcType="VARCHAR" property="tradeName" />
-    <result column="quotation_num" jdbcType="VARCHAR" property="quotationNum" />
     <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
     <result column="trade_desc" jdbcType="VARCHAR" property="tradeDesc" />
     <result column="pay_type" jdbcType="TINYINT" property="payType" />
@@ -95,9 +95,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, client_id, client_num, client_name, user_id, user_org_no, state, step, trade_name, 
-    quotation_num, pay_status, trade_desc, pay_type, attn, tel_client, fax_client, email, 
-    gmt_create, delivery_address, report_fee, postage, tax_fee, discount, total_cost, 
+    id, quotation_num, client_id, client_num, client_name, user_id, user_org_no, state, 
+    step, trade_name, pay_status, trade_desc, pay_type, attn, tel_client, fax_client, 
+    email, gmt_create, delivery_address, report_fee, postage, tax_fee, discount, total_cost, 
     total_test_amt, paid_amt, service_id, type, single_report, org_quotation_num, audit_id, 
     audit_name, audit_reason
   </sql>
@@ -135,9 +135,9 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into test_quotation (client_id, client_num, client_name, 
-      user_id, user_org_no, state, 
-      step, trade_name, quotation_num, 
+    insert into test_quotation (quotation_num, client_id, client_num, 
+      client_name, user_id, user_org_no, 
+      state, step, trade_name, 
       pay_status, trade_desc, pay_type, 
       attn, tel_client, fax_client, 
       email, gmt_create, delivery_address, 
@@ -146,9 +146,9 @@
       paid_amt, service_id, type, 
       single_report, org_quotation_num, audit_id, 
       audit_name, audit_reason)
-    values (#{clientId,jdbcType=BIGINT}, #{clientNum,jdbcType=VARCHAR}, #{clientName,jdbcType=VARCHAR}, 
-      #{userId,jdbcType=BIGINT}, #{userOrgNo,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
-      #{step,jdbcType=TINYINT}, #{tradeName,jdbcType=VARCHAR}, #{quotationNum,jdbcType=VARCHAR}, 
+    values (#{quotationNum,jdbcType=VARCHAR}, #{clientId,jdbcType=BIGINT}, #{clientNum,jdbcType=VARCHAR}, 
+      #{clientName,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{userOrgNo,jdbcType=VARCHAR}, 
+      #{state,jdbcType=TINYINT}, #{step,jdbcType=TINYINT}, #{tradeName,jdbcType=VARCHAR}, 
       #{payStatus,jdbcType=TINYINT}, #{tradeDesc,jdbcType=VARCHAR}, #{payType,jdbcType=TINYINT}, 
       #{attn,jdbcType=VARCHAR}, #{telClient,jdbcType=VARCHAR}, #{faxClient,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{deliveryAddress,jdbcType=VARCHAR}, 
@@ -164,6 +164,9 @@
     </selectKey>
     insert into test_quotation
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="quotationNum != null">
+        quotation_num,
+      </if>
       <if test="clientId != null">
         client_id,
       </if>
@@ -187,9 +190,6 @@
       </if>
       <if test="tradeName != null">
         trade_name,
-      </if>
-      <if test="quotationNum != null">
-        quotation_num,
       </if>
       <if test="payStatus != null">
         pay_status,
@@ -262,6 +262,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="quotationNum != null">
+        #{quotationNum,jdbcType=VARCHAR},
+      </if>
       <if test="clientId != null">
         #{clientId,jdbcType=BIGINT},
       </if>
@@ -285,9 +288,6 @@
       </if>
       <if test="tradeName != null">
         #{tradeName,jdbcType=VARCHAR},
-      </if>
-      <if test="quotationNum != null">
-        #{quotationNum,jdbcType=VARCHAR},
       </if>
       <if test="payStatus != null">
         #{payStatus,jdbcType=TINYINT},
@@ -372,6 +372,9 @@
       <if test="row.id != null">
         id = #{row.id,jdbcType=BIGINT},
       </if>
+      <if test="row.quotationNum != null">
+        quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
+      </if>
       <if test="row.clientId != null">
         client_id = #{row.clientId,jdbcType=BIGINT},
       </if>
@@ -395,9 +398,6 @@
       </if>
       <if test="row.tradeName != null">
         trade_name = #{row.tradeName,jdbcType=VARCHAR},
-      </if>
-      <if test="row.quotationNum != null">
-        quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
       </if>
       <if test="row.payStatus != null">
         pay_status = #{row.payStatus,jdbcType=TINYINT},
@@ -476,6 +476,7 @@
   <update id="updateByExample" parameterType="map">
     update test_quotation
     set id = #{row.id,jdbcType=BIGINT},
+      quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
       client_id = #{row.clientId,jdbcType=BIGINT},
       client_num = #{row.clientNum,jdbcType=VARCHAR},
       client_name = #{row.clientName,jdbcType=VARCHAR},
@@ -484,7 +485,6 @@
       state = #{row.state,jdbcType=TINYINT},
       step = #{row.step,jdbcType=TINYINT},
       trade_name = #{row.tradeName,jdbcType=VARCHAR},
-      quotation_num = #{row.quotationNum,jdbcType=VARCHAR},
       pay_status = #{row.payStatus,jdbcType=TINYINT},
       trade_desc = #{row.tradeDesc,jdbcType=VARCHAR},
       pay_type = #{row.payType,jdbcType=TINYINT},
@@ -515,6 +515,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.TestQuotation">
     update test_quotation
     <set>
+      <if test="quotationNum != null">
+        quotation_num = #{quotationNum,jdbcType=VARCHAR},
+      </if>
       <if test="clientId != null">
         client_id = #{clientId,jdbcType=BIGINT},
       </if>
@@ -538,9 +541,6 @@
       </if>
       <if test="tradeName != null">
         trade_name = #{tradeName,jdbcType=VARCHAR},
-      </if>
-      <if test="quotationNum != null">
-        quotation_num = #{quotationNum,jdbcType=VARCHAR},
       </if>
       <if test="payStatus != null">
         pay_status = #{payStatus,jdbcType=TINYINT},
@@ -616,7 +616,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestQuotation">
     update test_quotation
-    set client_id = #{clientId,jdbcType=BIGINT},
+    set quotation_num = #{quotationNum,jdbcType=VARCHAR},
+      client_id = #{clientId,jdbcType=BIGINT},
       client_num = #{clientNum,jdbcType=VARCHAR},
       client_name = #{clientName,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=BIGINT},
@@ -624,7 +625,6 @@
       state = #{state,jdbcType=TINYINT},
       step = #{step,jdbcType=TINYINT},
       trade_name = #{tradeName,jdbcType=VARCHAR},
-      quotation_num = #{quotationNum,jdbcType=VARCHAR},
       pay_status = #{payStatus,jdbcType=TINYINT},
       trade_desc = #{tradeDesc,jdbcType=VARCHAR},
       pay_type = #{payType,jdbcType=TINYINT},

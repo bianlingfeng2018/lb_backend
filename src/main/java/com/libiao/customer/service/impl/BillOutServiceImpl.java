@@ -146,12 +146,12 @@ public class BillOutServiceImpl implements BillOutService {
         balanceMapper.updateByPrimaryKeySelective(update);
         //插入
         ClientBillOut row = new ClientBillOut();
-        row.setClientId(req.getClientId().toString());
+        row.setClientId(req.getClientNum());
         row.setTradeId(req.getQuotationNum());
         row.setOnaccountAmt(Long.valueOf(req.getTotalCost()));
         row.setUnAmt(Long.valueOf(req.getTotalCost()));
         row.setStartTime(new Date());
-        row.setStatus("未核销");
+        row.setStatus(BillStatus.STATUS_UNSETTLE.getValue());
         outMapper.insertSelective(row);
         return true;
     }

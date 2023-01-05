@@ -85,7 +85,7 @@ public class QuotationServiceImpl implements QuotationService {
         }
         //然后再对比实际的金额来计算折扣 报价/基本售价 = 折扣
         final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100))
-                .divide(new BigDecimal(amount)).setScale(0, RoundingMode.HALF_UP);
+                .divide(new BigDecimal(amount),0, RoundingMode.HALF_UP);
         int dis = discount.intValue();
         TestQuotation record = new TestQuotation();
         BeanCopyUtil.copy(req,record);
@@ -96,7 +96,7 @@ public class QuotationServiceImpl implements QuotationService {
         record.setUserId(req.getUser().getId());
         record.setUserOrgNo(req.getUser().getOrgNo());
         record.setPayStatus(QuotationEnum.PRICE_CHECK.getCode());
-
+        record.setClientNum(req.getClientNum());
         if (dis < req.getUser().getDiscount()){
             //状态设置为待审核
             record.setState(QuotationEnum.PRICE_CHECK.getCode());

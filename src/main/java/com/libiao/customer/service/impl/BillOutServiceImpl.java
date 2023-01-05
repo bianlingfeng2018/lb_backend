@@ -131,8 +131,9 @@ public class BillOutServiceImpl implements BillOutService {
     @Transactional
     public boolean creditRecord(TestQuotation req){
         BalanceExample balanceExample = new BalanceExample();
-        balanceExample.createCriteria().andClientIdEqualTo(req.getClientId().toString());
+        balanceExample.createCriteria().andClientIdEqualTo(req.getClientNum());
         List<Balance> list = balanceMapper.selectByExample(balanceExample);
+        if(list.isEmpty()) return false;
         final Balance balance = list.get(0);
         long val = balance.getCreditLimit() - balance.getUnsettledAmt();
         if (req.getTotalCost() > val){

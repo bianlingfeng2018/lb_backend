@@ -17,7 +17,8 @@ public class CreateQuotationReq extends BaseSessionReq {
     @NotBlank
     @ApiModelProperty("客户名称")
     private String clientName;
-
+    @ApiModelProperty("客户ID ")
+    private String clientNum;
     @NotBlank
     @ApiModelProperty("交易名称")
     private String tradeName;

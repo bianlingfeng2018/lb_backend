@@ -12,10 +12,11 @@ import com.libiao.customer.service.BasicService;
 import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
 import com.libiao.customer.util.model.ResponseVO;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.springframework.stereotype.Service;
 
 @Service
 public class BasicServiceImpl implements BasicService {
@@ -71,4 +72,6 @@ public class BasicServiceImpl implements BasicService {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
     }
   }
+
+
 }

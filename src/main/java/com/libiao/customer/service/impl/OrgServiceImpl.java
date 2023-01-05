@@ -1,14 +1,19 @@
 package com.libiao.customer.service.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.libiao.customer.dal.mapper.CheckCompanyMapper;
 import com.libiao.customer.dal.mapper.DepartmentOrgMapper;
 import com.libiao.customer.dal.mapper.OrgMapperExt;
+import com.libiao.customer.dal.model.CheckCompany;
+import com.libiao.customer.dal.model.CheckCompanyExample;
 import com.libiao.customer.dal.model.DepartmentOrg;
 import com.libiao.customer.dal.model.DepartmentOrgExample;
 import com.libiao.customer.model.org.*;
 import com.libiao.customer.service.OrgService;
 import com.libiao.customer.util.BeanCopyUtil;
+import com.libiao.customer.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -24,6 +29,8 @@ public class OrgServiceImpl implements OrgService {
     private DepartmentOrgMapper departmentOrgMapper;
     @Autowired
     private OrgMapperExt orgMapperExt;
+    @Autowired
+    CheckCompanyMapper checkCompanyMapper;
 
     public static final String TOP_ORG = "100";
 
@@ -114,5 +121,12 @@ public class OrgServiceImpl implements OrgService {
             leafList.add(copy);
         });
         node.setSubOrgList(leafList);
+    }
+
+
+    @Override
+    public ResponseEntity<List<CheckCompany>> getAllCheckCompany() {
+        List<CheckCompany> list = checkCompanyMapper.selectByExample(new CheckCompanyExample());
+        return ResponseUtil.getResponseVO(list);
     }
 }

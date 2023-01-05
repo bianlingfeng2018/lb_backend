@@ -1,6 +1,7 @@
 package com.libiao.customer.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.libiao.customer.dal.model.CheckCompany;
 import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.BaseSessionReq;
 import com.libiao.customer.model.ListResponseVO;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 组织架构管理
@@ -54,5 +57,14 @@ public class OrgController {
         final OrgComboVO orgComboVO = orgService.selectAll();
         return ResponseUtil.getResponseVO(orgComboVO);
     }
+
+    @PostMapping("allCompany")
+    @ApiOperation("获取所有公司信息")
+    public ResponseEntity<List<CheckCompany>> getAllCheckCompany(@RequestBody BaseSessionReq req){
+        return orgService.getAllCheckCompany();
+    }
+
+
+
 
 }

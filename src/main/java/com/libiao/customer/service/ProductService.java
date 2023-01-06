@@ -17,7 +17,7 @@ public interface ProductService {
 
     List<GoodsVO> getProductList(GoodsListReq req);
 
-    void createProduct(AddGoodsReq req);
+    Long createProduct(AddGoodsReq req);
 
     PageInfo<BasicCountry> countryList(BasePageReq req);
 

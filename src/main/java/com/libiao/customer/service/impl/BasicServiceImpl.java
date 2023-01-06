@@ -2,9 +2,10 @@ package com.libiao.customer.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.libiao.customer.dal.model.BasicStandard;
-import com.libiao.customer.dal.model.BasicTestItem;
-import com.libiao.customer.dal.model.BasicTestItemGroupVO;
+import com.libiao.customer.dal.mapper.BasicGoodsClassMapper;
+import com.libiao.customer.dal.mapper.BasicGoodsMaterialMapper;
+import com.libiao.customer.dal.mapper.BasicHscodeMapper;
+import com.libiao.customer.dal.model.*;
 import com.libiao.customer.repository.BasicCountryRepository;
 import com.libiao.customer.repository.BasicStandardRepository;
 import com.libiao.customer.repository.BasicTestItemRepository;
@@ -12,6 +13,8 @@ import com.libiao.customer.service.BasicService;
 import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
 import com.libiao.customer.util.model.ResponseVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +36,13 @@ public class BasicServiceImpl implements BasicService {
     this.basicCountryRepository = basicCountryRepository;
     this.basicStandardRepository = basicStandardRepository;
   }
+
+  @Autowired
+  BasicGoodsClassMapper goodsClassMapper;
+  @Autowired
+  BasicGoodsMaterialMapper goodsMaterialMapper;
+  @Autowired
+  BasicHscodeMapper hscodeMapper;
 
   @Override
   public ResponseVO<?> getAllTestItems() {
@@ -71,6 +81,21 @@ public class BasicServiceImpl implements BasicService {
     } catch (Exception e) {
       return ResponseUtil.error(ErrorCodeEnum.UNKNOWN_ERROR);
     }
+  }
+
+  @Override
+  public ResponseEntity<List<BasicGoodsClass>> getAllGoodsClass() {
+    return ResponseUtil.getResponseVO(goodsClassMapper.selectByExample(new BasicGoodsClassExample()));
+  }
+
+  @Override
+  public ResponseEntity<List<BasicGoodsMaterial>> getAllGoodsMaterial() {
+    return  ResponseUtil.getResponseVO(goodsMaterialMapper.selectByExample(new BasicGoodsMaterialExample()));
+  }
+
+  @Override
+  public ResponseEntity<List<BasicHscode>> getAllHSCode() {
+    return  ResponseUtil.getResponseVO(hscodeMapper.selectByExample(new BasicHscodeExample()));
   }
 
 

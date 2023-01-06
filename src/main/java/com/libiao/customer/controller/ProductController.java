@@ -1,12 +1,12 @@
 package com.libiao.customer.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.libiao.customer.dal.model.BasicCountry;
-import com.libiao.customer.dal.model.BasicStandard;
-import com.libiao.customer.dal.model.BasicTestItem;
+import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.BasePageReq;
+import com.libiao.customer.model.BaseRequest;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.product.*;
+import com.libiao.customer.service.BasicService;
 import com.libiao.customer.service.ProductService;
 import com.libiao.customer.util.AccessController;
 import com.libiao.customer.util.BeanCopyUtil;
@@ -30,6 +30,8 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private BasicService basicService;
 
     @AccessController
     @ApiOperation("获取基本检测项列表")
@@ -83,5 +85,27 @@ public class ProductController {
         }
         return ResponseUtil.getListResponseVO(voList,basicCountryPageInfo.getTotal());
     }
+
+    @AccessController
+    @ApiOperation("获取分类列表")
+    @PostMapping("class/list")
+    public ResponseEntity<List<BasicGoodsClass>> classList(@RequestBody BaseRequest req){
+        return basicService.getAllGoodsClass();
+    }
+
+    @AccessController
+    @ApiOperation("获取材质分类列表")
+    @PostMapping("class/materialList")
+    public ResponseEntity<List<BasicGoodsMaterial>> materialList(@RequestBody BaseRequest req){
+        return basicService.getAllGoodsMaterial();
+    }
+
+    @AccessController
+    @ApiOperation("获取海关码列表")
+    @PostMapping("class/hsCode")
+    public ResponseEntity<List<BasicHscode>> hsCodeList(@RequestBody BaseRequest req){
+        return basicService.getAllHSCode();
+    }
+
 
 }

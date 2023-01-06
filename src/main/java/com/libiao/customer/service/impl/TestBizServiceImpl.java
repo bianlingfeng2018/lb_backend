@@ -1,46 +1,30 @@
 package com.libiao.customer.service.impl;
 
-import static com.libiao.customer.util.SystemConstant.TEST_APPLICATION_CREATED;
-import static com.libiao.customer.util.SystemConstant.TEST_REPORT_CONFIRMED;
-import static com.libiao.customer.util.SystemConstant.TEST_REPORT_SECOND_CONFIRMED;
-import static com.libiao.customer.util.SystemConstant.TEST_REPORT_THIRD_CONFIRMED;
-import static com.libiao.customer.util.SystemConstant.TEST_WORK_ORDER_CREATED;
-import static com.libiao.customer.util.SystemConstant.getTestApplicationFormImageDir;
-import static com.libiao.customer.util.SystemConstant.getTestApplicationFormPDFDir;
-import static com.libiao.customer.util.SystemConstant.getTestReportSampleImageDir;
-import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_AUDIT_1;
-import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_AUDIT_2;
-import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_AUDIT_3;
-import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_CLIENT;
-import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_SALESMAN;
-import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_TEST;
-import static com.libiao.customer.util.UserRolePermissionUtil.isAdmin;
-import static com.libiao.customer.util.file.FileUploadUtil.recurseDelFile;
-import static com.libiao.customer.util.file.FileUploadUtil.uploadToFileDir;
-
 import com.alibaba.druid.util.StringUtils;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.libiao.customer.dal.model.*;
+import com.libiao.customer.dal.model.TestTrade;
+import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.repository.FinanceRepository;
 import com.libiao.customer.repository.TestRespository;
 import com.libiao.customer.repository.UserRepository;
 import com.libiao.customer.repository.UserTestTradeRepository;
 import com.libiao.customer.service.TestBizService;
-import com.libiao.customer.util.ConvertUtil;
 import com.libiao.customer.util.FileVO;
 import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.WebUtil;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
-import com.libiao.customer.util.exception.LibiaoException;
-import com.libiao.customer.util.file.FileUtil;
 import com.libiao.customer.util.model.ResponseVO;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,20 +32,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.multipart.MultipartFile;
+
+import static com.libiao.customer.util.SystemConstant.*;
+import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_CLIENT;
+import static com.libiao.customer.util.UserRolePermissionConstUtil.ROLE_SALESMAN;
+import static com.libiao.customer.util.UserRolePermissionUtil.isAdmin;
 
 
 @Service

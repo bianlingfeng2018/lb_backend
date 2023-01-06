@@ -3,8 +3,11 @@ package com.libiao.customer.service;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.Quotation;
 import com.libiao.customer.dal.model.TestQuotation;
+import com.libiao.customer.model.BaseNameReq;
 import com.libiao.customer.model.quotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * 报价单相关
@@ -27,4 +30,6 @@ public interface QuotationService {
     void upload(AddQuotationBillReq req);
 
     String getRate();
+
+    List<QuotationNameVO> getQuotationByName(BaseNameReq req);
 }

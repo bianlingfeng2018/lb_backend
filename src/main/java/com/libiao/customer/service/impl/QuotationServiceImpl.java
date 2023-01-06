@@ -1,9 +1,11 @@
 package com.libiao.customer.service.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.constant.QuotationEnum;
 import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
+import com.libiao.customer.model.BaseNameReq;
 import com.libiao.customer.model.quotation.*;
 import com.libiao.customer.service.BillOutService;
 import com.libiao.customer.service.QuotationService;
@@ -45,7 +47,7 @@ public class QuotationServiceImpl implements QuotationService {
     private BillOutService billOutService;
 
     @Override
-    public PageInfo<TestQuotation> list(QuotationListReq req){
+    public PageInfo<TestQuotation> list(QuotationListReq req) {
         PageInfo<TestQuotation> page = new PageInfo<>();
         page.setPageSize(req.getPageSize());
         page.setPageNum(req.getPage());
@@ -60,17 +62,17 @@ public class QuotationServiceImpl implements QuotationService {
 
     @Override
     @Transactional
-    public void create(CreateQuotationReq req){
+    public void create(CreateQuotationReq req) {
         //获取所有测试项目
-        Map<Integer,Integer> itemMap = new HashMap<>();
-        Map<Long,List<QuotaGoodsItemVO>> goodsMap = new HashMap<>();
+        Map<Integer, Integer> itemMap = new HashMap<>();
+        Map<Long, List<QuotaGoodsItemVO>> goodsMap = new HashMap<>();
         int trans_amount = 0;
         for (CreateQuotaGoodsReqVO goods : req.getGoods()) {
             trans_amount += goods.getTestPrice();
             for (QuotaGoodsItemVO item : goods.getItems()) {
                 itemMap.put(item.getItemId(), item.getQuantity());
             }
-            goodsMap.put(goods.getGoodsId(),goods.getItems());
+            goodsMap.put(goods.getGoodsId(), goods.getItems());
         }
         //计算折扣前的总金额
         final Set<Integer> itemIds = itemMap.keySet();
@@ -78,45 +80,45 @@ public class QuotationServiceImpl implements QuotationService {
         basicTestItemExample.createCriteria().andIdIn(new ArrayList<>(itemIds));
         final List<BasicTestItem> basicTestItems = basicTestItemMapper.selectByExample(basicTestItemExample);
         int amount = 0;
-        Map<Integer,BasicTestItem> dbItemMap = new HashMap<>();
+        Map<Integer, BasicTestItem> dbItemMap = new HashMap<>();
         for (BasicTestItem item : basicTestItems) {
             amount += item.getPrice() * itemMap.get(item.getId());
-            dbItemMap.put(item.getId(),item);
+            dbItemMap.put(item.getId(), item);
         }
 
         //然后再对比实际的金额来计算折扣 报价/基本售价 = 折扣
         final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100))
-                .divide(new BigDecimal(amount),0, RoundingMode.HALF_UP);
+                .divide(new BigDecimal(amount), 0, RoundingMode.HALF_UP);
         int dis = discount.intValue();
         TestQuotation record = new TestQuotation();
-        BeanCopyUtil.copy(req,record);
+        BeanCopyUtil.copy(req, record);
         record.setDiscount(String.valueOf(dis));
         //生产报价单号
-        String quotNo = redisUtil.getNo(req.getUser().getCity(),DateUtils.getDate("yyMMdd"));
+        String quotNo = redisUtil.getNo(req.getUser().getCity(), DateUtils.getDate("yyMMdd"));
         record.setQuotationNum(quotNo);
         record.setUserId(req.getUser().getId());
         record.setUserOrgNo(req.getUser().getOrgNo());
         record.setPayStatus(QuotationEnum.PRICE_CHECK.getCode());
         record.setClientNum(req.getClientNum());
-        if (dis < req.getUser().getDiscount()){
+        if (dis < req.getUser().getDiscount()) {
             //状态设置为待审核
             record.setState(QuotationEnum.PRICE_CHECK.getCode());
             record.setStep(QuotationEnum.STEP_QUOT_CHECK.getCode());
-        }else {
+        } else {
             //状态设置为报价审核通过
             record.setStep(QuotationEnum.STEP_QUOT_CHECKED.getCode());
             if (req.getPayType() == 0) {//挂账
 
                 //创建挂账记录，同时删减少用户挂账金额
                 final boolean result = billOutService.creditRecord(record);
-                if (result){
+                if (result) {
                     //挂账成功
                     record.setState(QuotationEnum.CREDIT.getCode());
-                }else {
+                } else {
                     //挂账失败
                     record.setState(QuotationEnum.NOT_PAID.getCode());
                 }
-            }else {//未支付，待上传支付凭证
+            } else {//未支付，待上传支付凭证
                 record.setState(QuotationEnum.NOT_PAID.getCode());
             }
         }
@@ -140,10 +142,10 @@ public class QuotationServiceImpl implements QuotationService {
             testQuotationGoods.setAmount(req.getGoods().get(0).getTestPrice());
             testQuotationGoods.setQuotationNum(quotNo);
             StringBuilder sb = new StringBuilder();
-            for(Byte str : req.getGoods().get(0).getReportTypes()){
+            for (Byte str : req.getGoods().get(0).getReportTypes()) {
                 sb.append(str).append(",");
             }
-            String result3 = sb.deleteCharAt(sb.length()-1).toString();
+            String result3 = sb.deleteCharAt(sb.length() - 1).toString();
             testQuotationGoods.setReprotType(result3);
             //testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
 
@@ -192,29 +194,29 @@ public class QuotationServiceImpl implements QuotationService {
     //编辑报价单，只有未审核的报价单可以编辑
     @Override
     @Transactional
-    public void modify(ModifyQuotationReq req){
+    public void modify(ModifyQuotationReq req) {
         final TestQuotationExample testQuotationExample = new TestQuotationExample();
         testQuotationExample.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());
         final List<TestQuotation> testQuotations = testQuotationMapper.selectByExample(testQuotationExample);
-        if (testQuotations == null){
-            throw new ServiceException(HttpStatus.NOT_FOUND,"报价单不存在");
+        if (testQuotations == null) {
+            throw new ServiceException(HttpStatus.NOT_FOUND, "报价单不存在");
         }
         final TestQuotation testQuotation = testQuotations.get(0);
-        if (testQuotation.getState() != QuotationEnum.STEP_QUOT_CHECK.getCode()){
-            throw new ServiceException(HttpStatus.NOT_ACCEPTABLE,"报价单状态不正确");
+        if (testQuotation.getState() != QuotationEnum.STEP_QUOT_CHECK.getCode()) {
+            throw new ServiceException(HttpStatus.NOT_ACCEPTABLE, "报价单状态不正确");
         }
         //通过后进行更新
 
         //获取所有测试项目
-        Map<Integer,Integer> itemMap = new HashMap<>();
-        Map<Long,List<QuotaGoodsItemVO>> goodsMap = new HashMap<>();
+        Map<Integer, Integer> itemMap = new HashMap<>();
+        Map<Long, List<QuotaGoodsItemVO>> goodsMap = new HashMap<>();
         int trans_amount = 0;
         for (CreateQuotaGoodsReqVO goods : req.getGoods()) {
             trans_amount += goods.getTestPrice();
             for (QuotaGoodsItemVO item : goods.getItems()) {
                 itemMap.put(item.getItemId(), item.getQuantity());
             }
-            goodsMap.put(goods.getGoodsId(),goods.getItems());
+            goodsMap.put(goods.getGoodsId(), goods.getItems());
         }
         //计算折扣前的总金额
         final Set<Integer> itemIds = itemMap.keySet();
@@ -222,28 +224,28 @@ public class QuotationServiceImpl implements QuotationService {
         basicTestItemExample.createCriteria().andIdIn(new ArrayList<>(itemIds));
         final List<BasicTestItem> basicTestItems = basicTestItemMapper.selectByExample(basicTestItemExample);
         int amount = 0;
-        Map<Integer,BasicTestItem> dbItemMap = new HashMap<>();
+        Map<Integer, BasicTestItem> dbItemMap = new HashMap<>();
         for (BasicTestItem item : basicTestItems) {
             amount += item.getPrice() * itemMap.get(item.getId());
-            dbItemMap.put(item.getId(),item);
+            dbItemMap.put(item.getId(), item);
         }
         //然后再对比实际的金额来计算折扣 报价/基本售价 = 折扣
-        final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100)).divide(new BigDecimal(amount),0, RoundingMode.HALF_UP);
+        final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100)).divide(new BigDecimal(amount), 0, RoundingMode.HALF_UP);
         int dis = discount.intValue();
         TestQuotation record = new TestQuotation();
-        BeanCopyUtil.copy(req,record);
+        BeanCopyUtil.copy(req, record);
         record.setId(testQuotation.getId());
         record.setDiscount(String.valueOf(dis));
-        if (dis < req.getUser().getDiscount()){
+        if (dis < req.getUser().getDiscount()) {
             //状态设置为待审核
             record.setState(QuotationEnum.PRICE_CHECK.getCode());
             record.setStep(QuotationEnum.STEP_QUOT_CHECK.getCode());
-        }else {
+        } else {
             //状态设置为报价审核通过
             record.setStep(QuotationEnum.STEP_QUOT_CHECKED.getCode());
             if (req.getPayType() == 0) {//挂账
                 record.setState(QuotationEnum.CREDIT.getCode());
-            }else {//未支付，待上传支付凭证
+            } else {//未支付，待上传支付凭证
                 record.setState(QuotationEnum.NOT_PAID.getCode());
             }
         }
@@ -269,10 +271,10 @@ public class QuotationServiceImpl implements QuotationService {
             testQuotationGoods.setAmount(req.getGoods().get(0).getTestPrice());
             testQuotationGoods.setQuotationNum(testQuotation.getQuotationNum());
             StringBuilder sb = new StringBuilder();
-            for(Byte str : req.getGoods().get(0).getReportTypes()){
+            for (Byte str : req.getGoods().get(0).getReportTypes()) {
                 sb.append(str).append(",");
             }
-            String result3 = sb.deleteCharAt(sb.length()-1).toString();
+            String result3 = sb.deleteCharAt(sb.length() - 1).toString();
             testQuotationGoods.setReprotType(result3);
             //testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
 
@@ -321,16 +323,16 @@ public class QuotationServiceImpl implements QuotationService {
 
     @Override
     @Transactional
-    public void examine(ExamineQuotationReq req){
+    public void examine(ExamineQuotationReq req) {
         final TestQuotationExample testQuotationExample = new TestQuotationExample();
         testQuotationExample.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());
         final List<TestQuotation> testQuotations = testQuotationMapper.selectByExample(testQuotationExample);
-        if (testQuotations == null){
-            throw new ServiceException(HttpStatus.NOT_FOUND,"报价单不存在");
+        if (testQuotations == null) {
+            throw new ServiceException(HttpStatus.NOT_FOUND, "报价单不存在");
         }
         final TestQuotation testQuotation = testQuotations.get(0);
-        if (testQuotation.getState() != QuotationEnum.PRICE_CHECK.getCode()){
-            throw new ServiceException(HttpStatus.NOT_ACCEPTABLE,"报价单状态不正确");
+        if (testQuotation.getState() != QuotationEnum.PRICE_CHECK.getCode()) {
+            throw new ServiceException(HttpStatus.NOT_ACCEPTABLE, "报价单状态不正确");
         }
         //更新报价审核结果
         TestQuotation update = new TestQuotation();
@@ -338,23 +340,23 @@ public class QuotationServiceImpl implements QuotationService {
         update.setAuditId(req.getUser().getId());
         update.setAuditName(req.getUser().getNickname());
 
-        if (0 == req.getCheckResult()){//审核拒绝
+        if (0 == req.getCheckResult()) {//审核拒绝
             update.setAuditReason(req.getReason());
             update.setState(QuotationEnum.PRICE_REFUSE.getCode());
 
-        }else {
+        } else {
             update.setStep(QuotationEnum.STEP_QUOT_CHECKED.getCode());
             if (testQuotation.getPayType() == 0) {//挂账
                 //创建挂账记录，同时删减少用户挂账金额
                 final boolean result = billOutService.creditRecord(testQuotation);
-                if (result){
+                if (result) {
                     //挂账成功
                     update.setState(QuotationEnum.CREDIT.getCode());
-                }else {
+                } else {
                     //挂账失败
                     update.setState(QuotationEnum.NOT_PAID.getCode());
                 }
-            }else {//未支付，待上传支付凭证
+            } else {//未支付，待上传支付凭证
                 update.setState(QuotationEnum.NOT_PAID.getCode());
             }
         }
@@ -363,29 +365,30 @@ public class QuotationServiceImpl implements QuotationService {
 
     /**
      * 加测报价单
+     *
      * @param req
      */
     @Override
     @Transactional
-    public void addQuot(AddQuotationReq req){
+    public void addQuot(AddQuotationReq req) {
         final TestQuotationExample testQuotationExample = new TestQuotationExample();
         testQuotationExample.createCriteria().andQuotationNumEqualTo(req.getOrgQuotationNum());
         final List<TestQuotation> testQuotations = testQuotationMapper.selectByExample(testQuotationExample);
-        if (testQuotations == null){
-            throw new ServiceException(HttpStatus.NOT_FOUND,"原报价单不存在");
+        if (testQuotations == null) {
+            throw new ServiceException(HttpStatus.NOT_FOUND, "原报价单不存在");
         }
         final TestQuotation testQuotation = testQuotations.get(0);
 
         //获取所有测试项目
-        Map<Integer,Integer> itemMap = new HashMap<>();
-        Map<Long,List<QuotaGoodsItemVO>> goodsMap = new HashMap<>();
+        Map<Integer, Integer> itemMap = new HashMap<>();
+        Map<Long, List<QuotaGoodsItemVO>> goodsMap = new HashMap<>();
         int trans_amount = 0;
         for (CreateQuotaGoodsReqVO goods : req.getGoods()) {
             trans_amount += goods.getTestPrice();
             for (QuotaGoodsItemVO item : goods.getItems()) {
                 itemMap.put(item.getItemId(), item.getQuantity());
             }
-            goodsMap.put(goods.getGoodsId(),goods.getItems());
+            goodsMap.put(goods.getGoodsId(), goods.getItems());
         }
         //计算折扣前的总金额
         final Set<Integer> itemIds = itemMap.keySet();
@@ -393,43 +396,43 @@ public class QuotationServiceImpl implements QuotationService {
         basicTestItemExample.createCriteria().andIdIn(new ArrayList<>(itemIds));
         final List<BasicTestItem> basicTestItems = basicTestItemMapper.selectByExample(basicTestItemExample);
         int amount = 0;
-        Map<Integer,BasicTestItem> dbItemMap = new HashMap<>();
+        Map<Integer, BasicTestItem> dbItemMap = new HashMap<>();
         for (BasicTestItem item : basicTestItems) {
             amount += item.getPrice() * itemMap.get(item.getId());
-            dbItemMap.put(item.getId(),item);
+            dbItemMap.put(item.getId(), item);
         }
         //然后再对比实际的金额来计算折扣 报价/基本售价 = 折扣
         final BigDecimal discount = new BigDecimal(trans_amount).multiply(new BigDecimal(100)).divide(new BigDecimal(amount)).setScale(0, RoundingMode.HALF_UP);
         int dis = discount.intValue();
         TestQuotation record = new TestQuotation();
-        BeanCopyUtil.copy(testQuotation,record);
+        BeanCopyUtil.copy(testQuotation, record);
         record.setType(req.getType());
         String quotNo = testQuotation.getQuotationNum();
         TestQuotationExample example = new TestQuotationExample();
         example.createCriteria().andOrgQuotationNumEqualTo(req.getOrgQuotationNum()).andTypeEqualTo(req.getType());
         final long l = testQuotationMapper.countByExample(example);
         //String no = String.format("%02d",l);
-        if (2 == req.getType()){//加测
-            record.setTradeName(record.getTradeName()+"加测");
+        if (2 == req.getType()) {//加测
+            record.setTradeName(record.getTradeName() + "加测");
             //生产报价单号
-            quotNo = testQuotation.getQuotationNum()+"-a"+l;
-        } else if (3 == req.getPayType()){//复测
-            record.setTradeName(record.getTradeName()+"复测");
+            quotNo = testQuotation.getQuotationNum() + "-a" + l;
+        } else if (3 == req.getPayType()) {//复测
+            record.setTradeName(record.getTradeName() + "复测");
             //生产报价单号
-            quotNo = testQuotation.getQuotationNum()+"-r"+l;
+            quotNo = testQuotation.getQuotationNum() + "-r" + l;
         }
         record.setOrgQuotationNum(req.getOrgQuotationNum());
         record.setDiscount(String.valueOf(dis));
-        if (dis < req.getUser().getDiscount()){
+        if (dis < req.getUser().getDiscount()) {
             //状态设置为待审核
             record.setState(QuotationEnum.PRICE_CHECK.getCode());
             record.setStep(QuotationEnum.STEP_QUOT_CHECK.getCode());
-        }else {
+        } else {
             //状态设置为报价审核通过
             record.setStep(QuotationEnum.STEP_QUOT_CHECKED.getCode());
             if (req.getPayType() == 0) {//挂账
                 record.setState(QuotationEnum.CREDIT.getCode());
-            }else {//未支付，待上传支付凭证
+            } else {//未支付，待上传支付凭证
                 record.setState(QuotationEnum.NOT_PAID.getCode());
             }
         }
@@ -454,10 +457,10 @@ public class QuotationServiceImpl implements QuotationService {
             testQuotationGoods.setAmount(req.getGoods().get(0).getTestPrice());
             testQuotationGoods.setQuotationNum(quotNo);
             StringBuilder sb = new StringBuilder();
-            for(Byte str : req.getGoods().get(0).getReportTypes()){
+            for (Byte str : req.getGoods().get(0).getReportTypes()) {
                 sb.append(str).append(",");
             }
-            String result3 = sb.deleteCharAt(sb.length()-1).toString();
+            String result3 = sb.deleteCharAt(sb.length() - 1).toString();
             testQuotationGoods.setReprotType(result3);
             //testQuotationGoods.setOrgPrice(Integer.parseInt(mallGoods.getPrice()));
 
@@ -499,12 +502,12 @@ public class QuotationServiceImpl implements QuotationService {
     }
 
     @Override
-    public QuotationDetailVO detail(QuotationDetailReq req){
+    public QuotationDetailVO detail(QuotationDetailReq req) {
         final TestQuotationExample testQuotationExample = new TestQuotationExample();
         testQuotationExample.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());
         final List<TestQuotation> testQuotations = testQuotationMapper.selectByExample(testQuotationExample);
-        if (testQuotations == null){
-            throw new ServiceException(HttpStatus.NOT_FOUND,"报价单不存在");
+        if (testQuotations == null) {
+            throw new ServiceException(HttpStatus.NOT_FOUND, "报价单不存在");
         }
         final TestQuotation testQuotation = testQuotations.get(0);
         QuotationDetailVO vo = BeanCopyUtil.copy(testQuotation, QuotationDetailVO.class);
@@ -520,14 +523,14 @@ public class QuotationServiceImpl implements QuotationService {
         final List<TestQuotation> arList = testQuotationMapper.selectByExample(aExample);
         List<String> addList = new ArrayList<>();
         List<String> repList = new ArrayList<>();
-        Map<String,TestQuotation> map = new HashMap<>();
-        if (arList != null){
+        Map<String, TestQuotation> map = new HashMap<>();
+        if (arList != null) {
             for (TestQuotation quotation : arList) {
-                map.put(quotation.getQuotationNum(),quotation);
-                if (quotation.getType() == 2){
+                map.put(quotation.getQuotationNum(), quotation);
+                if (quotation.getType() == 2) {
                     addList.add(quotation.getQuotationNum());
                 }
-                if (quotation.getType() == 3){
+                if (quotation.getType() == 3) {
                     repList.add(quotation.getQuotationNum());
                 }
             }
@@ -540,7 +543,7 @@ public class QuotationServiceImpl implements QuotationService {
                     .andTestQuotationGoodsIdEqualTo(testQuotationGood.getGoodsId());
             final List<TestQuotationItem> testQuotationItemList = testQuotationItemMapper.selectByExample(testQuotationItemExample);
             QuotaGoodsVO quotaGoodsVO = new QuotaGoodsVO();
-            BeanCopyUtil.copy(testQuotationGood,quotaGoodsVO);
+            BeanCopyUtil.copy(testQuotationGood, quotaGoodsVO);
             final String[] split = testQuotationGood.getReprotType().split(",");
             List<Byte> list = new ArrayList<>();
             for (String s : split) {
@@ -551,7 +554,7 @@ public class QuotationServiceImpl implements QuotationService {
             //开始组装item
             for (TestQuotationItem testQuotationItem : testQuotationItemList) {
                 QuotaDetailItemVO itemVO = new QuotaDetailItemVO();
-                BeanCopyUtil.copy(testQuotationItem,itemVO);
+                BeanCopyUtil.copy(testQuotationItem, itemVO);
                 itemVOList.add(itemVO);
             }
             quotaGoodsVO.setItems(itemVOList);
@@ -560,7 +563,7 @@ public class QuotationServiceImpl implements QuotationService {
                 TestQuotationGoodsExample aaExample = new TestQuotationGoodsExample();
                 aaExample.createCriteria().andQuotationNumIn(addList).andGoodsIdEqualTo(testQuotationGood.getGoodsId());
                 final List<TestQuotationGoods> addGoods = testQuotationGoodsMapper.selectByExample(aaExample);
-                if (!CollectionUtils.isEmpty(addGoods)){
+                if (!CollectionUtils.isEmpty(addGoods)) {
                     List<AdditionalQuotationVO> aList = new ArrayList<>();
                     for (TestQuotationGoods ag : addGoods) {
                         AdditionalQuotationVO addiVo = new AdditionalQuotationVO();
@@ -571,7 +574,7 @@ public class QuotationServiceImpl implements QuotationService {
                         List<QuotaDetailItemVO> aItemVOList = new ArrayList<>();
                         for (TestQuotationItem testQuotationItem : aItemList) {
                             QuotaDetailItemVO itemVO = new QuotaDetailItemVO();
-                            BeanCopyUtil.copy(testQuotationItem,itemVO);
+                            BeanCopyUtil.copy(testQuotationItem, itemVO);
                             aItemVOList.add(itemVO);
                         }
                         final TestQuotation testQuotation1 = map.get(ag.getQuotationNum());
@@ -590,7 +593,7 @@ public class QuotationServiceImpl implements QuotationService {
                 TestQuotationGoodsExample aaExample = new TestQuotationGoodsExample();
                 aaExample.createCriteria().andQuotationNumIn(repList).andGoodsIdEqualTo(testQuotationGood.getGoodsId());
                 final List<TestQuotationGoods> repGoods = testQuotationGoodsMapper.selectByExample(aaExample);
-                if (!CollectionUtils.isEmpty(repGoods)){
+                if (!CollectionUtils.isEmpty(repGoods)) {
                     List<AdditionalQuotationVO> rList = new ArrayList<>();
                     for (TestQuotationGoods rg : repGoods) {
                         AdditionalQuotationVO repVO = new AdditionalQuotationVO();
@@ -601,7 +604,7 @@ public class QuotationServiceImpl implements QuotationService {
                         List<QuotaDetailItemVO> aItemVOList = new ArrayList<>();
                         for (TestQuotationItem testQuotationItem : aItemList) {
                             QuotaDetailItemVO itemVO = new QuotaDetailItemVO();
-                            BeanCopyUtil.copy(testQuotationItem,itemVO);
+                            BeanCopyUtil.copy(testQuotationItem, itemVO);
                             aItemVOList.add(itemVO);
                         }
                         final TestQuotation testQuotation1 = map.get(rg.getQuotationNum());
@@ -630,13 +633,13 @@ public class QuotationServiceImpl implements QuotationService {
 
     //上传水单
     @Override
-    public void upload(AddQuotationBillReq req){
+    public void upload(AddQuotationBillReq req) {
 
         TestQuotationExample example = new TestQuotationExample();
         example.createCriteria().andQuotationNumEqualTo(req.getQuotationNum());
         List<TestQuotation> testQuotations = testQuotationMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(testQuotations)) {
-            throw new ServiceException(HttpStatus.NOT_FOUND,"报价单不存在");
+            throw new ServiceException(HttpStatus.NOT_FOUND, "报价单不存在");
         }
         TestQuotation testQuotation = testQuotations.get(0);
 
@@ -692,17 +695,34 @@ public class QuotationServiceImpl implements QuotationService {
     }*/
 
 
-
-    private int calReportAmt(String report){
-        if (report.contains("1") || report.contains("2")){
-            if (report.contains("3") || report.contains("4")){
+    private int calReportAmt(String report) {
+        if (report.contains("1") || report.contains("2")) {
+            if (report.contains("3") || report.contains("4")) {
                 return 10000;
-            }}
+            }
+        }
         return 0;
     }
 
     @Override
-    public String getRate(){
+    public String getRate() {
         return systemParameterMapper.selectByPrimaryKey("TAX_RATE").getParamValue();
+    }
+
+    @Override
+    public List<QuotationNameVO> getQuotationByName(BaseNameReq req) {
+        List<QuotationNameVO> voList = new ArrayList<>();
+        if (StringUtils.isEmpty(req.getName())) return voList;
+        TestQuotationExample example = new TestQuotationExample();
+        example.createCriteria().andTradeNameLike("%" + req.getName() + "%");
+        List<TestQuotation> quotations = testQuotationMapper.selectByExample(example);
+        if (quotations.isEmpty()) return voList;
+        quotations.forEach(quotation->{
+            QuotationNameVO vo = new QuotationNameVO();
+            vo.setTradeId(quotation.getQuotationNum());
+            vo.setTradeName(quotation.getTradeName());
+            voList.add(vo);
+        });
+        return voList;
     }
 }

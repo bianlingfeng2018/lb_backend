@@ -3,6 +3,7 @@ package com.libiao.customer.controller;
 import com.alibaba.fastjson2.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.TestQuotation;
+import com.libiao.customer.model.BaseNameReq;
 import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.quotation.*;
@@ -97,6 +98,13 @@ public class QuotationController {
     @ApiOperation("确认上传水单")
     @PostMapping("confirm")
     public ResponseEntity<BaseResponseVO> confirm(@RequestBody AddQuotationBillReq req){
+        quotationService.upload(req);
+        return ResponseUtil.getDefaultResp();
+    }
+
+    @ApiOperation("根据名称查询交易")
+    @PostMapping("getQuotationByName")
+    public ResponseEntity<List<QuotationNameVO>> getQuotationByName(@RequestBody BaseNameReq req){
         quotationService.upload(req);
         return ResponseUtil.getDefaultResp();
     }

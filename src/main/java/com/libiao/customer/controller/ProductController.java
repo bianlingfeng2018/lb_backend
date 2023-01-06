@@ -5,7 +5,6 @@ import com.libiao.customer.dal.model.BasicCountry;
 import com.libiao.customer.dal.model.BasicStandard;
 import com.libiao.customer.dal.model.BasicTestItem;
 import com.libiao.customer.model.BasePageReq;
-import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
 import com.libiao.customer.model.product.*;
 import com.libiao.customer.service.ProductService;
@@ -54,9 +53,9 @@ public class ProductController {
     @AccessController
     @ApiOperation("创建商品")
     @PostMapping("create")
-    public ResponseEntity<BaseResponseVO> create(@RequestBody AddGoodsReq req){
-        productService.createProduct(req);
-        return ResponseUtil.getDefaultResp();
+    public ResponseEntity<Long> create(@RequestBody AddGoodsReq req){
+        final Long product = productService.createProduct(req);
+        return ResponseUtil.getResponseVO(product);
     }
 
     @AccessController

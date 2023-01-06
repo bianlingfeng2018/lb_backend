@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void createProduct(AddGoodsReq req){
+    public Long createProduct(AddGoodsReq req){
         MallGoods record = new MallGoods();
         BeanCopyUtil.copy(req,record);
 
@@ -64,6 +64,7 @@ public class ProductServiceImpl implements ProductService {
             row.setItemId(item.getId());
             goodsItemMapper.insertSelective(row);
         }
+        return record.getId();
     }
 
     @Override

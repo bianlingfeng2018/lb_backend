@@ -110,7 +110,7 @@ public class FileUtil {
      */
     private void  downloadFile(String filePath, String fileName, HttpServletResponse response){
         try{
-            File file = new File(filePath);
+            File file = new File(filePath+fileName);
             if (file.exists()) {
                 InputStream ins = new FileInputStream(file);
                 BufferedInputStream bins = new BufferedInputStream(ins);// 放到缓冲流里面

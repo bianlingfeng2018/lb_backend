@@ -327,7 +327,11 @@ public class ApplicationServiceImpl implements ApplicationService {
             //完全走直属的
             //
             //算法
+            //第一轮：筛选公司，找到能测的所有集合，如果全包含，挑选结束
             //
+            //第二轮：重新筛选一家公司，在从剩下的公司中，找到需要最少的公司组合。组合为2筛选结束
+            //
+            //第三轮，递归调用，找到符合组合的，即结束。
 
         }else {
             //直属的

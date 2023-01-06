@@ -105,8 +105,8 @@ public class QuotationController {
     @ApiOperation("根据名称查询交易")
     @PostMapping("getQuotationByName")
     public ResponseEntity<List<QuotationNameVO>> getQuotationByName(@RequestBody BaseNameReq req){
-        quotationService.upload(req);
-        return ResponseUtil.getDefaultResp();
+
+        return ResponseUtil.getResponseVO(quotationService.getQuotationByName(req));
     }
 
 

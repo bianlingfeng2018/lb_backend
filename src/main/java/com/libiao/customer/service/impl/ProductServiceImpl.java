@@ -1,5 +1,6 @@
 package com.libiao.customer.service.impl;
 
+import ch.qos.logback.core.util.TimeUtil;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
@@ -7,10 +8,13 @@ import com.libiao.customer.model.BasePageReq;
 import com.libiao.customer.model.product.*;
 import com.libiao.customer.service.ProductService;
 import com.libiao.customer.util.BeanCopyUtil;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -54,7 +58,8 @@ public class ProductServiceImpl implements ProductService {
     public Long createProduct(AddGoodsReq req){
         MallGoods record = new MallGoods();
         BeanCopyUtil.copy(req,record);
-
+        String date = DateFormatUtils.format(new Date(),"YYMMDDmmss");
+        record.setGoodsNum("LTIT"+date);
         mallGoodsMapper.insertSelective(record);
 
         List<BasicItemVO> items = req.getItems();

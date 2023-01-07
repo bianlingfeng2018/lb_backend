@@ -1,6 +1,7 @@
 package com.libiao.customer.service;
 
 import com.github.pagehelper.PageInfo;
+import com.libiao.customer.dal.model.ClientContract;
 import com.libiao.customer.model.client.contract.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +12,7 @@ public interface ContractService {
 
     void addContract(AddContractReq req);
 
+    ClientContract getClientByNum(String clietnNum);
 
     ClientContractDetailVO detail(ContractDetailReq req);
 

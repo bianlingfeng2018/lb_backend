@@ -5,11 +5,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.BalanceInfoMapper;
 import com.libiao.customer.dal.mapper.BalanceMapper;
+import com.libiao.customer.dal.mapper.ClientBillIncomeMapper;
+import com.libiao.customer.dal.mapper.ClientContractMapper;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.balance.BalanceListReq;
 import com.libiao.customer.model.balance.BalanceReq;
 import com.libiao.customer.model.balance.BalanceVo;
-import com.libiao.customer.repository.ClientRepository;
+import com.libiao.customer.model.enums.BillStatus;
 import com.libiao.customer.service.BalanceService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
@@ -35,7 +37,9 @@ public class BalanceServiceImpl implements BalanceService {
     BalanceInfoMapper balanceInfoMapper;
 
     @Autowired
-    ClientRepository clientRepository;
+    ClientContractMapper clientContractMapper;
+    @Autowired
+    ClientBillIncomeMapper billIncomeMapper;
 
     @Override
     public Balance getBalance(String clientId) {
@@ -51,31 +55,19 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     public PageInfo<BalanceVo> getBalanceList(BalanceListReq listReq) {
-//        ClientExample clientExample = new ClientExample();
-//        ClientExample.Criteria criteria =  clientExample.createCriteria();
-//        ClientExample.Criteria criteria2 =  clientExample.createCriteria();
-//        if(null != listReq.getClient()){
-//            criteria.andClientNumLike(listReq.getClient());
-//            criteria2.andNameLike(listReq.getClient());
-//        }
-//
-//        if(null !=listReq.getStartTime() && null !=listReq.getEndTime()){ //时间是varchar类型？
-////            criteria.andReserveDaysBetween(listReq.getStartTime(),listReq.getEndTime());
-////            criteria2.andReserveDaysBetween(listReq.getStartTime(),listReq.getEndTime());
-//        }
-//        clientExample.or(criteria2);
-//        List<Client> clients = clientMapper.selectByExample(clientExample);
-        List<Client> clients ;
+        Map<String,String> clientIds = new HashMap<>();
+        ClientContractExample clientContractExample = new ClientContractExample();
+        ClientContractExample.Criteria criteria = clientContractExample.createCriteria();
         if(!StringUtils.isEmpty(listReq.getClient())){
-            ClientParamVO paramVO = new ClientParamVO();
-            paramVO.setCnameOrAbbr(listReq.getClient());
-            clients= clientRepository.selectAllByCondition(paramVO);
-        }else
-            clients = clientRepository.selectAll();
+            criteria.andClientNumEqualTo(listReq.getClient());
+        }
+        if(null!= listReq.getStartTime() && null!=listReq.getEndTime()){
+            criteria.andContractStartDateBetween(listReq.getStartTime(),listReq.getEndTime());
+        }
+        List<ClientContract> clients =  clientContractMapper.selectByExample(clientContractExample);
         if(clients.size() == 0) return new PageInfo<>(new ArrayList<>());
 
-        Map<String,String> clientIds = new HashMap<>();
-        clients.forEach(client -> clientIds.put(client.getClientNum(),client.getName()));
+        clients.forEach(client -> clientIds.put(client.getClientNum(),client.getClientName()));
         PageHelper.startPage(listReq.getPage(),listReq.getPageSize());
         BalanceExample balanceExample = new BalanceExample();
         balanceExample.createCriteria().andClientIdIn(new ArrayList<>(clientIds.keySet()));
@@ -83,11 +75,26 @@ public class BalanceServiceImpl implements BalanceService {
         List<BalanceVo> vo = new ArrayList<>();
         balances.forEach(balance -> {
             BalanceVo balanceVo = BeanCopyUtil.copy(balance,BalanceVo.class);
-            balanceVo.setLeftIncomeAmt(0L);//TODO 所有交易相加？
+            // 剩余收款金额=应收帐明细-收款帐-期末余额
+            balanceVo.setLeftIncomeAmt(getClientIncomeCount(balance.getClientId()));
             balanceVo.setName(clientIds.get(balanceVo.getClientId()));
             vo.add(balanceVo);
         });
         return new PageInfo<>(vo);
+    }
+
+    //获取商户入账总和
+    private Long getClientIncomeCount(String clientId){
+        ClientBillIncomeExample billIncomeExample = new ClientBillIncomeExample();
+        billIncomeExample.createCriteria().andClientIdEqualTo(clientId)
+        .andOprationTypeEqualTo(BillStatus.BILL_INCOME.getValue());
+        List<ClientBillIncome> billIncomes = billIncomeMapper.selectByExample(billIncomeExample);
+        if(billIncomes.isEmpty()) return 0L;
+         long sum = 0L;
+        for (ClientBillIncome bill : billIncomes) {
+            sum += (bill.getOriginAmount()-bill.getFinalAmount()-bill.getOperationAmount());
+        }
+        return sum;
     }
 
 

@@ -40,7 +40,7 @@ public class BillIncomeServiceImpl implements BillIncomeService {
         if (!StringUtils.isEmpty( req.getClientId())) {
             criteria.andClientIdEqualTo(req.getClientId());
         }
-        if (null != req.getOperType()) {
+        if (!StringUtils.isEmpty(req.getOperType())) {
             criteria.andOprationTypeEqualTo(req.getOperType());
         }
         if (null != req.getEndTime() && null != req.getStartTime()) {

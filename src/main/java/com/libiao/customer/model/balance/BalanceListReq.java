@@ -17,6 +17,8 @@ import java.util.Date;
 public class BalanceListReq extends BasePageReq {
     @ApiModelProperty("客户ID或名称")
     String client;
+    @ApiModelProperty("客户ID或名称")
+    String clientName;
     @ApiModelProperty("合同开始时间")
     Date startTime;
     @ApiModelProperty("合同结束时间")

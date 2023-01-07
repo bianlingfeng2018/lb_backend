@@ -51,6 +51,9 @@ public class CustomerBillServiceImpl implements CustomerBillService {
         if (!StringUtils.isEmpty(req.getClientId())) {
             criteria.andClientIdEqualTo(req.getClientId());
         }
+        if (!StringUtils.isEmpty(req.getTradeId())) {
+            criteria.andTradeIdEqualTo(req.getTradeId());
+        }
         if (req.getStatus() != null) {
             criteria.andStatusEqualTo(req.getStatus());
         }

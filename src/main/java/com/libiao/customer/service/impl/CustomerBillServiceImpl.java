@@ -25,6 +25,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -121,6 +123,11 @@ public class CustomerBillServiceImpl implements CustomerBillService {
         customerBill.setStatus(req.getStatus());
         customerBill.setOperUser(String.valueOf(req.getUser().getId()));
         customerBill.setOperTime(new Date());
+        try {
+            customerBill.setIncomeTime(DateFormat.getDateInstance().parse(req.getIncomeTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         customerBill.setIncomeAmt(req.getIncomeAmt().intValue());
         int row = billMapper.updateByPrimaryKeySelective(customerBill);
         if(row !=1) return ResponseUtil.convert(HttpStatus.INTERNAL_SERVER_ERROR,"系统错误");

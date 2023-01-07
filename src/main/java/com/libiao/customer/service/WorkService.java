@@ -21,6 +21,9 @@ public interface WorkService {
     //删除工作单
     void delete(WorkOrderDetailReq req);
 
+    @Transactional
+    void createWorkOrder(CreateWorkOrderListReq req);
+
     List<CheckCompany> comList(CheckComListReq req);
 
     //获得该公司下的能测试的，这个测试项目

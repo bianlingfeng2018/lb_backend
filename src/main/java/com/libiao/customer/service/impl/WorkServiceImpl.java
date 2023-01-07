@@ -5,10 +5,7 @@ import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.work.*;
 import com.libiao.customer.service.WorkService;
-import com.libiao.customer.util.BeanCopyUtil;
-import com.libiao.customer.util.DateUtils;
-import com.libiao.customer.util.LikeUtil;
-import com.libiao.customer.util.ServiceException;
+import com.libiao.customer.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,7 +14,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class WorkServiceImpl implements WorkService {
@@ -32,9 +32,15 @@ public class WorkServiceImpl implements WorkService {
     @Autowired
     private TestApplicationFormMapper testApplicationFormMapper;
     @Autowired
+    private TestApplicationSampleMapper testApplicationSampleMapper;
+    @Autowired
+    private TestApplicationItemMapper testApplicationItemMapper;
+    @Autowired
     private CheckCompanyMapper checkCompanyMapper;
     @Autowired
     private TestInfoMapperExt testInfoMapperExt;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public PageInfo<TestWorkOrder> list(WorkOrderListReq req){
@@ -148,8 +154,73 @@ public class WorkServiceImpl implements WorkService {
      * 手动创建工作单
      *
      */
-    public void createWorkOrder(){
+    @Override
+    @Transactional
+    public void createWorkOrder(CreateWorkOrderListReq req){
 
+        TestApplicationFormExample appExample = new TestApplicationFormExample();
+        appExample.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
+        List<TestApplicationForm> testApplicationForms = testApplicationFormMapper.selectByExample(appExample);
+        TestApplicationForm testApplicationForm = testApplicationForms.get(0);
+        if (1 != testApplicationForm.getContractStatus()) {
+            throw new ServiceException(HttpStatus.BAD_REQUEST,"申请单状态不正确");
+        }
+
+        TestApplicationSampleExample sampleExample = new TestApplicationSampleExample();
+        sampleExample.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
+        List<TestApplicationSample> testApplicationSamples = testApplicationSampleMapper.selectByExample(sampleExample);
+        Map<Long, TestApplicationSample> sampleMap = testApplicationSamples.stream().collect(Collectors.toMap(TestApplicationSample::getId, sp -> sp));
+
+        TestApplicationItemExample itemExample = new TestApplicationItemExample();
+        itemExample.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
+        List<TestApplicationItem> testApplicationItems = testApplicationItemMapper.selectByExample(itemExample);
+        Map<Integer, TestApplicationItem> itemMap = testApplicationItems.stream().collect(Collectors.toMap(TestApplicationItem::getTestItemId, tt->tt));
+
+        for (CreateWorkOrderVO createWorkOrderVO : req.getOrderList()) {
+            //创建工作单
+
+            TestWorkOrder record = new TestWorkOrder();
+            //工作单编号：LTI+T/I/C+W+年份后两位+月份+日+ （A-Z）+ 三位
+            String workOrderNum = redisUtil.getWorkNo(DateUtils.getDate("yyyyMMdd"));
+            record.setWorkOrderNum(workOrderNum);
+            record.setQuotationNum(testApplicationForm.getQuotationNum());
+            record.setApplicationNum(testApplicationForm.getApplicationNum());
+            Calendar instance = Calendar.getInstance();
+            record.setCreateTime(instance.getTime());
+
+            instance.add(Calendar.DATE,1);
+            record.setPlanDate(instance.getTime());
+            //TODO 开单日期
+
+            record.setService(testApplicationForm.getService());
+            record.setTestComId(createWorkOrderVO.getTestComId());
+            record.setComName(createWorkOrderVO.getComName());
+            record.setSubContract(createWorkOrderVO.getSubContract());
+            record.setClientName(testApplicationForm.getApplicationName());
+            record.setSampleStatus(testApplicationForm.getSampleStatus());
+
+            testWorkOrderMapper.insertSelective(record);
+
+            for (CreateWorkOrderItemVO item : createWorkOrderVO.getTestItemList()) {
+
+                TestApplicationItem testApplicationItem = itemMap.get(item.getTestItemId());
+                TestApplicationSample testApplicationSample = sampleMap.get(testApplicationItem.getAppSampleId());
+
+                TestWorkOrderItem sampleRow = new TestWorkOrderItem();
+                sampleRow.setTestWorkOrderId(record.getId());
+                sampleRow.setSampleLocation(testApplicationSample.getSampleName());
+                sampleRow.setSampleModel(testApplicationSample.getSampleModel());
+                sampleRow.setSampleMaterial(testApplicationSample.getSampleMaterial());
+                sampleRow.setSampleDesc(testApplicationSample.getSampleDescription());
+                sampleRow.setTestItem(testApplicationItem.getItemName());
+                sampleRow.setTestItemId(testApplicationItem.getTestItemId());
+                sampleRow.setTestItemMethod(testApplicationItem.getTestMethod());
+                sampleRow.setTestItemCase(testApplicationItem.getTestCase());
+                sampleRow.setRemark(testApplicationItem.getRemark());
+                sampleRow.setLabId(item.getLabId());
+                testWorkOrderItemMapper.insertSelective(sampleRow);
+            }
+        }
     }
 
     @Override

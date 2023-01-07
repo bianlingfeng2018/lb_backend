@@ -83,7 +83,7 @@ public class WorkController {
 
     //TODO 这块和自动创建，还差校验CAS资质逻辑
     @ApiOperation(value = "检测公司列表")
-    @GetMapping(value = "comList")
+    @PostMapping(value = "comList")
     public ResponseEntity<ListResponseVO<CheckCompanyVO>> comList(@RequestBody CheckComListReq req){
         List<CheckCompany> checkCompanies = workService.comList(req);
         List<CheckCompanyVO> voList = new ArrayList<>();
@@ -92,7 +92,7 @@ public class WorkController {
     }
 
     @ApiOperation(value = "该公司下检测项目列表")
-    @GetMapping(value = "itemList")
+    @PostMapping(value = "itemList")
     public ResponseEntity<ListResponseVO<CheckItemVO>> itemList(@RequestBody CheckItemReq req){
         List<CheckItemVO> itemList = workService.getComCheckItemList(req);
         List<CheckItemVO> voList = new ArrayList<>();
@@ -100,5 +100,11 @@ public class WorkController {
         return ResponseUtil.getListResponseVO(voList,voList.size());
     }
 
-    //
+    @ApiOperation(value = "新增工作单列表")
+    @PostMapping(value = "create")
+    public ResponseEntity<BaseResponseVO> createWorkOrders(@RequestBody CreateWorkOrderListReq req){
+        workService.createWorkOrder(req);
+        return ResponseUtil.getDefaultResp();
+    }
+
 }

@@ -282,6 +282,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new ServiceException(HttpStatus.NOT_FOUND,"申请单未找到");
         }
         final TestApplicationForm testApplicationForm = testApplicationForms.get(0);
+        if (testApplicationForm.getContractStatus() != 1){
+            throw new ServiceException(HttpStatus.BAD_REQUEST,"申请单状态不正确");
+        }
 
         //找到申请单后，
         //根据申请单下属的测试项目来进行拆分
@@ -359,6 +362,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                     testWorkOrderItemMapper.insertSelective(sampleRow);
                 }
             }
+
+            TestApplicationForm update = new TestApplicationForm();
+            update.setId(testApplicationForm.getId());
+            update.setContractStatus((byte) 3);
+            testApplicationFormMapper.updateByPrimaryKeySelective(update);
         }
     }
 

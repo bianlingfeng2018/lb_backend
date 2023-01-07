@@ -1,6 +1,7 @@
 package com.libiao.customer.service.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.libiao.customer.dal.mapper.TestApplicationFormMapper;
 import com.libiao.customer.dal.mapper.TestWorkOrderItemMapper;
 import com.libiao.customer.dal.mapper.TestWorkOrderMapper;
 import com.libiao.customer.dal.mapper.TestWorkOrderSampleMapper;
@@ -31,6 +32,8 @@ public class WorkServiceImpl implements WorkService {
     private TestWorkOrderItemMapper testWorkOrderItemMapper;
     @Autowired
     private TestWorkOrderSampleMapper testWorkOrderSampleMapper;
+    @Autowired
+    private TestApplicationFormMapper testApplicationFormMapper;
 
     @Override
     public PageInfo<TestWorkOrder> list(WorkOrderListReq req){
@@ -130,6 +133,13 @@ public class WorkServiceImpl implements WorkService {
         sampleExample.createCriteria().andTestWorkOrderIdEqualTo(req.getId());
         testWorkOrderSampleMapper.deleteByExample(sampleExample);
 
+        //将申请单的状态修改为“评审通过”（可重新创建工作单）
+
+        TestApplicationForm appUpdate = new TestApplicationForm();
+        appUpdate.setContractStatus((byte) 1);
+        TestApplicationFormExample appExample = new TestApplicationFormExample();
+        appExample.createCriteria().andApplicationNumEqualTo(testWorkOrder.getApplicationNum());
+        testApplicationFormMapper.updateByExampleSelective(appUpdate,appExample);
     }
 
 }

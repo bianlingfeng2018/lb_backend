@@ -13,6 +13,8 @@ import java.util.Date;
 public class BillOutReq extends BasePageReq {
     @ApiModelProperty(value = "客户ID",required = true)
     String clientId;
+    @ApiModelProperty(value = "tradeId")
+    String tradeId;
     @ApiModelProperty("发生开始时间")
     Date startTime;
     @ApiModelProperty("发生结束时间")

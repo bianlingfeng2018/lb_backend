@@ -1,5 +1,6 @@
 package com.libiao.customer.model.balance;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -17,6 +18,8 @@ public class CommissionRecordVo {
     private String operUser;
     @ApiModelProperty("佣金比")
     private Integer rate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty("操作时间")
     private Date operTime;
     @ApiModelProperty("状态")

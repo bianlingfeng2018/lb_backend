@@ -59,6 +59,9 @@ public class BillOutServiceImpl implements BillOutService {
         if (!StringUtils.isEmpty( req.getClientId())) {
             criteria.andClientIdEqualTo(req.getClientId());
         }
+        if (!StringUtils.isEmpty( req.getTradeId())) {
+            criteria.andTradeIdEqualTo(req.getTradeId());
+        }
         if (!StringUtils.isEmpty( req.getStatus())) {
             criteria.andStatusEqualTo(req.getStatus());
         }

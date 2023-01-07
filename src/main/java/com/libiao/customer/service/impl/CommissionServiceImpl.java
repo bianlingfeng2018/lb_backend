@@ -64,7 +64,12 @@ public class CommissionServiceImpl implements CommissionService {
         pageInfo.getList().forEach(clientCommission -> {
             CommissionVo commissionVo = BeanCopyUtil.copy(clientCommission, CommissionVo.class);
             Balance balance = balanceService.getBalance(clientCommission.getClientId());
-            commissionVo.setUnsettleCommission(balance.getUnsettleCommission());
+            if(null == balance){
+                commissionVo.setUnsettleCommission(0L);
+            }else{
+                commissionVo.setUnsettleCommission(balance.getUnsettleCommission());
+            }
+
             voList.add(commissionVo);
         });
 

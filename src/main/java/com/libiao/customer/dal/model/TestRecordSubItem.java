@@ -3,6 +3,8 @@ package com.libiao.customer.dal.model;
 import java.io.Serializable;
 
 public class TestRecordSubItem implements Serializable {
+    private Long id;
+
     private Long oriRecordId;
 
     private String subTestItem;
@@ -18,6 +20,14 @@ public class TestRecordSubItem implements Serializable {
     private String testResult;
 
     private static final long serialVersionUID = 1L;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getOriRecordId() {
         return oriRecordId;
@@ -81,6 +91,7 @@ public class TestRecordSubItem implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
         sb.append(", oriRecordId=").append(oriRecordId);
         sb.append(", subTestItem=").append(subTestItem);
         sb.append(", cas=").append(cas);

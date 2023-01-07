@@ -575,6 +575,136 @@ public class TestOriRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andTestLabIsNull() {
+            addCriterion("test_lab is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIsNotNull() {
+            addCriterion("test_lab is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabEqualTo(String value) {
+            addCriterion("test_lab =", value, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabNotEqualTo(String value) {
+            addCriterion("test_lab <>", value, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabGreaterThan(String value) {
+            addCriterion("test_lab >", value, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabGreaterThanOrEqualTo(String value) {
+            addCriterion("test_lab >=", value, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabLessThan(String value) {
+            addCriterion("test_lab <", value, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabLessThanOrEqualTo(String value) {
+            addCriterion("test_lab <=", value, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabLike(String value) {
+            addCriterion("test_lab like", value, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabNotLike(String value) {
+            addCriterion("test_lab not like", value, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIn(List<String> values) {
+            addCriterion("test_lab in", values, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabNotIn(List<String> values) {
+            addCriterion("test_lab not in", values, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabBetween(String value1, String value2) {
+            addCriterion("test_lab between", value1, value2, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabNotBetween(String value1, String value2) {
+            addCriterion("test_lab not between", value1, value2, "testLab");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdIsNull() {
+            addCriterion("test_lab_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdIsNotNull() {
+            addCriterion("test_lab_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdEqualTo(Integer value) {
+            addCriterion("test_lab_id =", value, "testLabId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdNotEqualTo(Integer value) {
+            addCriterion("test_lab_id <>", value, "testLabId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdGreaterThan(Integer value) {
+            addCriterion("test_lab_id >", value, "testLabId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("test_lab_id >=", value, "testLabId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdLessThan(Integer value) {
+            addCriterion("test_lab_id <", value, "testLabId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdLessThanOrEqualTo(Integer value) {
+            addCriterion("test_lab_id <=", value, "testLabId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdIn(List<Integer> values) {
+            addCriterion("test_lab_id in", values, "testLabId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdNotIn(List<Integer> values) {
+            addCriterion("test_lab_id not in", values, "testLabId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdBetween(Integer value1, Integer value2) {
+            addCriterion("test_lab_id between", value1, value2, "testLabId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLabIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("test_lab_id not between", value1, value2, "testLabId");
+            return (Criteria) this;
+        }
+
         public Criteria andTestItemIsNull() {
             addCriterion("test_item is null");
             return (Criteria) this;
@@ -645,133 +775,63 @@ public class TestOriRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdIsNull() {
-            addCriterion("test_lab_id is null");
+        public Criteria andTestItemIdIsNull() {
+            addCriterion("test_item_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdIsNotNull() {
-            addCriterion("test_lab_id is not null");
+        public Criteria andTestItemIdIsNotNull() {
+            addCriterion("test_item_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdEqualTo(Integer value) {
-            addCriterion("test_lab_id =", value, "testLabId");
+        public Criteria andTestItemIdEqualTo(Integer value) {
+            addCriterion("test_item_id =", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdNotEqualTo(Integer value) {
-            addCriterion("test_lab_id <>", value, "testLabId");
+        public Criteria andTestItemIdNotEqualTo(Integer value) {
+            addCriterion("test_item_id <>", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdGreaterThan(Integer value) {
-            addCriterion("test_lab_id >", value, "testLabId");
+        public Criteria andTestItemIdGreaterThan(Integer value) {
+            addCriterion("test_item_id >", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("test_lab_id >=", value, "testLabId");
+        public Criteria andTestItemIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("test_item_id >=", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdLessThan(Integer value) {
-            addCriterion("test_lab_id <", value, "testLabId");
+        public Criteria andTestItemIdLessThan(Integer value) {
+            addCriterion("test_item_id <", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdLessThanOrEqualTo(Integer value) {
-            addCriterion("test_lab_id <=", value, "testLabId");
+        public Criteria andTestItemIdLessThanOrEqualTo(Integer value) {
+            addCriterion("test_item_id <=", value, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdIn(List<Integer> values) {
-            addCriterion("test_lab_id in", values, "testLabId");
+        public Criteria andTestItemIdIn(List<Integer> values) {
+            addCriterion("test_item_id in", values, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdNotIn(List<Integer> values) {
-            addCriterion("test_lab_id not in", values, "testLabId");
+        public Criteria andTestItemIdNotIn(List<Integer> values) {
+            addCriterion("test_item_id not in", values, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdBetween(Integer value1, Integer value2) {
-            addCriterion("test_lab_id between", value1, value2, "testLabId");
+        public Criteria andTestItemIdBetween(Integer value1, Integer value2) {
+            addCriterion("test_item_id between", value1, value2, "testItemId");
             return (Criteria) this;
         }
 
-        public Criteria andTestLabIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("test_lab_id not between", value1, value2, "testLabId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabIsNull() {
-            addCriterion("test_lab is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabIsNotNull() {
-            addCriterion("test_lab is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabEqualTo(String value) {
-            addCriterion("test_lab =", value, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabNotEqualTo(String value) {
-            addCriterion("test_lab <>", value, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabGreaterThan(String value) {
-            addCriterion("test_lab >", value, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabGreaterThanOrEqualTo(String value) {
-            addCriterion("test_lab >=", value, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabLessThan(String value) {
-            addCriterion("test_lab <", value, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabLessThanOrEqualTo(String value) {
-            addCriterion("test_lab <=", value, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabLike(String value) {
-            addCriterion("test_lab like", value, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabNotLike(String value) {
-            addCriterion("test_lab not like", value, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabIn(List<String> values) {
-            addCriterion("test_lab in", values, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabNotIn(List<String> values) {
-            addCriterion("test_lab not in", values, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabBetween(String value1, String value2) {
-            addCriterion("test_lab between", value1, value2, "testLab");
-            return (Criteria) this;
-        }
-
-        public Criteria andTestLabNotBetween(String value1, String value2) {
-            addCriterion("test_lab not between", value1, value2, "testLab");
+        public Criteria andTestItemIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("test_item_id not between", value1, value2, "testItemId");
             return (Criteria) this;
         }
 

@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.libiao.customer.dal.mapper.TestRecordSubItemMapper">
   <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestRecordSubItem">
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="ori_record_id" jdbcType="BIGINT" property="oriRecordId" />
     <result column="sub_test_item" jdbcType="VARCHAR" property="subTestItem" />
     <result column="cas" jdbcType="VARCHAR" property="cas" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    ori_record_id, sub_test_item, cas, limit_value, unit, avg_value, test_result
+    id, ori_record_id, sub_test_item, cas, limit_value, unit, avg_value, test_result
   </sql>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestRecordSubItemExample" resultMap="BaseResultMap">
     select
@@ -85,6 +86,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from test_record_sub_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from test_record_sub_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
   <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.TestRecordSubItemExample">
     delete from test_record_sub_item
     <if test="_parameter != null">
@@ -92,6 +103,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.libiao.customer.dal.model.TestRecordSubItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into test_record_sub_item (ori_record_id, sub_test_item, cas, 
       limit_value, unit, avg_value, 
       test_result)
@@ -100,6 +114,9 @@
       #{testResult,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestRecordSubItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into test_record_sub_item
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="oriRecordId != null">
@@ -157,6 +174,9 @@
   <update id="updateByExampleSelective" parameterType="map">
     update test_record_sub_item
     <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
       <if test="row.oriRecordId != null">
         ori_record_id = #{row.oriRecordId,jdbcType=BIGINT},
       </if>
@@ -185,7 +205,8 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update test_record_sub_item
-    set ori_record_id = #{row.oriRecordId,jdbcType=BIGINT},
+    set id = #{row.id,jdbcType=BIGINT},
+      ori_record_id = #{row.oriRecordId,jdbcType=BIGINT},
       sub_test_item = #{row.subTestItem,jdbcType=VARCHAR},
       cas = #{row.cas,jdbcType=VARCHAR},
       limit_value = #{row.limitValue,jdbcType=VARCHAR},
@@ -195,5 +216,43 @@
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.TestRecordSubItem">
+    update test_record_sub_item
+    <set>
+      <if test="oriRecordId != null">
+        ori_record_id = #{oriRecordId,jdbcType=BIGINT},
+      </if>
+      <if test="subTestItem != null">
+        sub_test_item = #{subTestItem,jdbcType=VARCHAR},
+      </if>
+      <if test="cas != null">
+        cas = #{cas,jdbcType=VARCHAR},
+      </if>
+      <if test="limitValue != null">
+        limit_value = #{limitValue,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="avgValue != null">
+        avg_value = #{avgValue,jdbcType=VARCHAR},
+      </if>
+      <if test="testResult != null">
+        test_result = #{testResult,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestRecordSubItem">
+    update test_record_sub_item
+    set ori_record_id = #{oriRecordId,jdbcType=BIGINT},
+      sub_test_item = #{subTestItem,jdbcType=VARCHAR},
+      cas = #{cas,jdbcType=VARCHAR},
+      limit_value = #{limitValue,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      avg_value = #{avgValue,jdbcType=VARCHAR},
+      test_result = #{testResult,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

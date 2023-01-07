@@ -9,9 +9,10 @@
     <result column="report_num" jdbcType="VARCHAR" property="reportNum" />
     <result column="test_com" jdbcType="VARCHAR" property="testCom" />
     <result column="test_com_id" jdbcType="INTEGER" property="testComId" />
-    <result column="test_item" jdbcType="VARCHAR" property="testItem" />
-    <result column="test_lab_id" jdbcType="INTEGER" property="testLabId" />
     <result column="test_lab" jdbcType="VARCHAR" property="testLab" />
+    <result column="test_lab_id" jdbcType="INTEGER" property="testLabId" />
+    <result column="test_item" jdbcType="VARCHAR" property="testItem" />
+    <result column="test_item_id" jdbcType="INTEGER" property="testItemId" />
     <result column="test_device_no" jdbcType="VARCHAR" property="testDeviceNo" />
     <result column="test_device_name" jdbcType="VARCHAR" property="testDeviceName" />
     <result column="test_person_id" jdbcType="BIGINT" property="testPersonId" />
@@ -92,10 +93,10 @@
   </sql>
   <sql id="Base_Column_List">
     id, record_num, work_order_num, quotation_num, report_num, test_com, test_com_id, 
-    test_item, test_lab_id, test_lab, test_device_no, test_device_name, test_person_id, 
-    test_person, test_method, test_case, create_time, plan_date, report_date, report_person, 
-    report_person_id, status, test_result, remark, sample_date, review_id, review_name, 
-    review_reason, review_time
+    test_lab, test_lab_id, test_item, test_item_id, test_device_no, test_device_name, 
+    test_person_id, test_person, test_method, test_case, create_time, plan_date, report_date, 
+    report_person, report_person_id, status, test_result, remark, sample_date, review_id, 
+    review_name, review_reason, review_time
   </sql>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestOriRecordExample" resultMap="BaseResultMap">
     select
@@ -133,24 +134,24 @@
     </selectKey>
     insert into test_ori_record (record_num, work_order_num, quotation_num, 
       report_num, test_com, test_com_id, 
-      test_item, test_lab_id, test_lab, 
-      test_device_no, test_device_name, test_person_id, 
-      test_person, test_method, test_case, 
-      create_time, plan_date, report_date, 
-      report_person, report_person_id, status, 
-      test_result, remark, sample_date, 
-      review_id, review_name, review_reason, 
-      review_time)
+      test_lab, test_lab_id, test_item, 
+      test_item_id, test_device_no, test_device_name, 
+      test_person_id, test_person, test_method, 
+      test_case, create_time, plan_date, 
+      report_date, report_person, report_person_id, 
+      status, test_result, remark, 
+      sample_date, review_id, review_name, 
+      review_reason, review_time)
     values (#{recordNum,jdbcType=VARCHAR}, #{workOrderNum,jdbcType=VARCHAR}, #{quotationNum,jdbcType=VARCHAR}, 
       #{reportNum,jdbcType=VARCHAR}, #{testCom,jdbcType=VARCHAR}, #{testComId,jdbcType=INTEGER}, 
-      #{testItem,jdbcType=VARCHAR}, #{testLabId,jdbcType=INTEGER}, #{testLab,jdbcType=VARCHAR}, 
-      #{testDeviceNo,jdbcType=VARCHAR}, #{testDeviceName,jdbcType=VARCHAR}, #{testPersonId,jdbcType=BIGINT}, 
-      #{testPerson,jdbcType=VARCHAR}, #{testMethod,jdbcType=VARCHAR}, #{testCase,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{planDate,jdbcType=TIMESTAMP}, #{reportDate,jdbcType=TIMESTAMP}, 
-      #{reportPerson,jdbcType=VARCHAR}, #{reportPersonId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
-      #{testResult,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{sampleDate,jdbcType=TIMESTAMP}, 
-      #{reviewId,jdbcType=BIGINT}, #{reviewName,jdbcType=VARCHAR}, #{reviewReason,jdbcType=VARCHAR}, 
-      #{reviewTime,jdbcType=TIMESTAMP})
+      #{testLab,jdbcType=VARCHAR}, #{testLabId,jdbcType=INTEGER}, #{testItem,jdbcType=VARCHAR}, 
+      #{testItemId,jdbcType=INTEGER}, #{testDeviceNo,jdbcType=VARCHAR}, #{testDeviceName,jdbcType=VARCHAR}, 
+      #{testPersonId,jdbcType=BIGINT}, #{testPerson,jdbcType=VARCHAR}, #{testMethod,jdbcType=VARCHAR}, 
+      #{testCase,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{planDate,jdbcType=TIMESTAMP}, 
+      #{reportDate,jdbcType=TIMESTAMP}, #{reportPerson,jdbcType=VARCHAR}, #{reportPersonId,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT}, #{testResult,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{sampleDate,jdbcType=TIMESTAMP}, #{reviewId,jdbcType=BIGINT}, #{reviewName,jdbcType=VARCHAR}, 
+      #{reviewReason,jdbcType=VARCHAR}, #{reviewTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestOriRecord">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -176,14 +177,17 @@
       <if test="testComId != null">
         test_com_id,
       </if>
-      <if test="testItem != null">
-        test_item,
+      <if test="testLab != null">
+        test_lab,
       </if>
       <if test="testLabId != null">
         test_lab_id,
       </if>
-      <if test="testLab != null">
-        test_lab,
+      <if test="testItem != null">
+        test_item,
+      </if>
+      <if test="testItemId != null">
+        test_item_id,
       </if>
       <if test="testDeviceNo != null">
         test_device_no,
@@ -262,14 +266,17 @@
       <if test="testComId != null">
         #{testComId,jdbcType=INTEGER},
       </if>
-      <if test="testItem != null">
-        #{testItem,jdbcType=VARCHAR},
+      <if test="testLab != null">
+        #{testLab,jdbcType=VARCHAR},
       </if>
       <if test="testLabId != null">
         #{testLabId,jdbcType=INTEGER},
       </if>
-      <if test="testLab != null">
-        #{testLab,jdbcType=VARCHAR},
+      <if test="testItem != null">
+        #{testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="testItemId != null">
+        #{testItemId,jdbcType=INTEGER},
       </if>
       <if test="testDeviceNo != null">
         #{testDeviceNo,jdbcType=VARCHAR},
@@ -360,14 +367,17 @@
       <if test="row.testComId != null">
         test_com_id = #{row.testComId,jdbcType=INTEGER},
       </if>
-      <if test="row.testItem != null">
-        test_item = #{row.testItem,jdbcType=VARCHAR},
+      <if test="row.testLab != null">
+        test_lab = #{row.testLab,jdbcType=VARCHAR},
       </if>
       <if test="row.testLabId != null">
         test_lab_id = #{row.testLabId,jdbcType=INTEGER},
       </if>
-      <if test="row.testLab != null">
-        test_lab = #{row.testLab,jdbcType=VARCHAR},
+      <if test="row.testItem != null">
+        test_item = #{row.testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testItemId != null">
+        test_item_id = #{row.testItemId,jdbcType=INTEGER},
       </if>
       <if test="row.testDeviceNo != null">
         test_device_no = #{row.testDeviceNo,jdbcType=VARCHAR},
@@ -440,9 +450,10 @@
       report_num = #{row.reportNum,jdbcType=VARCHAR},
       test_com = #{row.testCom,jdbcType=VARCHAR},
       test_com_id = #{row.testComId,jdbcType=INTEGER},
-      test_item = #{row.testItem,jdbcType=VARCHAR},
-      test_lab_id = #{row.testLabId,jdbcType=INTEGER},
       test_lab = #{row.testLab,jdbcType=VARCHAR},
+      test_lab_id = #{row.testLabId,jdbcType=INTEGER},
+      test_item = #{row.testItem,jdbcType=VARCHAR},
+      test_item_id = #{row.testItemId,jdbcType=INTEGER},
       test_device_no = #{row.testDeviceNo,jdbcType=VARCHAR},
       test_device_name = #{row.testDeviceName,jdbcType=VARCHAR},
       test_person_id = #{row.testPersonId,jdbcType=BIGINT},
@@ -487,14 +498,17 @@
       <if test="testComId != null">
         test_com_id = #{testComId,jdbcType=INTEGER},
       </if>
-      <if test="testItem != null">
-        test_item = #{testItem,jdbcType=VARCHAR},
+      <if test="testLab != null">
+        test_lab = #{testLab,jdbcType=VARCHAR},
       </if>
       <if test="testLabId != null">
         test_lab_id = #{testLabId,jdbcType=INTEGER},
       </if>
-      <if test="testLab != null">
-        test_lab = #{testLab,jdbcType=VARCHAR},
+      <if test="testItem != null">
+        test_item = #{testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="testItemId != null">
+        test_item_id = #{testItemId,jdbcType=INTEGER},
       </if>
       <if test="testDeviceNo != null">
         test_device_no = #{testDeviceNo,jdbcType=VARCHAR},
@@ -564,9 +578,10 @@
       report_num = #{reportNum,jdbcType=VARCHAR},
       test_com = #{testCom,jdbcType=VARCHAR},
       test_com_id = #{testComId,jdbcType=INTEGER},
-      test_item = #{testItem,jdbcType=VARCHAR},
-      test_lab_id = #{testLabId,jdbcType=INTEGER},
       test_lab = #{testLab,jdbcType=VARCHAR},
+      test_lab_id = #{testLabId,jdbcType=INTEGER},
+      test_item = #{testItem,jdbcType=VARCHAR},
+      test_item_id = #{testItemId,jdbcType=INTEGER},
       test_device_no = #{testDeviceNo,jdbcType=VARCHAR},
       test_device_name = #{testDeviceName,jdbcType=VARCHAR},
       test_person_id = #{testPersonId,jdbcType=BIGINT},

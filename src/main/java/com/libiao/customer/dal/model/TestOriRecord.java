@@ -18,11 +18,13 @@ public class TestOriRecord implements Serializable {
 
     private Integer testComId;
 
-    private String testItem;
+    private String testLab;
 
     private Integer testLabId;
 
-    private String testLab;
+    private String testItem;
+
+    private Integer testItemId;
 
     private String testDeviceNo;
 
@@ -120,12 +122,12 @@ public class TestOriRecord implements Serializable {
         this.testComId = testComId;
     }
 
-    public String getTestItem() {
-        return testItem;
+    public String getTestLab() {
+        return testLab;
     }
 
-    public void setTestItem(String testItem) {
-        this.testItem = testItem;
+    public void setTestLab(String testLab) {
+        this.testLab = testLab;
     }
 
     public Integer getTestLabId() {
@@ -136,12 +138,20 @@ public class TestOriRecord implements Serializable {
         this.testLabId = testLabId;
     }
 
-    public String getTestLab() {
-        return testLab;
+    public String getTestItem() {
+        return testItem;
     }
 
-    public void setTestLab(String testLab) {
-        this.testLab = testLab;
+    public void setTestItem(String testItem) {
+        this.testItem = testItem;
+    }
+
+    public Integer getTestItemId() {
+        return testItemId;
+    }
+
+    public void setTestItemId(Integer testItemId) {
+        this.testItemId = testItemId;
     }
 
     public String getTestDeviceNo() {
@@ -309,9 +319,10 @@ public class TestOriRecord implements Serializable {
         sb.append(", reportNum=").append(reportNum);
         sb.append(", testCom=").append(testCom);
         sb.append(", testComId=").append(testComId);
-        sb.append(", testItem=").append(testItem);
-        sb.append(", testLabId=").append(testLabId);
         sb.append(", testLab=").append(testLab);
+        sb.append(", testLabId=").append(testLabId);
+        sb.append(", testItem=").append(testItem);
+        sb.append(", testItemId=").append(testItemId);
         sb.append(", testDeviceNo=").append(testDeviceNo);
         sb.append(", testDeviceName=").append(testDeviceName);
         sb.append(", testPersonId=").append(testPersonId);

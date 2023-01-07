@@ -58,7 +58,6 @@ public class RedisUtil {
      * @return
      */
     public String getWorkNo(String date){
-        //生成申请单号 LTI+T+年份后两位+月份+日+ （A-Z）
         String key = "TODAY_WORK_NO"+":"+date;
         Long increment = redisTemplate.opsForValue().increment(key, 1);
         if (increment > 26000){
@@ -71,5 +70,26 @@ public class RedisUtil {
         long alpha = (increment / 1000) + 65;
         char aChar = (char) alpha;
         return "LTITW" + date + aChar + noStr;
+    }
+
+    /**
+     * 生成原始记录单编号
+     * LTI+T/I/C+R+年份后两位+月份+日+ （A-Z）+ 三位
+     * @param date
+     * @return
+     */
+    public String getOriRecordNo(String date){
+        String key = "TODAY_RECORD_NO"+":"+date;
+        Long increment = redisTemplate.opsForValue().increment(key, 1);
+        if (increment > 26000){
+            throw new ServiceException(HttpStatus.BAD_GATEWAY,"序列生成失败");
+        }
+        //获取后三位编号
+        long no = increment % 1000;
+        String noStr = String.format("%03d",no);
+        //获取前一位字母
+        long alpha = (increment / 1000) + 65;
+        char aChar = (char) alpha;
+        return "LTITR" + date + aChar + noStr;
     }
 }

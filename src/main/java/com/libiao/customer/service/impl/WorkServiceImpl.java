@@ -13,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +36,18 @@ public class WorkServiceImpl implements WorkService {
     private CheckCompanyMapper checkCompanyMapper;
     @Autowired
     private TestInfoMapperExt testInfoMapperExt;
+    @Autowired
+    private TestOriRecordMapper testOriRecordMapper;
+    @Autowired
+    private LabInfoMapper labInfoMapper;
+    @Autowired
+    private DeviceItemRelMapper deviceItemRelMapper;
+    @Autowired
+    private DeviceInfoMapper deviceInfoMapper;
+    @Autowired
+    private TestSubItemMapper testSubItemMapper;
+    @Autowired
+    private TestRecordSubItemMapper testRecordSubItemMapper;
     @Autowired
     private RedisUtil redisUtil;
 
@@ -115,10 +124,75 @@ public class WorkServiceImpl implements WorkService {
         record.setConfirmId(req.getUser().getId());
         testWorkOrderMapper.updateByPrimaryKeySelective(record);
 
+        TestApplicationFormExample example = new TestApplicationFormExample();
+        example.createCriteria().andApplicationNumEqualTo(testWorkOrder.getApplicationNum());
+        List<TestApplicationForm> testApplicationForms = testApplicationFormMapper.selectByExample(example);
+        TestApplicationForm testApplicationForm = testApplicationForms.get(0);
+
         TestWorkOrderSample sample = new TestWorkOrderSample();
         sample.setTestWorkOrderId(req.getId());
         sample.setFileName(req.getFileName());
         testWorkOrderSampleMapper.insertSelective(sample);
+
+        List<LabInfo> labInfos = labInfoMapper.selectByExample(new LabInfoExample());
+        Map<Integer, LabInfo> labMap = labInfos.stream().collect(Collectors.toMap(LabInfo::getId, lab -> lab));
+
+        String dateStr = DateUtils.getCurrentTime("yyyyMMdd");
+        //拆分原始记录单
+        TestWorkOrderItemExample itemExample = new TestWorkOrderItemExample();
+        List<TestWorkOrderItem> testWorkOrderItems = testWorkOrderItemMapper.selectByExample(itemExample);
+        for (TestWorkOrderItem testWorkOrderItem : testWorkOrderItems) {
+
+            //创建原始记录单
+            String oriRecordNo = redisUtil.getOriRecordNo(dateStr);
+            TestOriRecord row = new TestOriRecord();
+            row.setRecordNum(oriRecordNo);
+            row.setWorkOrderNum(testWorkOrder.getWorkOrderNum());
+            row.setQuotationNum(testWorkOrder.getQuotationNum());
+            row.setTestCom(testWorkOrder.getComName());
+            row.setTestComId(testWorkOrder.getTestComId());
+            row.setTestLabId(testWorkOrderItem.getLabId());
+            String labName = labMap.get(testWorkOrderItem.getLabId()).getLabName();
+            row.setTestLab(labName);
+            row.setTestItem(testWorkOrderItem.getTestItem());
+            row.setTestItemId(testWorkOrderItem.getTestItemId());
+            //去找到关联设备
+            DeviceItemRelExample deviceExample = new DeviceItemRelExample();
+            deviceExample.createCriteria().andItemIdEqualTo(testWorkOrderItem.getTestItemId());
+            List<DeviceItemRel> deviceItemRels = deviceItemRelMapper.selectByExample(deviceExample);
+            StringBuilder name = new StringBuilder();
+            StringBuilder no = new StringBuilder();
+            for (DeviceItemRel deviceItemRel : deviceItemRels) {
+                DeviceInfo deviceInfo = deviceInfoMapper.selectByPrimaryKey(deviceItemRel.getDeviceId());
+                name.append(deviceInfo.getDeviceName()).append(",");
+                no.append(deviceInfo.getDeviceNo()).append(",");
+            }
+            row.setTestDeviceName(name.deleteCharAt(name.length()-1).toString());
+            row.setTestDeviceNo(no.deleteCharAt(no.length()-1).toString());
+            row.setTestMethod(testWorkOrderItem.getTestItemMethod());
+            row.setTestCase(testWorkOrderItem.getTestItemCase());
+            row.setCreateTime(new Date());
+            row.setPlanDate(testWorkOrder.getPlanDate());
+            row.setStatus((byte) 0);
+            row.setSampleDate(testApplicationForm.getSampleDate());
+            testOriRecordMapper.insertSelective(row);
+            //确认是否存在测试子项目，存在则记录子项目单
+            TestSubItemExample subExample = new TestSubItemExample();
+            subExample.createCriteria().andTestItemEqualTo(testWorkOrderItem.getTestItem());
+            List<TestSubItem> testSubItems = testSubItemMapper.selectByExample(subExample);
+            if (!CollectionUtils.isEmpty(testSubItems)){
+                for (TestSubItem testSubItem : testSubItems) {
+                    //插入测试子项目
+                    TestRecordSubItem subRow = new TestRecordSubItem();
+                    subRow.setOriRecordId(row.getId());
+                    subRow.setSubTestItem(testSubItem.getSubTestItem());
+                    subRow.setCas(testSubItem.getCas());
+                    subRow.setLimitValue(testSubItem.getLimitValue());
+                    subRow.setUnit(testSubItem.getUnit());
+                    testRecordSubItemMapper.insert(subRow);
+                }
+            }
+        }
     }
 
     //删除工作单

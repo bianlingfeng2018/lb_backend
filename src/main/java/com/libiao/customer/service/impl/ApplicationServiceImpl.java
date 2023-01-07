@@ -368,6 +368,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             TestApplicationForm update = new TestApplicationForm();
             update.setId(testApplicationForm.getId());
             update.setContractStatus((byte) 3);
+            update.setSampleDate(new Date());
             testApplicationFormMapper.updateByPrimaryKeySelective(update);
         }
     }

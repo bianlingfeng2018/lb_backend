@@ -2,6 +2,7 @@ package com.libiao.customer.service.impl;
 
 import ch.qos.logback.core.util.TimeUtil;
 import com.github.pagehelper.PageInfo;
+import com.libiao.customer.constant.QuotationEnum;
 import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.BasePageReq;
@@ -58,8 +59,16 @@ public class ProductServiceImpl implements ProductService {
     public Long createProduct(AddGoodsReq req){
         MallGoods record = new MallGoods();
         BeanCopyUtil.copy(req,record);
-        String date = DateFormatUtils.format(new Date(),"YYMMDDmmss");
-        record.setGoodsNum("LTIT"+date);
+        String date = DateFormatUtils.format(new Date(),"YYMMDDhhmmss");
+        String goodsNum = "LIT";
+        if(req.getBusType() == QuotationEnum.BUS_TEST.getCode()){//1
+            goodsNum+="T";
+        }else if(req.getBusType() == QuotationEnum.BUS_CHECK.getCode()){
+            goodsNum+="C";
+        }else if(req.getBusType() == QuotationEnum.BUS_INSPECTION.getCode()){
+            goodsNum+="I";
+        }
+        record.setGoodsNum(goodsNum+date);
         mallGoodsMapper.insertSelective(record);
 
         List<BasicItemVO> items = req.getItems();

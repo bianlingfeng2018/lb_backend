@@ -65,9 +65,11 @@ public class ApplicationController {
         return ResponseUtil.getDefaultResp();
     }
 
-    //确认收样
-    public void confirm(@RequestBody ApplicationDetailReq req){
-
+    @ApiOperation("确认收样")
+    @PostMapping("confirm")
+    public ResponseEntity<BaseResponseVO> confirm(@RequestBody ApplicationDetailReq req){
+        applicationService.confirm(req);
+        return ResponseUtil.getDefaultResp();
     }
 
 }

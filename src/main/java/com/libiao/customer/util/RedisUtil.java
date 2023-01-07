@@ -51,4 +51,25 @@ public class RedisUtil {
         char aChar = (char) alpha;
         return "LTI" + "T" + date + aChar + noStr;
     }
+
+    /**
+     * 生成工作单编号
+     * @param date
+     * @return
+     */
+    public String getWorkNo(String date){
+        //生成申请单号 LTI+T+年份后两位+月份+日+ （A-Z）
+        String key = "TODAY_WORK_NO"+":"+date;
+        Long increment = redisTemplate.opsForValue().increment(key, 1);
+        if (increment > 26000){
+            throw new ServiceException(HttpStatus.BAD_GATEWAY,"序列生成失败");
+        }
+        //获取后三位编号
+        long no = increment % 1000;
+        String noStr = String.format("%03d",no);
+        //获取前一位字母
+        long alpha = (increment / 1000) + 65;
+        char aChar = (char) alpha;
+        return "LTI" + "W" + date + aChar + noStr;
+    }
 }

@@ -20,7 +20,7 @@
 
 
     <select id="getTotalSplitInfo" resultType="com.libiao.customer.dal.model.SplitInfo">
-        SELECT cc.id,cc.com_name,cc.sub_contract, li.lab_name,di.device_name,dir.item_id,dir.price,dir.period
+        SELECT cc.id,cc.com_name,cc.sub_contract, li.id as lab_id, li.lab_name,di.device_name,dir.item_id,dir.price,dir.period
         FROM check_company cc
                  INNER JOIN lab_info li ON cc.id = li.com_id
                  INNER JOIN device_info di ON di.lab_id = li.id

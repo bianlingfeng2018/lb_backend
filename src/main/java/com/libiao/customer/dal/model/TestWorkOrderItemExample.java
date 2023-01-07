@@ -504,6 +504,66 @@ public class TestWorkOrderItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andTestItemIdIsNull() {
+            addCriterion("test_item_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdIsNotNull() {
+            addCriterion("test_item_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdEqualTo(Integer value) {
+            addCriterion("test_item_id =", value, "testItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdNotEqualTo(Integer value) {
+            addCriterion("test_item_id <>", value, "testItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdGreaterThan(Integer value) {
+            addCriterion("test_item_id >", value, "testItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("test_item_id >=", value, "testItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdLessThan(Integer value) {
+            addCriterion("test_item_id <", value, "testItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdLessThanOrEqualTo(Integer value) {
+            addCriterion("test_item_id <=", value, "testItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdIn(List<Integer> values) {
+            addCriterion("test_item_id in", values, "testItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdNotIn(List<Integer> values) {
+            addCriterion("test_item_id not in", values, "testItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdBetween(Integer value1, Integer value2) {
+            addCriterion("test_item_id between", value1, value2, "testItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestItemIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("test_item_id not between", value1, value2, "testItemId");
+            return (Criteria) this;
+        }
+
         public Criteria andTestItemIsNull() {
             addCriterion("test_item is null");
             return (Criteria) this;
@@ -711,6 +771,66 @@ public class TestWorkOrderItemExample {
 
         public Criteria andTestItemCaseNotBetween(String value1, String value2) {
             addCriterion("test_item_case not between", value1, value2, "testItemCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdIsNull() {
+            addCriterion("lab_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdIsNotNull() {
+            addCriterion("lab_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdEqualTo(Integer value) {
+            addCriterion("lab_id =", value, "labId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdNotEqualTo(Integer value) {
+            addCriterion("lab_id <>", value, "labId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdGreaterThan(Integer value) {
+            addCriterion("lab_id >", value, "labId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("lab_id >=", value, "labId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdLessThan(Integer value) {
+            addCriterion("lab_id <", value, "labId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdLessThanOrEqualTo(Integer value) {
+            addCriterion("lab_id <=", value, "labId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdIn(List<Integer> values) {
+            addCriterion("lab_id in", values, "labId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdNotIn(List<Integer> values) {
+            addCriterion("lab_id not in", values, "labId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdBetween(Integer value1, Integer value2) {
+            addCriterion("lab_id between", value1, value2, "labId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLabIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("lab_id not between", value1, value2, "labId");
             return (Criteria) this;
         }
 

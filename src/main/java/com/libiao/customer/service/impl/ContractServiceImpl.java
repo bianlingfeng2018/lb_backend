@@ -58,7 +58,7 @@ public class ContractServiceImpl implements ContractService {
     public void modify(ModifyContractReq req){
         ClientContract record = BeanCopyUtil.copy(req,ClientContract.class);
         record.setUpdateTime(new Date());
-        clientContractMapper.updateByPrimaryKey(record);
+        clientContractMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
@@ -71,6 +71,7 @@ public class ContractServiceImpl implements ContractService {
         record.setReviewName(req.getUser().getNickname());
         record.setReviewReason(req.getReviewReason());
         clientContractMapper.updateByPrimaryKeySelective(record);
+        //TODO 审核通过，新增一个customer_bill记录
     }
 
     @Override

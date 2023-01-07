@@ -37,6 +37,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     private ClientMapper clientMapper;
     @Autowired
     private TestInfoMapperExt testInfoMapperExt;
+    @Autowired
+    private TestWorkOrderMapper testWorkOrderMapper;
+    @Autowired
+    private TestWorkOrderItemMapper testWorkOrderItemMapper;
+    @Autowired
+    private TestWorkOrderSampleMapper testWorkOrderSampleMapper;
 
     @Override
     public PageInfo<TestApplicationForm> list(ApplicationListReq req){
@@ -267,6 +273,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         testApplicationFormMapper.updateByExampleSelective(record,example);
     }
 
+    @Override
     public void confirm(ApplicationDetailReq req){
         TestApplicationFormExample example = new TestApplicationFormExample();
         example.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
@@ -282,18 +289,85 @@ public class ApplicationServiceImpl implements ApplicationService {
         itemExample.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());
         final List<TestApplicationItem> testApplicationItems = testApplicationItemMapper.selectByExample(itemExample);
 
+        List<SplitInfo> split = split(testApplicationItems, testApplicationForm.getService());
+        if (CollectionUtils.isEmpty(split)){
+            throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR,"工作拆单异常，请检查基础信息");
+        }
 
+        Map<Integer, List<SplitInfo>> comMap = split.stream().collect(Collectors.groupingBy(SplitInfo::getId));
+        for (Map.Entry<Integer, List<SplitInfo>> comEntry : comMap.entrySet()) {
+            List<SplitInfo> splits = comEntry.getValue();
+            List<Integer> sItems = new ArrayList<>();
+            int maxPeriod = 0;
+            for (SplitInfo splitInfo : splits) {
+                sItems.add(splitInfo.getItemId());
+                maxPeriod = maxPeriod > splitInfo.getPeriod() ? maxPeriod:splitInfo.getPeriod();
+            }
+            Map<Integer, SplitInfo> splitMap = splits.stream().collect(Collectors.toMap(SplitInfo::getItemId, s -> s));
+            //进行拆单
+            TestWorkOrder record = new TestWorkOrder();
+            //工作单编号：LTI+T/I/C+W+年份后两位+月份+日+ （A-Z）+ 三位
+            String workOrderNum = redisUtil.getWorkNo(DateUtils.getDate("yyyyMMdd"));
+            record.setWorkOrderNum(workOrderNum);
+            record.setQuotationNum(testApplicationForm.getQuotationNum());
+            record.setApplicationNum(testApplicationForm.getApplicationNum());
+            Calendar instance = Calendar.getInstance();
+            record.setCreateTime(instance.getTime());
 
+            instance.add(Calendar.DATE,1);
+            record.setPlanDate(instance.getTime());
 
+            //TODO 开单日期
 
+            record.setService(testApplicationForm.getService());
+            record.setTestComId(comEntry.getKey());
+            record.setComName(splits.get(0).getComName());
+            record.setSubContract(splits.get(0).getSubContract());
+            record.setClientName(testApplicationForm.getApplicationName());
+            record.setSampleStatus(testApplicationForm.getSampleStatus());
+
+            testWorkOrderMapper.insertSelective(record);
+            //确认该工作单涉及的item所涉及的样品
+
+            TestApplicationItemExample iExample = new TestApplicationItemExample();
+            iExample.createCriteria().andTestItemIdIn(sItems).andApplicationNumEqualTo(testApplicationForm.getApplicationNum());
+            List<TestApplicationItem> appItemsList = testApplicationItemMapper.selectByExample(iExample);
+            //有了样本ID
+            Map<Long, List<TestApplicationItem>> collect = appItemsList.stream().collect(Collectors.groupingBy(TestApplicationItem::getAppSampleId));
+            //插入工作单样本信息
+            for (Map.Entry<Long, List<TestApplicationItem>> sample : collect.entrySet()) {
+                //查询样本信息
+                TestApplicationSample testApplicationSample = testApplicationSampleMapper.selectByPrimaryKey(sample.getKey());
+
+                TestWorkOrderItem sampleRow = new TestWorkOrderItem();
+                sampleRow.setTestWorkOrderId(record.getId());
+                sampleRow.setSampleLocation(testApplicationSample.getSampleName());
+                sampleRow.setSampleModel(testApplicationSample.getSampleModel());
+                sampleRow.setSampleMaterial(testApplicationSample.getSampleMaterial());
+                sampleRow.setSampleDesc(testApplicationSample.getSampleDescription());
+
+                for (TestApplicationItem testApplicationItem : sample.getValue()) {
+
+                    SplitInfo splitInfo = splitMap.get(testApplicationItem.getTestItemId());
+
+                    sampleRow.setTestItem(testApplicationItem.getItemName());
+                    sampleRow.setTestItemId(testApplicationItem.getTestItemId());
+                    sampleRow.setTestItemMethod(testApplicationItem.getTestMethod());
+                    sampleRow.setTestItemCase(testApplicationItem.getTestCase());
+                    sampleRow.setRemark(testApplicationItem.getRemark());
+                    sampleRow.setLabId(splitInfo.getLabId());
+                    testWorkOrderItemMapper.insertSelective(sampleRow);
+                }
+            }
+        }
     }
 
     //拆工作单
-    public void split(List<TestApplicationItem> testApplicationItems, Byte service){
+    public List<SplitInfo> split(List<TestApplicationItem> testApplicationItems, Byte service){
         Set<Integer> itemSet = testApplicationItems.stream().map(TestApplicationItem::getTestItemId).collect(Collectors.toSet());
         final List<SplitInfo> totalSplitInfo = testInfoMapperExt.getTotalSplitInfo();
-        Map<Long,List<SplitInfo>> selfSpMap = new HashMap<>();//直属
-        Map<Long,List<SplitInfo>> otherSpMap = new HashMap<>();//分包商
+        Map<Integer,List<SplitInfo>> selfSpMap = new HashMap<>();//直属
+        Map<Integer,List<SplitInfo>> otherSpMap = new HashMap<>();//分包商
         Set<Integer> selfSet = new HashSet<>();
 
         //1根据测试项目和资质条件，匹配满足条件的公司：测试项目,对应公司
@@ -321,6 +395,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 }
             }
         }
+        List<SplitInfo> comIds = new ArrayList<>();
 
         //先找直属的。
         if (selfSet.containsAll(itemSet)){
@@ -328,19 +403,160 @@ public class ApplicationServiceImpl implements ApplicationService {
             //
             //算法
             //第一轮：筛选公司，找到能测的所有集合，如果全包含，挑选结束
+            for (Map.Entry<Integer, List<SplitInfo>> spEntry : selfSpMap.entrySet()) {
+                Set<Integer> spSet = spEntry.getValue().stream().map(SplitInfo::getItemId).collect(Collectors.toSet());
+                if (spSet.containsAll(itemSet)){
+                    //返回公司ID
+                    //comIds.add(spEntry.getKey());
+                    for (SplitInfo splitInfo : spEntry.getValue()) {
+                        if (itemSet.contains(splitInfo.getItemId())){
+                            comIds.add(splitInfo);
+                        }
+                    }
+                    return comIds;
+                }
+            }
             //
             //第二轮：重新筛选一家公司，在从剩下的公司中，找到需要最少的公司组合。组合为2筛选结束
+            for (Map.Entry<Integer, List<SplitInfo>> spEntry : selfSpMap.entrySet()) {
+                Set<Integer> spSet = spEntry.getValue().stream().map(SplitInfo::getItemId).collect(Collectors.toSet());
+                //获取剩余的
+                Set<Integer> otherSet = itemSet.stream().filter(f -> !spSet.contains(f)).collect(Collectors.toSet());
+                for (Map.Entry<Integer, List<SplitInfo>> subSpSet : selfSpMap.entrySet()) {
+                    Set<Integer> sss = subSpSet.getValue().stream().map(SplitInfo::getItemId).collect(Collectors.toSet());
+                    if (sss.containsAll(otherSet)){
+                        //返回2个公司ID
+                        /*comIds.add(spEntry.getKey());
+                        comIds.add(subSpSet.getKey());*/
+                        for (SplitInfo splitInfo : spEntry.getValue()) {
+                            if (spSet.contains(splitInfo.getItemId())){
+                                comIds.add(splitInfo);
+                            }
+                        }
+                        for (SplitInfo splitInfo : subSpSet.getValue()) {
+                            if (otherSet.contains(splitInfo.getItemId())){
+                                comIds.add(splitInfo);
+                            }
+                        }
+                        return comIds;
+                    }
+                }
+            }
             //
-            //第三轮，递归调用，找到符合组合的，即结束。
+            //第三轮，修改算法用itemSet来匹配递归
+            //先排序 ,公司 和 所匹配到的项目多少
+            List<ComMatch> matches = new ArrayList<>();
+            for (Map.Entry<Integer, List<SplitInfo>> spEntry : selfSpMap.entrySet()) {
+                Set<Integer> spSet = spEntry.getValue().stream().map(SplitInfo::getItemId).collect(Collectors.toSet());
+                //获取交集
+                int size = spSet.stream().filter(itemSet::contains).collect(Collectors.toSet()).size();
+                matches.add(new ComMatch(size, spEntry.getKey()));
+            }
+            //排序后递归
+            matches.sort(Comparator.comparingInt(o -> o.size));
+            //每次将itemSet中的去掉一点。
+            Set<Integer> tempItemSet = itemSet;
+            for (ComMatch match : matches) {
+                List<SplitInfo> splitInfos = selfSpMap.get(match.getId());
+                Set<Integer> sSet = splitInfos.stream().map(SplitInfo::getItemId).collect(Collectors.toSet());
+
+                for (SplitInfo splitInfo : splitInfos) {
+                    if (tempItemSet.contains(splitInfo.getItemId())){
+                        comIds.add(splitInfo);
+                    }
+                }
+
+                tempItemSet = tempItemSet.stream().filter(f->!sSet.contains(f)).collect(Collectors.toSet());
+                if (CollectionUtils.isEmpty(tempItemSet)){
+                    return comIds;
+                }
+            }
 
         }else {
             //直属的
             final Set<Integer> sLabSet = itemSet.stream().filter(selfSet::contains).collect(Collectors.toSet());
+
+            List<ComMatch> matches = new ArrayList<>();
+            for (Map.Entry<Integer, List<SplitInfo>> spEntry : selfSpMap.entrySet()) {
+                Set<Integer> spSet = spEntry.getValue().stream().map(SplitInfo::getItemId).collect(Collectors.toSet());
+                //获取交际值
+                int size = spSet.stream().filter(itemSet::contains).collect(Collectors.toSet()).size();
+                matches.add(new ComMatch(size, spEntry.getKey()));
+            }
+            //排序后递归
+            matches.sort(Comparator.comparingInt(o -> o.size));
+            //每次将itemSet中的去掉一点。
+            Set<Integer> tempItemSet = sLabSet;
+            for (ComMatch match : matches) {
+                List<SplitInfo> splitInfos = selfSpMap.get(match.getId());
+                Set<Integer> sSet = splitInfos.stream().map(SplitInfo::getItemId).collect(Collectors.toSet());
+                for (SplitInfo splitInfo : splitInfos) {
+                    if (tempItemSet.contains(splitInfo.getItemId())){
+                        comIds.add(splitInfo);
+                    }
+                }
+                tempItemSet = tempItemSet.stream().filter(f->!sSet.contains(f)).collect(Collectors.toSet());
+                if (CollectionUtils.isEmpty(tempItemSet)){
+                    break;
+                }
+            }
+
             //分包的
             final Set<Integer> oLabSet = itemSet.stream().filter(f->!selfSet.contains(f)).collect(Collectors.toSet());
+            Map<Integer,SplitInfo> map = new HashMap<>();
+            if (service > 0){
+                //按周期
+                for (Map.Entry<Integer, List<SplitInfo>> oEntry : otherSpMap.entrySet()) {
+                    for (SplitInfo splitInfo : oEntry.getValue()) {
+                        if (oLabSet.contains(splitInfo.getItemId())){
+                            SplitInfo ori = map.get(splitInfo.getItemId());
+                            if (ori.getPeriod() > splitInfo.getPeriod()){
+                                map.put(splitInfo.getItemId(),splitInfo);
+                            }
+                        }else {
+                            map.put(splitInfo.getItemId(),splitInfo);
+                        }
+                    }
+                }
+            }else {
+                //按价格
+                for (Map.Entry<Integer, List<SplitInfo>> oEntry : otherSpMap.entrySet()) {
+                    for (SplitInfo splitInfo : oEntry.getValue()) {
+                        if (oLabSet.contains(splitInfo.getItemId())){
+                            SplitInfo ori = map.get(splitInfo.getItemId());
+                            if (ori.getPrice() > splitInfo.getPrice()){
+                                map.put(splitInfo.getItemId(),splitInfo);
+                            }
+                        }else {
+                            map.put(splitInfo.getItemId(),splitInfo);
+                        }
+                    }
+                }
+            }
+            //获取集合后
+            Map<Integer, List<SplitInfo>> collect = map.values().stream().collect(Collectors.groupingBy(SplitInfo::getId));
+            for (List<SplitInfo> value : collect.values()) {
+                comIds.addAll(value);
+            }
+        }
+        return comIds;
+    }
+
+    static class ComMatch {
+        private final int size;
+        private final long id;
+
+        public ComMatch(int size, long id) {
+            this.size = size;
+            this.id = id;
         }
 
+        public int getSize() {
+            return size;
+        }
 
-
+        public long getId() {
+            return id;
+        }
     }
 }

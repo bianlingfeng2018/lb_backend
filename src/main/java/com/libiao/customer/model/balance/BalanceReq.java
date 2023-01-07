@@ -13,14 +13,14 @@ public class BalanceReq extends BaseSessionReq {
     @ApiModelProperty("客户ID")
     String clientId;
     @ApiModelProperty("未结算金额")
-     Long unsettledAmt;
+    Long unsettledAmt;
     @ApiModelProperty("余额")
-     Long balanceAmt;
+    Long balanceAmt;
     @ApiModelProperty("授信额度")
-     Long creditLimit;
+    Long creditLimit;
     @ApiModelProperty("佣金比")
-     Long commissionRate;
+    Long commissionRate;
     @ApiModelProperty("未结算佣金")
-     Long unsettleCommission;
+    Long unsettleCommission;
 
 }

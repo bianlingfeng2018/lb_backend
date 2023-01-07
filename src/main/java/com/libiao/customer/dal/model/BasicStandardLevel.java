@@ -2,20 +2,12 @@ package com.libiao.customer.dal.model;
 
 import java.io.Serializable;
 
-public class BasicStandard implements Serializable {
-    private Integer id;
+public class BasicStandardLevel implements Serializable {
+    private Long id;
 
-    private String name;
+    private Integer standardId;
 
-    private String method;
-
-    private String item;
-
-    private Integer testItemId;
-
-    private Byte type;
-
-    private String value;
+    private String levelName;
 
     private String minValue;
 
@@ -27,60 +19,28 @@ public class BasicStandard implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Integer getStandardId() {
+        return standardId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStandardId(Integer standardId) {
+        this.standardId = standardId;
     }
 
-    public String getMethod() {
-        return method;
+    public String getLevelName() {
+        return levelName;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getItem() {
-        return item;
-    }
-
-    public void setItem(String item) {
-        this.item = item;
-    }
-
-    public Integer getTestItemId() {
-        return testItemId;
-    }
-
-    public void setTestItemId(Integer testItemId) {
-        this.testItemId = testItemId;
-    }
-
-    public Byte getType() {
-        return type;
-    }
-
-    public void setType(Byte type) {
-        this.type = type;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
     }
 
     public String getMinValue() {
@@ -122,12 +82,8 @@ public class BasicStandard implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
-        sb.append(", method=").append(method);
-        sb.append(", item=").append(item);
-        sb.append(", testItemId=").append(testItemId);
-        sb.append(", type=").append(type);
-        sb.append(", value=").append(value);
+        sb.append(", standardId=").append(standardId);
+        sb.append(", levelName=").append(levelName);
         sb.append(", minValue=").append(minValue);
         sb.append(", containMin=").append(containMin);
         sb.append(", maxValue=").append(maxValue);

@@ -50,7 +50,13 @@ public class TestOriRecord implements Serializable {
 
     private Byte status;
 
+    private String testValue;
+
     private String testResult;
+
+    private String testLevel;
+
+    private String oriReportFile;
 
     private String remark;
 
@@ -250,12 +256,36 @@ public class TestOriRecord implements Serializable {
         this.status = status;
     }
 
+    public String getTestValue() {
+        return testValue;
+    }
+
+    public void setTestValue(String testValue) {
+        this.testValue = testValue;
+    }
+
     public String getTestResult() {
         return testResult;
     }
 
     public void setTestResult(String testResult) {
         this.testResult = testResult;
+    }
+
+    public String getTestLevel() {
+        return testLevel;
+    }
+
+    public void setTestLevel(String testLevel) {
+        this.testLevel = testLevel;
+    }
+
+    public String getOriReportFile() {
+        return oriReportFile;
+    }
+
+    public void setOriReportFile(String oriReportFile) {
+        this.oriReportFile = oriReportFile;
     }
 
     public String getRemark() {
@@ -335,7 +365,10 @@ public class TestOriRecord implements Serializable {
         sb.append(", reportPerson=").append(reportPerson);
         sb.append(", reportPersonId=").append(reportPersonId);
         sb.append(", status=").append(status);
+        sb.append(", testValue=").append(testValue);
         sb.append(", testResult=").append(testResult);
+        sb.append(", testLevel=").append(testLevel);
+        sb.append(", oriReportFile=").append(oriReportFile);
         sb.append(", remark=").append(remark);
         sb.append(", sampleDate=").append(sampleDate);
         sb.append(", reviewId=").append(reviewId);

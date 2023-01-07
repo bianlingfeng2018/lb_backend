@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.libiao.customer.dal.mapper.BasicStandardMapper">
-  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.BasicStandard">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="method" jdbcType="VARCHAR" property="method" />
-    <result column="item" jdbcType="VARCHAR" property="item" />
-    <result column="test_item_id" jdbcType="INTEGER" property="testItemId" />
-    <result column="type" jdbcType="TINYINT" property="type" />
-    <result column="value" jdbcType="VARCHAR" property="value" />
+<mapper namespace="com.libiao.customer.dal.mapper.BasicStandardLevelMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.BasicStandardLevel">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="standard_id" jdbcType="INTEGER" property="standardId" />
+    <result column="level_name" jdbcType="VARCHAR" property="levelName" />
     <result column="min_value" jdbcType="VARCHAR" property="minValue" />
     <result column="contain_min" jdbcType="TINYINT" property="containMin" />
     <result column="max_value" jdbcType="VARCHAR" property="maxValue" />
@@ -73,16 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, method, item, test_item_id, type, value, min_value, contain_min, max_value, 
-    contain_max
+    id, standard_id, level_name, min_value, contain_min, max_value, contain_max
   </sql>
-  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.BasicStandardExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.BasicStandardLevelExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from basic_standard
+    from basic_standard_level
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -90,55 +85,41 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from basic_standard
-    where id = #{id,jdbcType=INTEGER}
+    from basic_standard_level
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from basic_standard
-    where id = #{id,jdbcType=INTEGER}
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from basic_standard_level
+    where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.BasicStandardExample">
-    delete from basic_standard
+  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.BasicStandardLevelExample">
+    delete from basic_standard_level
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.libiao.customer.dal.model.BasicStandard">
-    insert into basic_standard (id, name, method, 
-      item, test_item_id, type, 
-      value, min_value, contain_min, 
-      max_value, contain_max)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, 
-      #{item,jdbcType=VARCHAR}, #{testItemId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, 
-      #{value,jdbcType=VARCHAR}, #{minValue,jdbcType=VARCHAR}, #{containMin,jdbcType=TINYINT}, 
-      #{maxValue,jdbcType=VARCHAR}, #{containMax,jdbcType=TINYINT})
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.BasicStandardLevel">
+    insert into basic_standard_level (id, standard_id, level_name, 
+      min_value, contain_min, max_value, 
+      contain_max)
+    values (#{id,jdbcType=BIGINT}, #{standardId,jdbcType=INTEGER}, #{levelName,jdbcType=VARCHAR}, 
+      #{minValue,jdbcType=VARCHAR}, #{containMin,jdbcType=TINYINT}, #{maxValue,jdbcType=VARCHAR}, 
+      #{containMax,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.BasicStandard">
-    insert into basic_standard
+  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.BasicStandardLevel">
+    insert into basic_standard_level
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="name != null">
-        name,
+      <if test="standardId != null">
+        standard_id,
       </if>
-      <if test="method != null">
-        method,
-      </if>
-      <if test="item != null">
-        item,
-      </if>
-      <if test="testItemId != null">
-        test_item_id,
-      </if>
-      <if test="type != null">
-        type,
-      </if>
-      <if test="value != null">
-        value,
+      <if test="levelName != null">
+        level_name,
       </if>
       <if test="minValue != null">
         min_value,
@@ -155,25 +136,13 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="standardId != null">
+        #{standardId,jdbcType=INTEGER},
       </if>
-      <if test="method != null">
-        #{method,jdbcType=VARCHAR},
-      </if>
-      <if test="item != null">
-        #{item,jdbcType=VARCHAR},
-      </if>
-      <if test="testItemId != null">
-        #{testItemId,jdbcType=INTEGER},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=TINYINT},
-      </if>
-      <if test="value != null">
-        #{value,jdbcType=VARCHAR},
+      <if test="levelName != null">
+        #{levelName,jdbcType=VARCHAR},
       </if>
       <if test="minValue != null">
         #{minValue,jdbcType=VARCHAR},
@@ -189,35 +158,23 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.libiao.customer.dal.model.BasicStandardExample" resultType="java.lang.Long">
-    select count(*) from basic_standard
+  <select id="countByExample" parameterType="com.libiao.customer.dal.model.BasicStandardLevelExample" resultType="java.lang.Long">
+    select count(*) from basic_standard_level
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update basic_standard
+    update basic_standard_level
     <set>
       <if test="row.id != null">
-        id = #{row.id,jdbcType=INTEGER},
+        id = #{row.id,jdbcType=BIGINT},
       </if>
-      <if test="row.name != null">
-        name = #{row.name,jdbcType=VARCHAR},
+      <if test="row.standardId != null">
+        standard_id = #{row.standardId,jdbcType=INTEGER},
       </if>
-      <if test="row.method != null">
-        method = #{row.method,jdbcType=VARCHAR},
-      </if>
-      <if test="row.item != null">
-        item = #{row.item,jdbcType=VARCHAR},
-      </if>
-      <if test="row.testItemId != null">
-        test_item_id = #{row.testItemId,jdbcType=INTEGER},
-      </if>
-      <if test="row.type != null">
-        type = #{row.type,jdbcType=TINYINT},
-      </if>
-      <if test="row.value != null">
-        value = #{row.value,jdbcType=VARCHAR},
+      <if test="row.levelName != null">
+        level_name = #{row.levelName,jdbcType=VARCHAR},
       </if>
       <if test="row.minValue != null">
         min_value = #{row.minValue,jdbcType=VARCHAR},
@@ -237,14 +194,10 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update basic_standard
-    set id = #{row.id,jdbcType=INTEGER},
-      name = #{row.name,jdbcType=VARCHAR},
-      method = #{row.method,jdbcType=VARCHAR},
-      item = #{row.item,jdbcType=VARCHAR},
-      test_item_id = #{row.testItemId,jdbcType=INTEGER},
-      type = #{row.type,jdbcType=TINYINT},
-      value = #{row.value,jdbcType=VARCHAR},
+    update basic_standard_level
+    set id = #{row.id,jdbcType=BIGINT},
+      standard_id = #{row.standardId,jdbcType=INTEGER},
+      level_name = #{row.levelName,jdbcType=VARCHAR},
       min_value = #{row.minValue,jdbcType=VARCHAR},
       contain_min = #{row.containMin,jdbcType=TINYINT},
       max_value = #{row.maxValue,jdbcType=VARCHAR},
@@ -253,26 +206,14 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.BasicStandard">
-    update basic_standard
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.BasicStandardLevel">
+    update basic_standard_level
     <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+      <if test="standardId != null">
+        standard_id = #{standardId,jdbcType=INTEGER},
       </if>
-      <if test="method != null">
-        method = #{method,jdbcType=VARCHAR},
-      </if>
-      <if test="item != null">
-        item = #{item,jdbcType=VARCHAR},
-      </if>
-      <if test="testItemId != null">
-        test_item_id = #{testItemId,jdbcType=INTEGER},
-      </if>
-      <if test="type != null">
-        type = #{type,jdbcType=TINYINT},
-      </if>
-      <if test="value != null">
-        value = #{value,jdbcType=VARCHAR},
+      <if test="levelName != null">
+        level_name = #{levelName,jdbcType=VARCHAR},
       </if>
       <if test="minValue != null">
         min_value = #{minValue,jdbcType=VARCHAR},
@@ -287,20 +228,16 @@
         contain_max = #{containMax,jdbcType=TINYINT},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.BasicStandard">
-    update basic_standard
-    set name = #{name,jdbcType=VARCHAR},
-      method = #{method,jdbcType=VARCHAR},
-      item = #{item,jdbcType=VARCHAR},
-      test_item_id = #{testItemId,jdbcType=INTEGER},
-      type = #{type,jdbcType=TINYINT},
-      value = #{value,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.BasicStandardLevel">
+    update basic_standard_level
+    set standard_id = #{standardId,jdbcType=INTEGER},
+      level_name = #{levelName,jdbcType=VARCHAR},
       min_value = #{minValue,jdbcType=VARCHAR},
       contain_min = #{containMin,jdbcType=TINYINT},
       max_value = #{maxValue,jdbcType=VARCHAR},
       contain_max = #{containMax,jdbcType=TINYINT}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

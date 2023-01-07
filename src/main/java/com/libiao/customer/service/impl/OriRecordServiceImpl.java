@@ -1,12 +1,8 @@
 package com.libiao.customer.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.libiao.customer.dal.mapper.TestOriRecordMapper;
-import com.libiao.customer.dal.mapper.TestRecordSubItemMapper;
-import com.libiao.customer.dal.model.TestOriRecord;
-import com.libiao.customer.dal.model.TestOriRecordExample;
-import com.libiao.customer.dal.model.TestRecordSubItem;
-import com.libiao.customer.dal.model.TestRecordSubItemExample;
+import com.libiao.customer.dal.mapper.*;
+import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.ori.*;
 import com.libiao.customer.service.OriRecordService;
 import com.libiao.customer.util.BeanCopyUtil;
@@ -28,6 +24,10 @@ public class OriRecordServiceImpl implements OriRecordService {
     private TestOriRecordMapper testOriRecordMapper;
     @Autowired
     private TestRecordSubItemMapper testRecordSubItemMapper;
+    @Autowired
+    private BasicStandardMapper basicStandardMapper;
+    @Autowired
+    private BasicStandardLevelMapper basicStandardLevelMapper;
 
     @Override
     public PageInfo<TestOriRecord> list(OriRecordListReq req){
@@ -81,4 +81,56 @@ public class OriRecordServiceImpl implements OriRecordService {
         update.setReviewReason(req.getReviewReason());
         testOriRecordMapper.updateByPrimaryKeySelective(update);
     }
+
+    //更新原始记录单，首先获取测试类型和对应的参数
+    //根据test_item_id
+    @Override
+    public TestItemInfoVO testInfo(TestItemInfoReq req){
+        TestItemInfoVO vo = new TestItemInfoVO();
+        BasicStandardExample example = new BasicStandardExample();
+        example.createCriteria().andTestItemIdEqualTo(req.getTestItemId());
+        List<BasicStandard> basicStandards = basicStandardMapper.selectByExample(example);
+        BasicStandard basicStandard = basicStandards.get(0);
+        BeanCopyUtil.copy(basicStandard,vo);
+        //1:单个限值 2:多级别限值 3:纯文本判断 4:包含测试子项目
+        if (basicStandard.getType() == 2){
+            //查询多级别
+            BasicStandardLevelExample levelExample = new BasicStandardLevelExample();
+            levelExample.createCriteria().andStandardIdEqualTo(basicStandard.getId());
+            List<BasicStandardLevel> basicStandardLevels = basicStandardLevelMapper.selectByExample(levelExample);
+            List<TestItemInfoLvlVO> levelList = new ArrayList<>();
+            basicStandardLevels.forEach(lvl->levelList.add(BeanCopyUtil.copy(lvl,TestItemInfoLvlVO.class)));
+            vo.setLevelList(levelList);
+        }else if (4 == basicStandard.getType()){
+            TestRecordSubItemExample subExample = new TestRecordSubItemExample();
+            subExample.createCriteria().andOriRecordIdEqualTo(req.getOriRecordId());
+            List<TestRecordSubItem> testSubItems = testRecordSubItemMapper.selectByExample(subExample);
+            List<TestItemSubInfoVO> subList = new ArrayList<>();
+            testSubItems.forEach(sub->subList.add(BeanCopyUtil.copy(sub,TestItemSubInfoVO.class)));
+            vo.setSubList(subList);
+        }
+        return vo;
+    }
+
+    @Override
+    public void upload(UploadTestResultReq req){
+        //更新原始记录单
+        TestOriRecord update = new TestOriRecord();
+        update.setTestResult(req.getTestResult());
+        update.setTestValue(req.getTestValue());
+        update.setOriReportFile(req.getFileName());
+        update.setTestLevel(req.getTestLevel());
+        update.setRemark(req.getRemark());
+        testOriRecordMapper.updateByPrimaryKeySelective(update);
+        if (!CollectionUtils.isEmpty(req.getSubList())) {
+            for (SubResultVO subResultVO : req.getSubList()) {
+                TestRecordSubItem subUpdate = new TestRecordSubItem();
+                subUpdate.setId(subResultVO.getId());
+                subUpdate.setAvgValue(subResultVO.getAvgValue());
+                subUpdate.setTestResult(subResultVO.getTestResult());
+                testRecordSubItemMapper.updateByPrimaryKeySelective(subUpdate);
+            }
+        }
+    }
+
 }

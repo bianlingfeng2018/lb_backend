@@ -1615,6 +1615,76 @@ public class TestOriRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andTestValueIsNull() {
+            addCriterion("test_value is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueIsNotNull() {
+            addCriterion("test_value is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueEqualTo(String value) {
+            addCriterion("test_value =", value, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueNotEqualTo(String value) {
+            addCriterion("test_value <>", value, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueGreaterThan(String value) {
+            addCriterion("test_value >", value, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueGreaterThanOrEqualTo(String value) {
+            addCriterion("test_value >=", value, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueLessThan(String value) {
+            addCriterion("test_value <", value, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueLessThanOrEqualTo(String value) {
+            addCriterion("test_value <=", value, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueLike(String value) {
+            addCriterion("test_value like", value, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueNotLike(String value) {
+            addCriterion("test_value not like", value, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueIn(List<String> values) {
+            addCriterion("test_value in", values, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueNotIn(List<String> values) {
+            addCriterion("test_value not in", values, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueBetween(String value1, String value2) {
+            addCriterion("test_value between", value1, value2, "testValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestValueNotBetween(String value1, String value2) {
+            addCriterion("test_value not between", value1, value2, "testValue");
+            return (Criteria) this;
+        }
+
         public Criteria andTestResultIsNull() {
             addCriterion("test_result is null");
             return (Criteria) this;
@@ -1682,6 +1752,146 @@ public class TestOriRecordExample {
 
         public Criteria andTestResultNotBetween(String value1, String value2) {
             addCriterion("test_result not between", value1, value2, "testResult");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelIsNull() {
+            addCriterion("test_level is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelIsNotNull() {
+            addCriterion("test_level is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelEqualTo(String value) {
+            addCriterion("test_level =", value, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelNotEqualTo(String value) {
+            addCriterion("test_level <>", value, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelGreaterThan(String value) {
+            addCriterion("test_level >", value, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelGreaterThanOrEqualTo(String value) {
+            addCriterion("test_level >=", value, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelLessThan(String value) {
+            addCriterion("test_level <", value, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelLessThanOrEqualTo(String value) {
+            addCriterion("test_level <=", value, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelLike(String value) {
+            addCriterion("test_level like", value, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelNotLike(String value) {
+            addCriterion("test_level not like", value, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelIn(List<String> values) {
+            addCriterion("test_level in", values, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelNotIn(List<String> values) {
+            addCriterion("test_level not in", values, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelBetween(String value1, String value2) {
+            addCriterion("test_level between", value1, value2, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestLevelNotBetween(String value1, String value2) {
+            addCriterion("test_level not between", value1, value2, "testLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileIsNull() {
+            addCriterion("ori_report_file is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileIsNotNull() {
+            addCriterion("ori_report_file is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileEqualTo(String value) {
+            addCriterion("ori_report_file =", value, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileNotEqualTo(String value) {
+            addCriterion("ori_report_file <>", value, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileGreaterThan(String value) {
+            addCriterion("ori_report_file >", value, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileGreaterThanOrEqualTo(String value) {
+            addCriterion("ori_report_file >=", value, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileLessThan(String value) {
+            addCriterion("ori_report_file <", value, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileLessThanOrEqualTo(String value) {
+            addCriterion("ori_report_file <=", value, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileLike(String value) {
+            addCriterion("ori_report_file like", value, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileNotLike(String value) {
+            addCriterion("ori_report_file not like", value, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileIn(List<String> values) {
+            addCriterion("ori_report_file in", values, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileNotIn(List<String> values) {
+            addCriterion("ori_report_file not in", values, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileBetween(String value1, String value2) {
+            addCriterion("ori_report_file between", value1, value2, "oriReportFile");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriReportFileNotBetween(String value1, String value2) {
+            addCriterion("ori_report_file not between", value1, value2, "oriReportFile");
             return (Criteria) this;
         }
 

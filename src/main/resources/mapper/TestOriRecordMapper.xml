@@ -25,7 +25,10 @@
     <result column="report_person" jdbcType="VARCHAR" property="reportPerson" />
     <result column="report_person_id" jdbcType="BIGINT" property="reportPersonId" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="test_value" jdbcType="VARCHAR" property="testValue" />
     <result column="test_result" jdbcType="VARCHAR" property="testResult" />
+    <result column="test_level" jdbcType="VARCHAR" property="testLevel" />
+    <result column="ori_report_file" jdbcType="VARCHAR" property="oriReportFile" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="sample_date" jdbcType="TIMESTAMP" property="sampleDate" />
     <result column="review_id" jdbcType="BIGINT" property="reviewId" />
@@ -95,8 +98,8 @@
     id, record_num, work_order_num, quotation_num, report_num, test_com, test_com_id, 
     test_lab, test_lab_id, test_item, test_item_id, test_device_no, test_device_name, 
     test_person_id, test_person, test_method, test_case, create_time, plan_date, report_date, 
-    report_person, report_person_id, status, test_result, remark, sample_date, review_id, 
-    review_name, review_reason, review_time
+    report_person, report_person_id, status, test_value, test_result, test_level, ori_report_file, 
+    remark, sample_date, review_id, review_name, review_reason, review_time
   </sql>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestOriRecordExample" resultMap="BaseResultMap">
     select
@@ -139,7 +142,8 @@
       test_person_id, test_person, test_method, 
       test_case, create_time, plan_date, 
       report_date, report_person, report_person_id, 
-      status, test_result, remark, 
+      status, test_value, test_result, 
+      test_level, ori_report_file, remark, 
       sample_date, review_id, review_name, 
       review_reason, review_time)
     values (#{recordNum,jdbcType=VARCHAR}, #{workOrderNum,jdbcType=VARCHAR}, #{quotationNum,jdbcType=VARCHAR}, 
@@ -149,7 +153,8 @@
       #{testPersonId,jdbcType=BIGINT}, #{testPerson,jdbcType=VARCHAR}, #{testMethod,jdbcType=VARCHAR}, 
       #{testCase,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{planDate,jdbcType=TIMESTAMP}, 
       #{reportDate,jdbcType=TIMESTAMP}, #{reportPerson,jdbcType=VARCHAR}, #{reportPersonId,jdbcType=BIGINT}, 
-      #{status,jdbcType=TINYINT}, #{testResult,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{testValue,jdbcType=VARCHAR}, #{testResult,jdbcType=VARCHAR}, 
+      #{testLevel,jdbcType=VARCHAR}, #{oriReportFile,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{sampleDate,jdbcType=TIMESTAMP}, #{reviewId,jdbcType=BIGINT}, #{reviewName,jdbcType=VARCHAR}, 
       #{reviewReason,jdbcType=VARCHAR}, #{reviewTime,jdbcType=TIMESTAMP})
   </insert>
@@ -225,8 +230,17 @@
       <if test="status != null">
         status,
       </if>
+      <if test="testValue != null">
+        test_value,
+      </if>
       <if test="testResult != null">
         test_result,
+      </if>
+      <if test="testLevel != null">
+        test_level,
+      </if>
+      <if test="oriReportFile != null">
+        ori_report_file,
       </if>
       <if test="remark != null">
         remark,
@@ -314,8 +328,17 @@
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
+      <if test="testValue != null">
+        #{testValue,jdbcType=VARCHAR},
+      </if>
       <if test="testResult != null">
         #{testResult,jdbcType=VARCHAR},
+      </if>
+      <if test="testLevel != null">
+        #{testLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="oriReportFile != null">
+        #{oriReportFile,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -415,8 +438,17 @@
       <if test="row.status != null">
         status = #{row.status,jdbcType=TINYINT},
       </if>
+      <if test="row.testValue != null">
+        test_value = #{row.testValue,jdbcType=VARCHAR},
+      </if>
       <if test="row.testResult != null">
         test_result = #{row.testResult,jdbcType=VARCHAR},
+      </if>
+      <if test="row.testLevel != null">
+        test_level = #{row.testLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="row.oriReportFile != null">
+        ori_report_file = #{row.oriReportFile,jdbcType=VARCHAR},
       </if>
       <if test="row.remark != null">
         remark = #{row.remark,jdbcType=VARCHAR},
@@ -466,7 +498,10 @@
       report_person = #{row.reportPerson,jdbcType=VARCHAR},
       report_person_id = #{row.reportPersonId,jdbcType=BIGINT},
       status = #{row.status,jdbcType=TINYINT},
+      test_value = #{row.testValue,jdbcType=VARCHAR},
       test_result = #{row.testResult,jdbcType=VARCHAR},
+      test_level = #{row.testLevel,jdbcType=VARCHAR},
+      ori_report_file = #{row.oriReportFile,jdbcType=VARCHAR},
       remark = #{row.remark,jdbcType=VARCHAR},
       sample_date = #{row.sampleDate,jdbcType=TIMESTAMP},
       review_id = #{row.reviewId,jdbcType=BIGINT},
@@ -546,8 +581,17 @@
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
       </if>
+      <if test="testValue != null">
+        test_value = #{testValue,jdbcType=VARCHAR},
+      </if>
       <if test="testResult != null">
         test_result = #{testResult,jdbcType=VARCHAR},
+      </if>
+      <if test="testLevel != null">
+        test_level = #{testLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="oriReportFile != null">
+        ori_report_file = #{oriReportFile,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
@@ -594,7 +638,10 @@
       report_person = #{reportPerson,jdbcType=VARCHAR},
       report_person_id = #{reportPersonId,jdbcType=BIGINT},
       status = #{status,jdbcType=TINYINT},
+      test_value = #{testValue,jdbcType=VARCHAR},
       test_result = #{testResult,jdbcType=VARCHAR},
+      test_level = #{testLevel,jdbcType=VARCHAR},
+      ori_report_file = #{oriReportFile,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       sample_date = #{sampleDate,jdbcType=TIMESTAMP},
       review_id = #{reviewId,jdbcType=BIGINT},

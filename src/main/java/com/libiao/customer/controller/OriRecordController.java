@@ -60,9 +60,19 @@ public class OriRecordController {
         return ResponseUtil.getResponseVO(fileName);
     }
 
-    //上传结果
-    public void result(){
+    //TODO 确认检测报告单的生成
+    @ApiOperation(value = "上传结果")
+    @PostMapping("uploadResult")
+    public ResponseEntity<BaseResponseVO> uploadResult(@RequestBody UploadTestResultReq req){
+        oriRecordService.upload(req);
+        return ResponseUtil.getDefaultResp();
+    }
 
+    @ApiOperation(value = "获取测试信息")
+    @PostMapping("test/info")
+    public ResponseEntity<TestItemInfoVO> testInfo(@RequestBody TestItemInfoReq req){
+        TestItemInfoVO testItemInfoVO = oriRecordService.testInfo(req);
+        return ResponseUtil.getResponseVO(testItemInfoVO);
     }
 
 }

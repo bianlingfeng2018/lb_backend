@@ -22,6 +22,10 @@ public enum QuotationEnum {
     PART_PAID((byte)5,"已付部分"),
     TOTAL_PAID((byte)6,"已全付"),
     INVALID((byte)7,"已失效"),
+
+    BUS_TEST((byte)1,"检测"),
+    BUS_CHECK((byte)3,"认证"),
+    BUS_INSPECTION((byte)3,"检验"),
     ;
 
     QuotationEnum(byte code, String desc) {

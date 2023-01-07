@@ -1,9 +1,11 @@
 package com.libiao.customer.model.bill;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.libiao.customer.model.BaseSessionReq;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -28,10 +30,12 @@ public class CustomerBillReq extends BaseSessionReq {
     private String billPath;
 
     @ApiModelProperty("水单上传时间")
-    private Date uploadTime;
+    @DateTimeFormat
+    private String uploadTime;
 
     @ApiModelProperty("收款时间")
-    private Date incomeTime;
+    @DateTimeFormat
+    private String incomeTime;
 
     @ApiModelProperty("状态")
     private Byte status;

@@ -18,5 +18,6 @@ public class CheckItemVO {
     private Integer unitPrice;
     @ApiModelProperty("测试金额")
     private Integer amountRmb;
-
+    @ApiModelProperty("测试项目")
+    private String itemName;
 }

@@ -20,11 +20,23 @@
 
 
     <select id="getTotalSplitInfo" resultType="com.libiao.customer.dal.model.SplitInfo">
-        SELECT cc.id,cc.com_name,cc.sub_contract, li.lab_name,di.device_name,dir.item_id,dir.price,dir.period
+        SELECT cc.id,cc.com_name,cc.sub_contract, li.id as lab_id, li.lab_name,di.device_name,dir.item_id,dir.price,dir.period
         FROM check_company cc
                  INNER JOIN lab_info li ON cc.id = li.com_id
                  INNER JOIN device_info di ON di.lab_id = li.id
                  INNER JOIN device_item_rel dir ON dir.device_id = di.id
+    </select>
+
+    <select id="getComCheckItemList" resultType="com.libiao.customer.model.work.CheckItemVO">
+        SELECT li.id AS lab_id, li.lab_name,di.device_name,dir.item_id,tqi.unit_price,tqi.amount_rmb
+        FROM check_company cc
+                 INNER JOIN lab_info li ON cc.id = li.com_id
+                 INNER JOIN device_info di ON di.lab_id = li.id
+                 INNER JOIN device_item_rel dir ON dir.device_id = di.id
+                 INNER JOIN test_application_item tai ON tai.test_item_id = dir.item_id
+                 LEFT JOIN test_application_form taf ON taf.application_num = tai.application_num
+                 LEFT JOIN test_quotation_item tqi ON (tqi.test_quotation_num = taf.quotation_num AND tqi.item_id = dir.item_id)
+        WHERE tai.application_num = #{applicationNum} and cc.id = #{comId}
     </select>
 
 </mapper>

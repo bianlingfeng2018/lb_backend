@@ -15,4 +15,6 @@ public interface ApplicationService {
     void modify(ModifyApplicationReq req);
 
     void review(ReviewApplicationReq req);
+
+    void confirm(ApplicationDetailReq req);
 }

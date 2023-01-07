@@ -15,11 +15,15 @@ public class TestWorkOrderItem implements Serializable {
 
     private String sampleDesc;
 
+    private Integer testItemId;
+
     private String testItem;
 
     private String testItemMethod;
 
     private String testItemCase;
+
+    private Integer labId;
 
     private String remark;
 
@@ -73,6 +77,14 @@ public class TestWorkOrderItem implements Serializable {
         this.sampleDesc = sampleDesc;
     }
 
+    public Integer getTestItemId() {
+        return testItemId;
+    }
+
+    public void setTestItemId(Integer testItemId) {
+        this.testItemId = testItemId;
+    }
+
     public String getTestItem() {
         return testItem;
     }
@@ -97,6 +109,14 @@ public class TestWorkOrderItem implements Serializable {
         this.testItemCase = testItemCase;
     }
 
+    public Integer getLabId() {
+        return labId;
+    }
+
+    public void setLabId(Integer labId) {
+        this.labId = labId;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -117,9 +137,11 @@ public class TestWorkOrderItem implements Serializable {
         sb.append(", sampleModel=").append(sampleModel);
         sb.append(", sampleMaterial=").append(sampleMaterial);
         sb.append(", sampleDesc=").append(sampleDesc);
+        sb.append(", testItemId=").append(testItemId);
         sb.append(", testItem=").append(testItem);
         sb.append(", testItemMethod=").append(testItemMethod);
         sb.append(", testItemCase=").append(testItemCase);
+        sb.append(", labId=").append(labId);
         sb.append(", remark=").append(remark);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

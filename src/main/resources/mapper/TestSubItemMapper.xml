@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.libiao.customer.dal.mapper.TestSubItemMapper">
+  <resultMap id="BaseResultMap" type="com.libiao.customer.dal.model.TestSubItem">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="test_item" jdbcType="VARCHAR" property="testItem" />
+    <result column="sub_test_item" jdbcType="VARCHAR" property="subTestItem" />
+    <result column="cas" jdbcType="VARCHAR" property="cas" />
+    <result column="limit_value" jdbcType="VARCHAR" property="limitValue" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, test_item, sub_test_item, cas, limit_value, unit
+  </sql>
+  <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestSubItemExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from test_sub_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from test_sub_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from test_sub_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.libiao.customer.dal.model.TestSubItemExample">
+    delete from test_sub_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.libiao.customer.dal.model.TestSubItem">
+    insert into test_sub_item (id, test_item, sub_test_item, 
+      cas, limit_value, unit
+      )
+    values (#{id,jdbcType=BIGINT}, #{testItem,jdbcType=VARCHAR}, #{subTestItem,jdbcType=VARCHAR}, 
+      #{cas,jdbcType=VARCHAR}, #{limitValue,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestSubItem">
+    insert into test_sub_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="testItem != null">
+        test_item,
+      </if>
+      <if test="subTestItem != null">
+        sub_test_item,
+      </if>
+      <if test="cas != null">
+        cas,
+      </if>
+      <if test="limitValue != null">
+        limit_value,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="testItem != null">
+        #{testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="subTestItem != null">
+        #{subTestItem,jdbcType=VARCHAR},
+      </if>
+      <if test="cas != null">
+        #{cas,jdbcType=VARCHAR},
+      </if>
+      <if test="limitValue != null">
+        #{limitValue,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.libiao.customer.dal.model.TestSubItemExample" resultType="java.lang.Long">
+    select count(*) from test_sub_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update test_sub_item
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.testItem != null">
+        test_item = #{row.testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="row.subTestItem != null">
+        sub_test_item = #{row.subTestItem,jdbcType=VARCHAR},
+      </if>
+      <if test="row.cas != null">
+        cas = #{row.cas,jdbcType=VARCHAR},
+      </if>
+      <if test="row.limitValue != null">
+        limit_value = #{row.limitValue,jdbcType=VARCHAR},
+      </if>
+      <if test="row.unit != null">
+        unit = #{row.unit,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update test_sub_item
+    set id = #{row.id,jdbcType=BIGINT},
+      test_item = #{row.testItem,jdbcType=VARCHAR},
+      sub_test_item = #{row.subTestItem,jdbcType=VARCHAR},
+      cas = #{row.cas,jdbcType=VARCHAR},
+      limit_value = #{row.limitValue,jdbcType=VARCHAR},
+      unit = #{row.unit,jdbcType=VARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.libiao.customer.dal.model.TestSubItem">
+    update test_sub_item
+    <set>
+      <if test="testItem != null">
+        test_item = #{testItem,jdbcType=VARCHAR},
+      </if>
+      <if test="subTestItem != null">
+        sub_test_item = #{subTestItem,jdbcType=VARCHAR},
+      </if>
+      <if test="cas != null">
+        cas = #{cas,jdbcType=VARCHAR},
+      </if>
+      <if test="limitValue != null">
+        limit_value = #{limitValue,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.libiao.customer.dal.model.TestSubItem">
+    update test_sub_item
+    set test_item = #{testItem,jdbcType=VARCHAR},
+      sub_test_item = #{subTestItem,jdbcType=VARCHAR},
+      cas = #{cas,jdbcType=VARCHAR},
+      limit_value = #{limitValue,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

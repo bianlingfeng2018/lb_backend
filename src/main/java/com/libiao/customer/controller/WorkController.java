@@ -1,6 +1,7 @@
 package com.libiao.customer.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.libiao.customer.dal.model.CheckCompany;
 import com.libiao.customer.dal.model.TestWorkOrder;
 import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
@@ -80,6 +81,30 @@ public class WorkController {
         fileUtil.downloadSample(fileName, response);
     }
 
+    //TODO 这块和自动创建，还差校验CAS资质逻辑
+    @ApiOperation(value = "检测公司列表")
+    @PostMapping(value = "comList")
+    public ResponseEntity<ListResponseVO<CheckCompanyVO>> comList(@RequestBody CheckComListReq req){
+        List<CheckCompany> checkCompanies = workService.comList(req);
+        List<CheckCompanyVO> voList = new ArrayList<>();
+        checkCompanies.forEach(item->voList.add(BeanCopyUtil.copy(item,CheckCompanyVO.class)));
+        return ResponseUtil.getListResponseVO(voList,voList.size());
+    }
 
+    @ApiOperation(value = "该公司下检测项目列表")
+    @PostMapping(value = "itemList")
+    public ResponseEntity<ListResponseVO<CheckItemVO>> itemList(@RequestBody CheckItemReq req){
+        List<CheckItemVO> itemList = workService.getComCheckItemList(req);
+        List<CheckItemVO> voList = new ArrayList<>();
+        itemList.forEach(item->voList.add(BeanCopyUtil.copy(item,CheckItemVO.class)));
+        return ResponseUtil.getListResponseVO(voList,voList.size());
+    }
+
+    @ApiOperation(value = "新增工作单列表")
+    @PostMapping(value = "create")
+    public ResponseEntity<BaseResponseVO> createWorkOrders(@RequestBody CreateWorkOrderListReq req){
+        workService.createWorkOrder(req);
+        return ResponseUtil.getDefaultResp();
+    }
 
 }

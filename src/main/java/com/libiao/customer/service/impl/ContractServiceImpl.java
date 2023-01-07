@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -74,7 +73,7 @@ public class ContractServiceImpl implements ContractService {
     public void modify(ModifyContractReq req){
         ClientContract record = BeanCopyUtil.copy(req,ClientContract.class);
         record.setUpdateTime(new Date());
-        clientContractMapper.updateByPrimaryKey(record);
+        clientContractMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
@@ -101,8 +100,6 @@ public class ContractServiceImpl implements ContractService {
             balanceReq.setCommissionRate(0L);
             balanceService.addRecord(balanceReq);
         }
-
-
     }
 
     @Override

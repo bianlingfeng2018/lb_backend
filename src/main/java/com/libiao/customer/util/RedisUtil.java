@@ -70,6 +70,6 @@ public class RedisUtil {
         //获取前一位字母
         long alpha = (increment / 1000) + 65;
         char aChar = (char) alpha;
-        return "LTI" + "W" + date + aChar + noStr;
+        return "LTITW" + date + aChar + noStr;
     }
 }

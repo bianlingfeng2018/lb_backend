@@ -1,10 +1,7 @@
 package com.libiao.customer.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.libiao.customer.dal.mapper.TestApplicationFormMapper;
-import com.libiao.customer.dal.mapper.TestWorkOrderItemMapper;
-import com.libiao.customer.dal.mapper.TestWorkOrderMapper;
-import com.libiao.customer.dal.mapper.TestWorkOrderSampleMapper;
+import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.work.*;
 import com.libiao.customer.service.WorkService;
@@ -34,6 +31,10 @@ public class WorkServiceImpl implements WorkService {
     private TestWorkOrderSampleMapper testWorkOrderSampleMapper;
     @Autowired
     private TestApplicationFormMapper testApplicationFormMapper;
+    @Autowired
+    private CheckCompanyMapper checkCompanyMapper;
+    @Autowired
+    private TestInfoMapperExt testInfoMapperExt;
 
     @Override
     public PageInfo<TestWorkOrder> list(WorkOrderListReq req){
@@ -116,6 +117,7 @@ public class WorkServiceImpl implements WorkService {
 
     //删除工作单
     @Override
+    @Transactional
     public void delete(WorkOrderDetailReq req){
 
         TestWorkOrder testWorkOrder = testWorkOrderMapper.selectByPrimaryKey(req.getId());
@@ -140,6 +142,28 @@ public class WorkServiceImpl implements WorkService {
         TestApplicationFormExample appExample = new TestApplicationFormExample();
         appExample.createCriteria().andApplicationNumEqualTo(testWorkOrder.getApplicationNum());
         testApplicationFormMapper.updateByExampleSelective(appUpdate,appExample);
+    }
+
+    /**
+     * 手动创建工作单
+     *
+     */
+    public void createWorkOrder(){
+
+    }
+
+    @Override
+    public List<CheckCompany> comList(CheckComListReq req){
+        CheckCompanyExample example = new CheckCompanyExample();
+        example.createCriteria().andComNameLike(LikeUtil.totalLike(req.getComName()));
+        List<CheckCompany> checkCompanies = checkCompanyMapper.selectByExample(example);
+        return checkCompanies;
+    }
+
+    //获得该公司下的能测试的，这个测试项目
+    @Override
+    public List<CheckItemVO> getComCheckItemList(CheckItemReq req){
+        return testInfoMapperExt.getComCheckItemList(req);
     }
 
 }

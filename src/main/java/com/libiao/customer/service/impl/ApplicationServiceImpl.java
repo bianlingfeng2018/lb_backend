@@ -10,6 +10,7 @@ import com.libiao.customer.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -274,6 +275,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    @Transactional
     public void confirm(ApplicationDetailReq req){
         TestApplicationFormExample example = new TestApplicationFormExample();
         example.createCriteria().andApplicationNumEqualTo(req.getApplicationNum());

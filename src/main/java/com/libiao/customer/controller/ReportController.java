@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.TestReport;
 import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
+import com.libiao.customer.model.report.ReportApproveBatchReq;
 import com.libiao.customer.model.report.ReportApproveReq;
 import com.libiao.customer.model.report.ReportListReq;
 import com.libiao.customer.model.report.ReportListVO;
@@ -43,6 +44,16 @@ public class ReportController {
     @ApiOperation("检测报告单审核")
     public ResponseEntity<BaseResponseVO> approve(@RequestBody ReportApproveReq req){
         reportService.approve(req);
+        return ResponseUtil.getDefaultResp();
+    }
+
+    @PostMapping("approveBatch")
+    @ApiOperation("检测报告单审核")
+    public ResponseEntity<BaseResponseVO> approveBatch(@RequestBody ReportApproveBatchReq req){
+       req.getReqList().forEach(reportApproveReq -> {
+           reportApproveReq.setUser(req.getUser());
+           reportService.approve(reportApproveReq);
+       });
         return ResponseUtil.getDefaultResp();
     }
 }

@@ -24,5 +24,6 @@ public class ReportListVO {
     private String tester;
     @ApiModelProperty("报告状态")
     private Byte reportStatus;
-
+    @ApiModelProperty("不通过原因")
+    private String reason;
 }

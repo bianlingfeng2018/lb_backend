@@ -13,7 +13,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.libiao.customer.controller.PageVO;
+import com.libiao.customer.model.PageVO;
 import com.libiao.customer.dal.model.Permission;
 import com.libiao.customer.dal.model.Role;
 import com.libiao.customer.dal.model.RolePermission;

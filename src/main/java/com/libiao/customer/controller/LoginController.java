@@ -1,7 +1,6 @@
 package com.libiao.customer.controller;
 
 import com.libiao.customer.dal.model.UserExt;
-import com.libiao.customer.entity.RegisterResult;
 import com.libiao.customer.service.UserBizService;
 import com.libiao.customer.util.AccessController;
 import com.libiao.customer.util.model.ResponseVO;
@@ -47,10 +46,5 @@ public class LoginController {
         return userBizService.queryCurrentUser();
     }
 
-    @AccessController
-    @ResponseBody
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public RegisterResult register(){
-        return null;
-    }
+
 }

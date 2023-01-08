@@ -4,6 +4,7 @@ import com.libiao.customer.dal.model.Client;
 import com.libiao.customer.dal.model.ClientParamVO;
 import com.libiao.customer.dal.model.ClientVO;
 import com.libiao.customer.dal.model.UserExt;
+import com.libiao.customer.model.PageVO;
 import com.libiao.customer.service.ClientService;
 import com.libiao.customer.util.ResponseUtil;
 import com.libiao.customer.util.model.ResponseVO;
@@ -53,7 +54,7 @@ public class ClientComCtrl {
    */
   @RequestMapping(value = "/api/client-com-page-all", method = RequestMethod.GET)
   public ResponseVO<PageVO<Client>> getAllClientComPage(int pageNum, int pageSize,
-      ClientParamVO vo) {
+                                                        ClientParamVO vo) {
     return clientService.getAllClientComPage(pageNum, pageSize, vo);
   }
 

@@ -1,6 +1,6 @@
 package com.libiao.customer.util;
 
-import com.libiao.customer.controller.PageVO;
+import com.libiao.customer.model.PageVO;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 

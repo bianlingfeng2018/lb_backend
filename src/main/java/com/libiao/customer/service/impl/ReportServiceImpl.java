@@ -4,9 +4,11 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.TestReportMapper;
 import com.libiao.customer.dal.model.TestReport;
 import com.libiao.customer.dal.model.TestReportExample;
+import com.libiao.customer.model.report.ReportApproveReq;
 import com.libiao.customer.model.report.ReportListReq;
 import com.libiao.customer.service.ReportService;
 import com.libiao.customer.util.LikeUtil;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -41,5 +43,20 @@ public class ReportServiceImpl implements ReportService {
         final List<TestReport> testReports = testReportMapper.selectByExample(example);
         page = new PageInfo<>(testReports);
         return page;
+    }
+
+    @Override
+    public boolean approve(ReportApproveReq req) {
+        TestReportExample example = new TestReportExample();
+        example.createCriteria().andIdEqualTo(req.getId())
+                .andReportNumEqualTo(req.getReportNum());
+        List<TestReport> reports = testReportMapper.selectByExample(example);
+        if(reports.size()!=1) return false;
+        TestReport report = reports.get(0);
+        report.setReviewer(req.getUser().getUsername());
+        report.setReportStatus(report.getReportStatus());
+        report.setReason(req.getReason());
+        testReportMapper.updateByPrimaryKeySelective(report);
+        return true;
     }
 }

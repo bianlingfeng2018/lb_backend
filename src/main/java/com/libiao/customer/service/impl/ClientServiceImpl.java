@@ -9,7 +9,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.beust.jcommander.internal.Lists;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.libiao.customer.controller.PageVO;
+import com.libiao.customer.model.PageVO;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.dal.model.UserExt;
 import com.libiao.customer.repository.ClientRepository;

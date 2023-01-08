@@ -1,6 +1,5 @@
 package com.libiao.customer.repository;
 
-import com.libiao.customer.controller.PageVO;
 import com.libiao.customer.dal.model.Role;
 import java.util.List;
 

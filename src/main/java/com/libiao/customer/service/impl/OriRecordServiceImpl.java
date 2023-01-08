@@ -186,6 +186,16 @@ public class OriRecordServiceImpl implements OriRecordService {
         if (record.getStatus() == 2){
             throw new ServiceException(HttpStatus.BAD_REQUEST,"审核通过，不能再上传");
         }
+        if (req.getUploadType() == 1){
+            if (record.getStatus() != 0){
+                throw new ServiceException(HttpStatus.BAD_REQUEST, "记录单状态不正确，不可上传");
+            }
+        } else if (req.getUploadType() == 2){
+            //待审核 和审核未通过的，可以编辑
+            if(record.getStatus() != 1  && record.getStatus() != 3) {
+                throw new ServiceException(HttpStatus.BAD_REQUEST, "记录单状态不正确，不可编辑");
+            }
+        }
         boolean flag = false;
         log.info("idStr={}",idStr);
         String[] split = record.getTestPersonId().split(",");
@@ -207,7 +217,7 @@ public class OriRecordServiceImpl implements OriRecordService {
         update.setTestLevel(req.getTestLevel());
         update.setLimitValue(req.getLimitValue());
         update.setRemark(req.getRemark());
-        update.setStatus((byte)1);
+        update.setStatus((byte) 1);
         log.info("update={}", JSONObject.toJSONString(update));
         testOriRecordMapper.updateByPrimaryKeySelective(update);
         if (!CollectionUtils.isEmpty(req.getSubList())) {

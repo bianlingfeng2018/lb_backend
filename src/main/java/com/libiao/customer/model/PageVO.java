@@ -1,4 +1,4 @@
-package com.libiao.customer.controller;
+package com.libiao.customer.model;
 
 import java.util.List;
 import lombok.Getter;

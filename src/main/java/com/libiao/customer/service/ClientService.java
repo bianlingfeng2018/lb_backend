@@ -1,6 +1,6 @@
 package com.libiao.customer.service;
 
-import com.libiao.customer.controller.PageVO;
+import com.libiao.customer.model.PageVO;
 import com.libiao.customer.dal.model.Client;
 import com.libiao.customer.dal.model.ClientParamVO;
 import com.libiao.customer.dal.model.ClientVO;

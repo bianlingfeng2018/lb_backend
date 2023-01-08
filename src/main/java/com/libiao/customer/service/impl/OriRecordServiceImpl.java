@@ -29,6 +29,8 @@ public class OriRecordServiceImpl implements OriRecordService {
     private BasicStandardMapper basicStandardMapper;
     @Autowired
     private BasicStandardLevelMapper basicStandardLevelMapper;
+    @Autowired
+    private TestReportMapper testReportMapper;
 
     @Override
     public PageInfo<TestOriRecord> list(OriRecordListReq req){
@@ -84,6 +86,15 @@ public class OriRecordServiceImpl implements OriRecordService {
         testOriRecordMapper.updateByPrimaryKeySelective(update);
         //TODO 确认该原始记录单的申请单下的所有原始记录单都已经审核完毕，那么生成检测报告单
 
+        TestOriRecordExample example = new TestOriRecordExample();
+        example.createCriteria().andApplicationNumEqualTo(testOriRecord.getApplicationNum()).andStatusNotEqualTo((byte) 2);
+        List<TestOriRecord> testOriRecords = testOriRecordMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(testOriRecords)){
+            //不存在未审核的原始记录单，那么开始生成检测报告单
+            TestReport report = new TestReport();
+
+            testReportMapper.insertSelective(report);
+        }
     }
 
     //更新原始记录单，首先获取测试类型和对应的参数

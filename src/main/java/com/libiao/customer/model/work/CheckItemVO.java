@@ -20,4 +20,6 @@ public class CheckItemVO {
     private Integer amountRmb;
     @ApiModelProperty("测试项目")
     private String itemName;
+    @ApiModelProperty("测试周期")
+    private Integer period;
 }

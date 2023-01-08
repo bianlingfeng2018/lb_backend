@@ -319,11 +319,10 @@ public class ApplicationServiceImpl implements ApplicationService {
             Calendar instance = Calendar.getInstance();
             record.setCreateTime(instance.getTime());
 
-            instance.add(Calendar.DATE,1);
+            instance.add(Calendar.DATE,maxPeriod);
             record.setPlanDate(instance.getTime());
-
-            //TODO 开单日期
-
+            record.setCreateName(testApplicationForm.getApplyPerson());
+            record.setOrderDate(new Date());
             record.setService(testApplicationForm.getService());
             record.setTestComId(comEntry.getKey());
             record.setComName(splits.get(0).getComName());

@@ -28,7 +28,7 @@
     </select>
 
     <select id="getComCheckItemList" resultType="com.libiao.customer.model.work.CheckItemVO">
-        SELECT li.id AS lab_id, li.lab_name,di.device_name,dir.item_id,tqi.unit_price,tqi.amount_rmb,tai.item_name
+        SELECT li.id AS lab_id, li.lab_name,di.device_name,dir.item_id,tqi.unit_price,tqi.amount_rmb,tai.item_name,dir.period
         FROM check_company cc
                  INNER JOIN lab_info li ON cc.id = li.com_id
                  INNER JOIN device_info di ON di.lab_id = li.id

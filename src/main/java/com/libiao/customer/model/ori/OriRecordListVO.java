@@ -19,6 +19,8 @@ public class OriRecordListVO {
     private String reportNum;
     @ApiModelProperty("检测项目")
     private String testItem;
+    @ApiModelProperty("检测项目ID")
+    private Integer testItemId;
     @ApiModelProperty("实验室")
     private String testLab;
     @ApiModelProperty("检测设备号")

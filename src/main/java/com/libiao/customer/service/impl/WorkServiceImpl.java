@@ -142,6 +142,7 @@ public class WorkServiceImpl implements WorkService {
         String dateStr = DateUtils.getCurrentTime("yyyyMMdd");
         //拆分原始记录单
         TestWorkOrderItemExample itemExample = new TestWorkOrderItemExample();
+        itemExample.createCriteria().andTestWorkOrderIdEqualTo(req.getId());
         List<TestWorkOrderItem> testWorkOrderItems = testWorkOrderItemMapper.selectByExample(itemExample);
         for (TestWorkOrderItem testWorkOrderItem : testWorkOrderItems) {
 

@@ -201,6 +201,7 @@ public class OriRecordServiceImpl implements OriRecordService {
         update.setTestValue(req.getTestValue());
         update.setOriReportFile(req.getFileName());
         update.setTestLevel(req.getTestLevel());
+        update.setLimitValue(req.getLimitValue());
         update.setRemark(req.getRemark());
         testOriRecordMapper.updateByPrimaryKeySelective(update);
         if (!CollectionUtils.isEmpty(req.getSubList())) {

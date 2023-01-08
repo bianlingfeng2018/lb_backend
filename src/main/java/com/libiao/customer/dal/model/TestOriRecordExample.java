@@ -1905,6 +1905,76 @@ public class TestOriRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andLimitValueIsNull() {
+            addCriterion("limit_value is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueIsNotNull() {
+            addCriterion("limit_value is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueEqualTo(String value) {
+            addCriterion("limit_value =", value, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueNotEqualTo(String value) {
+            addCriterion("limit_value <>", value, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueGreaterThan(String value) {
+            addCriterion("limit_value >", value, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueGreaterThanOrEqualTo(String value) {
+            addCriterion("limit_value >=", value, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueLessThan(String value) {
+            addCriterion("limit_value <", value, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueLessThanOrEqualTo(String value) {
+            addCriterion("limit_value <=", value, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueLike(String value) {
+            addCriterion("limit_value like", value, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueNotLike(String value) {
+            addCriterion("limit_value not like", value, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueIn(List<String> values) {
+            addCriterion("limit_value in", values, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueNotIn(List<String> values) {
+            addCriterion("limit_value not in", values, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueBetween(String value1, String value2) {
+            addCriterion("limit_value between", value1, value2, "limitValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andLimitValueNotBetween(String value1, String value2) {
+            addCriterion("limit_value not between", value1, value2, "limitValue");
+            return (Criteria) this;
+        }
+
         public Criteria andOriReportFileIsNull() {
             addCriterion("ori_report_file is null");
             return (Criteria) this;

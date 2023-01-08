@@ -3,6 +3,8 @@ package com.libiao.customer.service;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.TestReport;
 import com.libiao.customer.model.report.ReportApproveReq;
+import com.libiao.customer.model.report.ReportDetailReq;
+import com.libiao.customer.model.report.ReportDetailVO;
 import com.libiao.customer.model.report.ReportListReq;
 
 public interface ReportService {
@@ -10,4 +12,5 @@ public interface ReportService {
     PageInfo<TestReport> list(ReportListReq req);
     boolean approve(ReportApproveReq req);
 
+    ReportDetailVO detail(ReportDetailReq req);
 }

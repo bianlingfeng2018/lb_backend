@@ -29,6 +29,7 @@
     <result column="test_value" jdbcType="VARCHAR" property="testValue" />
     <result column="test_result" jdbcType="VARCHAR" property="testResult" />
     <result column="test_level" jdbcType="VARCHAR" property="testLevel" />
+    <result column="limit_value" jdbcType="VARCHAR" property="limitValue" />
     <result column="ori_report_file" jdbcType="VARCHAR" property="oriReportFile" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="sample_date" jdbcType="TIMESTAMP" property="sampleDate" />
@@ -99,8 +100,8 @@
     id, record_num, work_order_num, application_num, quotation_num, report_num, test_com, 
     test_com_id, test_lab, test_lab_id, test_item, test_item_id, test_device_no, test_device_name, 
     test_person_id, test_person, test_method, test_case, create_time, plan_date, report_date, 
-    report_person, report_person_id, status, test_value, test_result, test_level, ori_report_file, 
-    remark, sample_date, review_id, review_name, review_reason, review_time
+    report_person, report_person_id, status, test_value, test_result, test_level, limit_value, 
+    ori_report_file, remark, sample_date, review_id, review_name, review_reason, review_time
   </sql>
   <select id="selectByExample" parameterType="com.libiao.customer.dal.model.TestOriRecordExample" resultMap="BaseResultMap">
     select
@@ -144,10 +145,10 @@
       test_method, test_case, create_time, 
       plan_date, report_date, report_person, 
       report_person_id, status, test_value, 
-      test_result, test_level, ori_report_file, 
-      remark, sample_date, review_id, 
-      review_name, review_reason, review_time
-      )
+      test_result, test_level, limit_value, 
+      ori_report_file, remark, sample_date, 
+      review_id, review_name, review_reason, 
+      review_time)
     values (#{recordNum,jdbcType=VARCHAR}, #{workOrderNum,jdbcType=VARCHAR}, #{applicationNum,jdbcType=VARCHAR}, 
       #{quotationNum,jdbcType=VARCHAR}, #{reportNum,jdbcType=VARCHAR}, #{testCom,jdbcType=VARCHAR}, 
       #{testComId,jdbcType=INTEGER}, #{testLab,jdbcType=VARCHAR}, #{testLabId,jdbcType=INTEGER}, 
@@ -156,10 +157,10 @@
       #{testMethod,jdbcType=VARCHAR}, #{testCase,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{planDate,jdbcType=TIMESTAMP}, #{reportDate,jdbcType=TIMESTAMP}, #{reportPerson,jdbcType=VARCHAR}, 
       #{reportPersonId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{testValue,jdbcType=VARCHAR}, 
-      #{testResult,jdbcType=VARCHAR}, #{testLevel,jdbcType=VARCHAR}, #{oriReportFile,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{sampleDate,jdbcType=TIMESTAMP}, #{reviewId,jdbcType=BIGINT}, 
-      #{reviewName,jdbcType=VARCHAR}, #{reviewReason,jdbcType=VARCHAR}, #{reviewTime,jdbcType=TIMESTAMP}
-      )
+      #{testResult,jdbcType=VARCHAR}, #{testLevel,jdbcType=VARCHAR}, #{limitValue,jdbcType=VARCHAR}, 
+      #{oriReportFile,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{sampleDate,jdbcType=TIMESTAMP}, 
+      #{reviewId,jdbcType=BIGINT}, #{reviewName,jdbcType=VARCHAR}, #{reviewReason,jdbcType=VARCHAR}, 
+      #{reviewTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.libiao.customer.dal.model.TestOriRecord">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -244,6 +245,9 @@
       </if>
       <if test="testLevel != null">
         test_level,
+      </if>
+      <if test="limitValue != null">
+        limit_value,
       </if>
       <if test="oriReportFile != null">
         ori_report_file,
@@ -345,6 +349,9 @@
       </if>
       <if test="testLevel != null">
         #{testLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="limitValue != null">
+        #{limitValue,jdbcType=VARCHAR},
       </if>
       <if test="oriReportFile != null">
         #{oriReportFile,jdbcType=VARCHAR},
@@ -459,6 +466,9 @@
       <if test="row.testLevel != null">
         test_level = #{row.testLevel,jdbcType=VARCHAR},
       </if>
+      <if test="row.limitValue != null">
+        limit_value = #{row.limitValue,jdbcType=VARCHAR},
+      </if>
       <if test="row.oriReportFile != null">
         ori_report_file = #{row.oriReportFile,jdbcType=VARCHAR},
       </if>
@@ -514,6 +524,7 @@
       test_value = #{row.testValue,jdbcType=VARCHAR},
       test_result = #{row.testResult,jdbcType=VARCHAR},
       test_level = #{row.testLevel,jdbcType=VARCHAR},
+      limit_value = #{row.limitValue,jdbcType=VARCHAR},
       ori_report_file = #{row.oriReportFile,jdbcType=VARCHAR},
       remark = #{row.remark,jdbcType=VARCHAR},
       sample_date = #{row.sampleDate,jdbcType=TIMESTAMP},
@@ -606,6 +617,9 @@
       <if test="testLevel != null">
         test_level = #{testLevel,jdbcType=VARCHAR},
       </if>
+      <if test="limitValue != null">
+        limit_value = #{limitValue,jdbcType=VARCHAR},
+      </if>
       <if test="oriReportFile != null">
         ori_report_file = #{oriReportFile,jdbcType=VARCHAR},
       </if>
@@ -658,6 +672,7 @@
       test_value = #{testValue,jdbcType=VARCHAR},
       test_result = #{testResult,jdbcType=VARCHAR},
       test_level = #{testLevel,jdbcType=VARCHAR},
+      limit_value = #{limitValue,jdbcType=VARCHAR},
       ori_report_file = #{oriReportFile,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       sample_date = #{sampleDate,jdbcType=TIMESTAMP},

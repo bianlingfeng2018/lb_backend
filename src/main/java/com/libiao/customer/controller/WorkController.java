@@ -71,7 +71,7 @@ public class WorkController {
     @ApiOperation(value = "上传样品图片")
     @PostMapping("upload")
     public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file){
-        String fileName = fileUtil.saveSample(file, DateUtils.getDate("yyyyHHmm"));
+        String fileName = fileUtil.saveSample(file, DateUtils.getDate("yyyyMMdd"));
         return ResponseUtil.getResponseVO(fileName);
     }
 

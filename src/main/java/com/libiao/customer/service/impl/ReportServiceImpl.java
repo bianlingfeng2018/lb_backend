@@ -1,19 +1,19 @@
 package com.libiao.customer.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.libiao.customer.dal.mapper.TestReportMapper;
-import com.libiao.customer.dal.model.TestReport;
-import com.libiao.customer.dal.model.TestReportExample;
-import com.libiao.customer.model.report.ReportApproveReq;
-import com.libiao.customer.model.report.ReportListReq;
+import com.libiao.customer.dal.mapper.*;
+import com.libiao.customer.dal.model.*;
+import com.libiao.customer.model.report.*;
 import com.libiao.customer.service.ReportService;
+import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.LikeUtil;
 import com.libiao.customer.util.exception.LibiaoException;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +21,14 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private TestReportMapper testReportMapper;
+    @Autowired
+    private TestApplicationFormMapper testApplicationFormMapper;
+    @Autowired
+    private TestApplicationSampleMapper testApplicationSampleMapper;
+    @Autowired
+    private TestOriRecordMapper testOriRecordMapper;
+    @Autowired
+    private TestRecordSubItemMapper subItemMapper;
 
     @Override
     public PageInfo<TestReport> list(ReportListReq req){
@@ -57,10 +65,60 @@ public class ReportServiceImpl implements ReportService {
         if(report.getReportStatus()!=0){
             throw new LibiaoException("报告单状态不正确");
         }
-        report.setReviewer(req.getUser().getUsername());
-        report.setReportStatus(req.getReportStatus());
-        report.setReason(req.getReason());
-        testReportMapper.updateByPrimaryKeySelective(report);
+        TestReport update = new TestReport();
+        update.setId(report.getId());
+        update.setReviewer(req.getUser().getUsername());
+        update.setReportStatus(req.getReportStatus());
+        update.setReason(req.getReason());
+        testReportMapper.updateByPrimaryKeySelective(update);
+
         return true;
     }
+
+    @Override
+    public ReportDetailVO detail(ReportDetailReq req){
+        ReportDetailVO vo = new ReportDetailVO();
+        TestReport testReport = testReportMapper.selectByPrimaryKey(req.getTestReportId());
+        //找到对应的申请单的样品信息
+        TestApplicationFormExample example = new TestApplicationFormExample();
+        example.createCriteria().andApplicationNumEqualTo(testReport.getApplicationNum());
+        List<TestApplicationForm> testApplicationForms = testApplicationFormMapper.selectByExample(example);
+        TestApplicationForm testApplicationForm = testApplicationForms.get(0);
+
+        TestApplicationSampleExample sampleExample = new TestApplicationSampleExample();
+        sampleExample.createCriteria().andApplicationNumEqualTo(testReport.getApplicationNum());
+        List<TestApplicationSample> testApplicationSamples = testApplicationSampleMapper.selectByExample(sampleExample);
+
+        //找到所有的原始报告单结果
+        TestOriRecordExample oriExample = new TestOriRecordExample();
+        oriExample.createCriteria().andApplicationNumEqualTo(testReport.getApplicationNum());
+        List<TestOriRecord> testOriRecords = testOriRecordMapper.selectByExample(oriExample);
+        //转对象
+        BeanCopyUtil.copy(testReport,vo);
+        //
+        ReportSampleVO sampleVO = new ReportSampleVO();
+        BeanCopyUtil.copy(testApplicationForm,sampleVO);
+        vo.setSample(sampleVO);
+
+        List<ReportSampleDescVO> descList = new ArrayList<>();
+        testApplicationSamples.forEach(desc->descList.add(BeanCopyUtil.copy(desc,ReportSampleDescVO.class)));
+        vo.setDescList(descList);
+
+        List<TestResultVO> results = new ArrayList<>();
+        for (TestOriRecord testOriRecord : testOriRecords) {
+            TestResultVO result = BeanCopyUtil.copy(testOriRecord, TestResultVO.class);
+            TestRecordSubItemExample subExample = new TestRecordSubItemExample();
+            subExample.createCriteria().andOriRecordIdEqualTo(testOriRecord.getId());
+            List<TestRecordSubItem> testRecordSubItems = subItemMapper.selectByExample(subExample);
+            List<SubTestResultVO> subList = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(testRecordSubItems)){
+                testRecordSubItems.forEach(sub->subList.add(BeanCopyUtil.copy(sub,SubTestResultVO.class)));
+            }
+            result.setSubList(subList);
+            results.add(result);
+        }
+        vo.setTestResult(results);
+        return vo;
+    }
+
 }

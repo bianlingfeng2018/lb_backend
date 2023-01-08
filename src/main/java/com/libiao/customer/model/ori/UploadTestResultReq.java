@@ -15,6 +15,8 @@ public class UploadTestResultReq extends BaseSessionReq {
     private String testValue;
     @ApiModelProperty("测试结果 比如 合格")
     private String testResult;
+    @ApiModelProperty("限值（原样传回）")
+    private String limitValue;
     @ApiModelProperty("文件名称")
     private String fileName;
     @ApiModelProperty("测试分类")

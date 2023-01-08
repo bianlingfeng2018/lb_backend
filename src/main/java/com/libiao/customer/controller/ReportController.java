@@ -4,10 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.TestReport;
 import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
-import com.libiao.customer.model.report.ReportApproveBatchReq;
-import com.libiao.customer.model.report.ReportApproveReq;
-import com.libiao.customer.model.report.ReportListReq;
-import com.libiao.customer.model.report.ReportListVO;
+import com.libiao.customer.model.report.*;
 import com.libiao.customer.service.ReportService;
 import com.libiao.customer.util.BeanCopyUtil;
 import com.libiao.customer.util.ResponseUtil;
@@ -55,5 +52,12 @@ public class ReportController {
            reportService.approve(reportApproveReq);
        });
         return ResponseUtil.getDefaultResp();
+    }
+
+    @PostMapping("detail")
+    @ApiOperation("检测报告单详情")
+    public ResponseEntity<ReportDetailVO> detail(@RequestBody ReportDetailReq req){
+        ReportDetailVO detail = reportService.detail(req);
+        return ResponseUtil.getResponseVO(detail);
     }
 }

@@ -26,7 +26,7 @@ public class OriRecordListVO {
     @ApiModelProperty("检测设备号")
     private String testDeviceNo;
     @ApiModelProperty("测试人员编号")
-    private Integer testPersonId;
+    private String testPersonId;
     @ApiModelProperty("测试人员")
     private String testPerson;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

@@ -58,6 +58,8 @@ public class TestOriRecord implements Serializable {
 
     private String testLevel;
 
+    private String limitValue;
+
     private String oriReportFile;
 
     private String remark;
@@ -290,6 +292,14 @@ public class TestOriRecord implements Serializable {
         this.testLevel = testLevel;
     }
 
+    public String getLimitValue() {
+        return limitValue;
+    }
+
+    public void setLimitValue(String limitValue) {
+        this.limitValue = limitValue;
+    }
+
     public String getOriReportFile() {
         return oriReportFile;
     }
@@ -379,6 +389,7 @@ public class TestOriRecord implements Serializable {
         sb.append(", testValue=").append(testValue);
         sb.append(", testResult=").append(testResult);
         sb.append(", testLevel=").append(testLevel);
+        sb.append(", limitValue=").append(limitValue);
         sb.append(", oriReportFile=").append(oriReportFile);
         sb.append(", remark=").append(remark);
         sb.append(", sampleDate=").append(sampleDate);

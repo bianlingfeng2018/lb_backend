@@ -49,6 +49,8 @@ public class OriRecordDetailVO {
     private Date reviewTime;
     @ApiModelProperty("报告人")
     private String reportPerson;
+    @ApiModelProperty("原始纸质记录文件地址")
+    private String oriReportFile;
     @ApiModelProperty("测试子项目列表")
     private List<OriRecordSubItemVO> subList;
 

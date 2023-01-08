@@ -10,6 +10,8 @@ public class TestOriRecord implements Serializable {
 
     private String workOrderNum;
 
+    private String applicationNum;
+
     private String quotationNum;
 
     private String reportNum;
@@ -30,7 +32,7 @@ public class TestOriRecord implements Serializable {
 
     private String testDeviceName;
 
-    private Long testPersonId;
+    private String testPersonId;
 
     private String testPerson;
 
@@ -94,6 +96,14 @@ public class TestOriRecord implements Serializable {
 
     public void setWorkOrderNum(String workOrderNum) {
         this.workOrderNum = workOrderNum;
+    }
+
+    public String getApplicationNum() {
+        return applicationNum;
+    }
+
+    public void setApplicationNum(String applicationNum) {
+        this.applicationNum = applicationNum;
     }
 
     public String getQuotationNum() {
@@ -176,11 +186,11 @@ public class TestOriRecord implements Serializable {
         this.testDeviceName = testDeviceName;
     }
 
-    public Long getTestPersonId() {
+    public String getTestPersonId() {
         return testPersonId;
     }
 
-    public void setTestPersonId(Long testPersonId) {
+    public void setTestPersonId(String testPersonId) {
         this.testPersonId = testPersonId;
     }
 
@@ -345,6 +355,7 @@ public class TestOriRecord implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", recordNum=").append(recordNum);
         sb.append(", workOrderNum=").append(workOrderNum);
+        sb.append(", applicationNum=").append(applicationNum);
         sb.append(", quotationNum=").append(quotationNum);
         sb.append(", reportNum=").append(reportNum);
         sb.append(", testCom=").append(testCom);

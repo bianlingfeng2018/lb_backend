@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,12 @@ public class OriRecordController {
         return ResponseUtil.getResponseVO(fileName);
     }
 
-    //TODO 确认检测报告单的生成
+    @ApiOperation(value = "上传文件")
+    @GetMapping("download")
+    public void download(@RequestParam("fileName") String fileName, HttpServletResponse response){
+        fileUtil.downloadRecord(fileName,response);
+    }
+
     @ApiOperation(value = "上传结果")
     @PostMapping("uploadResult")
     public ResponseEntity<BaseResponseVO> uploadResult(@RequestBody UploadTestResultReq req){
@@ -75,4 +81,10 @@ public class OriRecordController {
         return ResponseUtil.getResponseVO(testItemInfoVO);
     }
 
+    @ApiOperation(value = "分配")
+    @PostMapping("assignment")
+    public ResponseEntity<BaseResponseVO> assignment(@RequestBody AssignmentReq req){
+        oriRecordService.assignment(req);
+        return ResponseUtil.getDefaultResp();
+    }
 }

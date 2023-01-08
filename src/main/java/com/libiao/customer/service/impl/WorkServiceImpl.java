@@ -122,6 +122,8 @@ public class WorkServiceImpl implements WorkService {
         record.setId(req.getId());
         record.setStatus((byte) 1);
         record.setConfirmId(req.getUser().getId());
+        record.setOutputDate(new Date());
+
         testWorkOrderMapper.updateByPrimaryKeySelective(record);
 
         TestApplicationFormExample example = new TestApplicationFormExample();
@@ -262,11 +264,15 @@ public class WorkServiceImpl implements WorkService {
             record.setApplicationNum(testApplicationForm.getApplicationNum());
             Calendar instance = Calendar.getInstance();
             record.setCreateTime(instance.getTime());
+            int maxPeriod = 0;
+            for (CreateWorkOrderItemVO createWorkOrderItemVO : createWorkOrderVO.getTestItemList()) {
+                maxPeriod = maxPeriod > createWorkOrderItemVO.getPeriod() ? maxPeriod : createWorkOrderItemVO.getPeriod();
+            }
 
-            instance.add(Calendar.DATE,1);
+            instance.add(Calendar.DATE,maxPeriod);
             record.setPlanDate(instance.getTime());
-            //TODO 开单日期
-
+            record.setOrderDate(new Date());
+            record.setCreateName(req.getUser().getNickname());
             record.setService(testApplicationForm.getService());
             record.setTestComId(createWorkOrderVO.getTestComId());
             record.setComName(createWorkOrderVO.getComName());

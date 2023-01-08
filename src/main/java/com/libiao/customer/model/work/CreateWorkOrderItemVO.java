@@ -10,5 +10,6 @@ public class CreateWorkOrderItemVO {
     private Integer testItemId;
     @ApiModelProperty("实验室ID")
     private Integer labId;
-
+    @ApiModelProperty("测试周期")
+    private Integer period;
 }

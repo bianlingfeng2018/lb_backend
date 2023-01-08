@@ -13,6 +13,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.libiao.customer.entity.SessionUser;
+import com.libiao.customer.interceptor.SessionInfoEnum;
 import com.libiao.customer.model.PageVO;
 import com.libiao.customer.dal.model.Permission;
 import com.libiao.customer.dal.model.Role;
@@ -24,10 +26,7 @@ import com.libiao.customer.repository.RoleRepository;
 import com.libiao.customer.repository.UserRepository;
 import com.libiao.customer.repository.UserTestTradeRepository;
 import com.libiao.customer.service.UserRolePermissionService;
-import com.libiao.customer.util.FileVO;
-import com.libiao.customer.util.PageUtil;
-import com.libiao.customer.util.ResponseUtil;
-import com.libiao.customer.util.WebUtil;
+import com.libiao.customer.util.*;
 import com.libiao.customer.util.exception.ErrorCodeEnum;
 import com.libiao.customer.util.model.ResponseVO;
 import java.io.File;
@@ -113,9 +112,8 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   @Override
   public ResponseVO<Void> addUser(UserExt userExt) {
     try {
-      String userName = WebUtil.getAccessToken().getUsername();
-      UserExt loginUserExt = userRepository.selectByUsername(userName);
-      userExt.setCreatedBy(loginUserExt.getId());
+      SessionUser sessionUser = (SessionUser) ServletUtils.getSession().getAttribute(SessionInfoEnum.USER.getName());
+      userExt.setCreatedBy(sessionUser.getId());
       userExt.setGmtCreate(new Date());
       userExt.setGmtModify(new Date());
       userExt.setPermission("");
@@ -268,7 +266,8 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   @Override
   public ResponseVO<List<UserExt>> getAllClientsByOwner(String role) {
     try {
-      String userName = WebUtil.getAccessToken().getUsername();
+      SessionUser sessionUser = (SessionUser) ServletUtils.getSession().getAttribute(SessionInfoEnum.USER.getName());
+      String userName = sessionUser.getUsername();
       UserExt loginUserExt = userRepository.selectByUsername(userName);
       String loginRole = loginUserExt.getRole().getName();
       String LoginUsername = loginUserExt.getUsername();
@@ -295,8 +294,8 @@ public class UserRolePermissionServiceImpl implements UserRolePermissionService 
   @Override
   public ResponseVO<PageVO<UserExt>> getClientsByPageAndOwner(int pageNo, int pageSize, String role) {
     try {
-      String userName = WebUtil.getAccessToken().getUsername();
-      UserExt loginUserExt = userRepository.selectByUsername(userName);
+      SessionUser sessionUser = (SessionUser) ServletUtils.getSession().getAttribute(SessionInfoEnum.USER.getName());
+      UserExt loginUserExt = userRepository.selectByUsername(sessionUser.getUsername());
       String loginRole = loginUserExt.getRole().getName();
       String LoginUsername = loginUserExt.getUsername();
       PageHelper.startPage(pageNo, pageSize);

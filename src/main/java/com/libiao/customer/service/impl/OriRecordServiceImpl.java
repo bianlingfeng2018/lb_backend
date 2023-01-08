@@ -1,11 +1,13 @@
 package com.libiao.customer.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.ori.*;
 import com.libiao.customer.service.OriRecordService;
 import com.libiao.customer.util.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
+@Slf4j
 public class OriRecordServiceImpl implements OriRecordService {
 
     @Autowired
@@ -184,7 +187,9 @@ public class OriRecordServiceImpl implements OriRecordService {
             throw new ServiceException(HttpStatus.BAD_REQUEST,"审核通过，不能再上传");
         }
         boolean flag = false;
+        log.info("idStr={}",idStr);
         String[] split = record.getTestPersonId().split(",");
+        log.info("split={}",record.getTestPersonId());
         for (String s : split) {
             if (s.equals(idStr)){
                 flag = true;
@@ -194,7 +199,6 @@ public class OriRecordServiceImpl implements OriRecordService {
         if (!flag){
             throw new ServiceException(HttpStatus.BAD_REQUEST,"非分配的测试人员，不能再上传");
         }
-
         TestOriRecord update = new TestOriRecord();
         update.setId(req.getOriRecordId());
         update.setTestResult(req.getTestResult());
@@ -203,6 +207,8 @@ public class OriRecordServiceImpl implements OriRecordService {
         update.setTestLevel(req.getTestLevel());
         update.setLimitValue(req.getLimitValue());
         update.setRemark(req.getRemark());
+        update.setStatus((byte)1);
+        log.info("update={}", JSONObject.toJSONString(update));
         testOriRecordMapper.updateByPrimaryKeySelective(update);
         if (!CollectionUtils.isEmpty(req.getSubList())) {
             for (SubResultVO subResultVO : req.getSubList()) {

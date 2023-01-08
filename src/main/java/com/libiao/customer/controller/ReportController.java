@@ -2,7 +2,9 @@ package com.libiao.customer.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.libiao.customer.dal.model.TestReport;
+import com.libiao.customer.model.BaseResponseVO;
 import com.libiao.customer.model.ListResponseVO;
+import com.libiao.customer.model.report.ReportApproveReq;
 import com.libiao.customer.model.report.ReportListReq;
 import com.libiao.customer.model.report.ReportListVO;
 import com.libiao.customer.service.ReportService;
@@ -35,5 +37,12 @@ public class ReportController {
         final PageInfo<TestReport> list = reportService.list(req);
         list.getList().forEach(report->voList.add(BeanCopyUtil.copy(report,ReportListVO.class)));
         return ResponseUtil.getListResponseVO(voList,list.getTotal());
+    }
+
+    @PostMapping("approve")
+    @ApiOperation("检测报告单审核")
+    public ResponseEntity<BaseResponseVO> approve(@RequestBody ReportApproveReq req){
+        reportService.approve(req);
+        return ResponseUtil.getDefaultResp();
     }
 }

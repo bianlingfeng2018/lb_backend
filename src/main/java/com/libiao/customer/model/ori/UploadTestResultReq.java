@@ -25,4 +25,6 @@ public class UploadTestResultReq extends BaseSessionReq {
     private String remark;
     @ApiModelProperty("测试子项目")
     private List<SubResultVO> subList;
+    @ApiModelProperty("上传类型 1上传 2编辑")
+    private Byte uploadType;
 }

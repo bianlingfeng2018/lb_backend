@@ -67,7 +67,7 @@ public class OriRecordController {
         fileUtil.downloadRecord(fileName,response);
     }
 
-    @ApiOperation(value = "上传结果")
+    @ApiOperation(value = "上传/编辑结果")
     @PostMapping("uploadResult")
     public ResponseEntity<BaseResponseVO> uploadResult(@RequestBody UploadTestResultReq req){
         oriRecordService.upload(req);

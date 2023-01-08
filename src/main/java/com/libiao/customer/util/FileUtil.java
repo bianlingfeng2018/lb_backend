@@ -37,6 +37,10 @@ public class FileUtil {
         return saveFile(multpartfile,clientId,RECORD_PATH);
     }
 
+    public void downloadRecord(String fileName, HttpServletResponse response){
+        downloadFile(RECORD_PATH,fileName,response);
+    }
+
     /**
      * 保存样品图片
      * @param multpartfile

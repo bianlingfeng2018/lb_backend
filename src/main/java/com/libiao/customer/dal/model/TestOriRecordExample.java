@@ -305,6 +305,76 @@ public class TestOriRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andApplicationNumIsNull() {
+            addCriterion("application_num is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumIsNotNull() {
+            addCriterion("application_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumEqualTo(String value) {
+            addCriterion("application_num =", value, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumNotEqualTo(String value) {
+            addCriterion("application_num <>", value, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumGreaterThan(String value) {
+            addCriterion("application_num >", value, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumGreaterThanOrEqualTo(String value) {
+            addCriterion("application_num >=", value, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumLessThan(String value) {
+            addCriterion("application_num <", value, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumLessThanOrEqualTo(String value) {
+            addCriterion("application_num <=", value, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumLike(String value) {
+            addCriterion("application_num like", value, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumNotLike(String value) {
+            addCriterion("application_num not like", value, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumIn(List<String> values) {
+            addCriterion("application_num in", values, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumNotIn(List<String> values) {
+            addCriterion("application_num not in", values, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumBetween(String value1, String value2) {
+            addCriterion("application_num between", value1, value2, "applicationNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationNumNotBetween(String value1, String value2) {
+            addCriterion("application_num not between", value1, value2, "applicationNum");
+            return (Criteria) this;
+        }
+
         public Criteria andQuotationNumIsNull() {
             addCriterion("quotation_num is null");
             return (Criteria) this;
@@ -985,52 +1055,62 @@ public class TestOriRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdEqualTo(Long value) {
+        public Criteria andTestPersonIdEqualTo(String value) {
             addCriterion("test_person_id =", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdNotEqualTo(Long value) {
+        public Criteria andTestPersonIdNotEqualTo(String value) {
             addCriterion("test_person_id <>", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdGreaterThan(Long value) {
+        public Criteria andTestPersonIdGreaterThan(String value) {
             addCriterion("test_person_id >", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andTestPersonIdGreaterThanOrEqualTo(String value) {
             addCriterion("test_person_id >=", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdLessThan(Long value) {
+        public Criteria andTestPersonIdLessThan(String value) {
             addCriterion("test_person_id <", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdLessThanOrEqualTo(Long value) {
+        public Criteria andTestPersonIdLessThanOrEqualTo(String value) {
             addCriterion("test_person_id <=", value, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdIn(List<Long> values) {
+        public Criteria andTestPersonIdLike(String value) {
+            addCriterion("test_person_id like", value, "testPersonId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestPersonIdNotLike(String value) {
+            addCriterion("test_person_id not like", value, "testPersonId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestPersonIdIn(List<String> values) {
             addCriterion("test_person_id in", values, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdNotIn(List<Long> values) {
+        public Criteria andTestPersonIdNotIn(List<String> values) {
             addCriterion("test_person_id not in", values, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdBetween(Long value1, Long value2) {
+        public Criteria andTestPersonIdBetween(String value1, String value2) {
             addCriterion("test_person_id between", value1, value2, "testPersonId");
             return (Criteria) this;
         }
 
-        public Criteria andTestPersonIdNotBetween(Long value1, Long value2) {
+        public Criteria andTestPersonIdNotBetween(String value1, String value2) {
             addCriterion("test_person_id not between", value1, value2, "testPersonId");
             return (Criteria) this;
         }

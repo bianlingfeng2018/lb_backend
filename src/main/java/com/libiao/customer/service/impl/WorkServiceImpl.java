@@ -149,6 +149,7 @@ public class WorkServiceImpl implements WorkService {
             row.setRecordNum(oriRecordNo);
             row.setWorkOrderNum(testWorkOrder.getWorkOrderNum());
             row.setQuotationNum(testWorkOrder.getQuotationNum());
+            row.setApplicationNum(testWorkOrder.getApplicationNum());
             row.setTestCom(testWorkOrder.getComName());
             row.setTestComId(testWorkOrder.getTestComId());
             row.setTestLabId(testWorkOrderItem.getLabId());

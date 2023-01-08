@@ -11,6 +11,7 @@ import com.libiao.customer.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -68,6 +69,7 @@ public class OriRecordServiceImpl implements OriRecordService {
     }
 
     @Override
+    @Transactional
     public void review(ReviewOriRecordReq req){
         final TestOriRecord testOriRecord = testOriRecordMapper.selectByPrimaryKey(req.getId());
         if (testOriRecord == null || 1 != testOriRecord.getStatus()){
@@ -80,6 +82,8 @@ public class OriRecordServiceImpl implements OriRecordService {
         update.setReviewName(req.getUser().getNickname());
         update.setReviewReason(req.getReviewReason());
         testOriRecordMapper.updateByPrimaryKeySelective(update);
+        //TODO 确认该原始记录单的申请单下的所有原始记录单都已经审核完毕，那么生成检测报告单
+
     }
 
     //更新原始记录单，首先获取测试类型和对应的参数
@@ -113,9 +117,29 @@ public class OriRecordServiceImpl implements OriRecordService {
     }
 
     @Override
+    @Transactional
     public void upload(UploadTestResultReq req){
         //更新原始记录单
+        //只有指定的测试人员才能上传
+        String idStr = String.valueOf(req.getUser().getId());
+        TestOriRecord record = testOriRecordMapper.selectByPrimaryKey(req.getOriRecordId());
+        if (record.getStatus() == 2){
+            throw new ServiceException(HttpStatus.BAD_REQUEST,"审核通过，不能再上传");
+        }
+        boolean flag = false;
+        String[] split = record.getTestPersonId().split(",");
+        for (String s : split) {
+            if (s.equals(idStr)){
+                flag = true;
+                break;
+            }
+        }
+        if (!flag){
+            throw new ServiceException(HttpStatus.BAD_REQUEST,"非分配的测试人员，不能再上传");
+        }
+
         TestOriRecord update = new TestOriRecord();
+        update.setId(req.getOriRecordId());
         update.setTestResult(req.getTestResult());
         update.setTestValue(req.getTestValue());
         update.setOriReportFile(req.getFileName());
@@ -131,6 +155,25 @@ public class OriRecordServiceImpl implements OriRecordService {
                 testRecordSubItemMapper.updateByPrimaryKeySelective(subUpdate);
             }
         }
+    }
+
+    @Override
+    public void assignment(AssignmentReq req){
+        TestOriRecord record = testOriRecordMapper.selectByPrimaryKey(req.getOriRecordId());
+        if (record.getStatus() != 0){
+            throw new ServiceException(HttpStatus.BAD_REQUEST,"该订单已经分配");
+        }
+        TestOriRecord update = new TestOriRecord();
+        update.setId(req.getOriRecordId());
+        StringBuilder name = new StringBuilder();
+        StringBuilder id = new StringBuilder();
+        for (UserVO user : req.getUserList()) {
+            name.append(user.getNickname()).append(",");
+            id.append(user.getId()).append(",");
+        }
+        update.setTestPersonId(id.deleteCharAt(id.length()-1).toString());
+        update.setTestPerson(name.deleteCharAt(name.length()-1).toString());
+        testOriRecordMapper.updateByPrimaryKeySelective(update);
     }
 
 }

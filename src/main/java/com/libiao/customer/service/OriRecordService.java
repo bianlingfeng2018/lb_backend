@@ -16,4 +16,6 @@ public interface OriRecordService {
     TestItemInfoVO testInfo(TestItemInfoReq req);
 
     void upload(UploadTestResultReq req);
+
+    void assignment(AssignmentReq req);
 }

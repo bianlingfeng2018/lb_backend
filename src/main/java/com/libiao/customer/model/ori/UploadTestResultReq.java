@@ -1,12 +1,13 @@
 package com.libiao.customer.model.ori;
 
+import com.libiao.customer.model.BaseSessionReq;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class UploadTestResultReq {
+public class UploadTestResultReq extends BaseSessionReq {
 
     @ApiModelProperty("原始记录单")
     private Long oriRecordId;

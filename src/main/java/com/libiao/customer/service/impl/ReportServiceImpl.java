@@ -58,7 +58,7 @@ public class ReportServiceImpl implements ReportService {
             throw new LibiaoException("报告单状态不正确");
         }
         report.setReviewer(req.getUser().getUsername());
-        report.setReportStatus(report.getReportStatus());
+        report.setReportStatus(req.getReportStatus());
         report.setReason(req.getReason());
         testReportMapper.updateByPrimaryKeySelective(report);
         return true;

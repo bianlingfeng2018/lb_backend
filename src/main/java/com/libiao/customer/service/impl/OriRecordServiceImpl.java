@@ -5,9 +5,7 @@ import com.libiao.customer.dal.mapper.*;
 import com.libiao.customer.dal.model.*;
 import com.libiao.customer.model.ori.*;
 import com.libiao.customer.service.OriRecordService;
-import com.libiao.customer.util.BeanCopyUtil;
-import com.libiao.customer.util.LikeUtil;
-import com.libiao.customer.util.ServiceException;
+import com.libiao.customer.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class OriRecordServiceImpl implements OriRecordService {
@@ -31,6 +29,15 @@ public class OriRecordServiceImpl implements OriRecordService {
     private BasicStandardLevelMapper basicStandardLevelMapper;
     @Autowired
     private TestReportMapper testReportMapper;
+    @Autowired
+    private TestApplicationFormMapper testApplicationFormMapper;
+    @Autowired
+    private RedisUtil redisUtil;
+    @Autowired
+    private SystemParameterMapperExt systemParameterMapperExt;
+    @Autowired
+    private TestInfoMapperExt testInfoMapperExt;
+
 
     @Override
     public PageInfo<TestOriRecord> list(OriRecordListReq req){
@@ -84,15 +91,54 @@ public class OriRecordServiceImpl implements OriRecordService {
         update.setReviewName(req.getUser().getNickname());
         update.setReviewReason(req.getReviewReason());
         testOriRecordMapper.updateByPrimaryKeySelective(update);
-        //TODO 确认该原始记录单的申请单下的所有原始记录单都已经审核完毕，那么生成检测报告单
+        //确认该原始记录单的申请单下的所有原始记录单都已经审核完毕，那么生成检测报告单
 
         TestOriRecordExample example = new TestOriRecordExample();
         example.createCriteria().andApplicationNumEqualTo(testOriRecord.getApplicationNum()).andStatusNotEqualTo((byte) 2);
         List<TestOriRecord> testOriRecords = testOriRecordMapper.selectByExample(example);
+
+        String editor = systemParameterMapperExt.getValueByKey("EDITOR");
+        String approver = systemParameterMapperExt.getValueByKey("APPROVER");
         if (CollectionUtils.isEmpty(testOriRecords)){
+            //找到申请单
+            TestApplicationFormExample appExample = new TestApplicationFormExample();
+            appExample.createCriteria().andApplicationNumEqualTo(testOriRecord.getApplicationNum());
+            List<TestApplicationForm> testApplicationForms = testApplicationFormMapper.selectByExample(appExample);
+            TestApplicationForm testApplicationForm = testApplicationForms.get(0);
+
+            //找到所有的原始记录单
+            example = new TestOriRecordExample();
+            example.createCriteria().andApplicationNumEqualTo(testOriRecord.getApplicationNum()).andStatusEqualTo((byte) 2);
+            List<TestOriRecord> oriRecords = testOriRecordMapper.selectByExample(example);
+            //获取下面所有的测试人员
+            Set<String> tester = new HashSet<>();
+            for (TestOriRecord oriRecord : oriRecords) {
+                String testPerson = oriRecord.getTestPerson();
+                String[] split = testPerson.split(",");
+                for (String s : split) {
+                    tester.add(s);
+                }
+            }
+            StringBuilder test = new StringBuilder();
+            tester.forEach(str->test.append(str).append(","));
+            String testStr = test.deleteCharAt(test.length() - 1).toString();
+
             //不存在未审核的原始记录单，那么开始生成检测报告单
             TestReport report = new TestReport();
-
+            report.setQuotationNum(testOriRecord.getQuotationNum());
+            report.setApplicationNum(testOriRecord.getApplicationNum());
+            report.setReportNum(redisUtil.getReportNo(DateUtils.getCurrentTime("yyyyMMdd")));
+            report.setReportDate(new Date());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            report.setPlanDate(sdf.format(testApplicationForm.getPlanDate()));
+            report.setClient(testApplicationForm.getApplicationName());
+            report.setApprover(approver);
+            report.setEditor(editor);
+            String charger = testInfoMapperExt.getDirectorByGoodsId(testApplicationForm.getGoodsId());
+            report.setCharger(charger);
+            //获取所有的测试人员
+            report.setTester(testStr);
+            report.setReportStatus((byte) 0);
             testReportMapper.insertSelective(report);
         }
     }

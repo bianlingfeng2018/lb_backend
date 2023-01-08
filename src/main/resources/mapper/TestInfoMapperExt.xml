@@ -39,5 +39,12 @@
         WHERE tai.application_num = #{applicationNum} and cc.id = #{comId}
     </select>
 
+    <select id="getDirectorByGoodsId" resultType="string">
+        SELECT bgc.director
+        FROM mall_goods mg
+                 LEFT JOIN basic_goods_material bgm ON bgm.material_name = mg.material
+                 LEFT JOIN basic_goods_class bgc ON bgc.id = bgm.class_id
+        WHERE mg.id = #{goodsId}
+    </select>
 </mapper>
 

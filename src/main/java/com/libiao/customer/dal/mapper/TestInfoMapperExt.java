@@ -14,4 +14,6 @@ public interface TestInfoMapperExt {
     List<SplitInfo> getTotalSplitInfo();
 
     List<CheckItemVO> getComCheckItemList(CheckItemReq req);
+
+    String getDirectorByGoodsId(Long goodsId);
 }
